@@ -4,9 +4,9 @@ module.exports = {
     node: true
   },
   'extends': [
-    'plugin:vue/essential',
     '@vue/standard',
-    'standard'
+    'standard',
+    'plugin:vue/essential'
   ],
   globals: {
     "Swiper":true,
