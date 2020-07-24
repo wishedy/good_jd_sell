@@ -1,9 +1,19 @@
 <template>
-    <section class="jd_main">首页</section>
+    <section class="jd_main">
+        <BannerBar></BannerBar>
+        <Entrance></Entrance>
+    </section>
 </template>
 <script>
+import BannerBar from 'components/BannerBar/BannerBar'
+import Entrance from 'components/Entrance/Entrance'
+
 export default {
-  name: 'home'
+  name: 'home',
+  components: {
+    BannerBar,
+    Entrance
+  }
 }
 </script>
 <style lang="scss" scoped>
