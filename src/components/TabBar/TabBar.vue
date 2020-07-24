@@ -2,12 +2,12 @@
     <section class="jd_tab">
         <section class="jd_tab_item active">
             <div class="icon index"></div>
-            <div class="title">名字</div>
+            <div class="title">首页</div>
         </section>
-        <section class="jd_tab_item">
+        <!--<section class="jd_tab_item">
             <div class="icon poster"></div>
             <div class="title">个性化海报</div>
-        </section>
+        </section>-->
         <section class="jd_tab_item">
             <div class="icon recommend"></div>
             <div class="title">推荐</div>
@@ -35,6 +35,7 @@ export default {
         bottom:0;
         left: 0;
         right: 0;
+        background: #fff;
         justify-content: space-around;
             .jd_tab_item{
                 width: 120px;

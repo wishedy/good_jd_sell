@@ -41,8 +41,10 @@ export default {
     .jd_entrance{
         height: 167px;
         width: 698px;
-        margin: 0 auto;
+        background: #fff;
         display: flex;
+        padding: 0 26px;
+        box-sizing: unset;
         flex-direction: row;
         align-items: flex-start;
         justify-content: space-around;

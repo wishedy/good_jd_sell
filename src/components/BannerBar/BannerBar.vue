@@ -36,8 +36,10 @@ export default {
     .jd_banner{
         width:698px;
         height:297px;
+        background: #fff;
         border-radius:11px;
-        margin: 10px auto 30px auto;
+        padding: 10px 26px 30px 26px;
+        box-sizing: unset;
         .swiper-container{
             width: 100%;
             height: 100%;
