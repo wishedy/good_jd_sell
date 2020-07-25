@@ -1,5 +1,6 @@
 <template>
     <section class="jd_main">
+        <HeaderBar title="关东臻品"></HeaderBar>
         <BannerBar></BannerBar>
         <Entrance></Entrance>
         <section class="divide-line"></section>
@@ -15,6 +16,8 @@
     </section>
 </template>
 <script>
+import HeaderBar from 'components/HeaderBar/index'
+
 import BannerBar from 'components/BannerBar/BannerBar'
 import Entrance from 'components/Entrance/Entrance'
 import SpecialOffer from 'components/SpecialOffer/SpecialOffer'
@@ -24,6 +27,7 @@ export default {
   name: 'home',
   components: {
     BannerBar,
+    HeaderBar,
     Entrance,
     SpecialOffer,
     TabBar,
@@ -32,11 +36,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .jd_main{
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        padding-bottom: 100px;
         .divide-line{
             width: 744px;
             border: 3px solid #fff;
@@ -54,5 +53,4 @@ export default {
             flex-direction: row;
             justify-content: space-around;
         }
-    }
 </style>

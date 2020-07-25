@@ -1,26 +1,36 @@
 <template>
-    <section class="jd_tab">
-        <section class="jd_tab_item active">
+    <section class="jd_tab" v-if="showTabbar">
+        <router-link class="jd_tab_item" tag="section" to="home" active-class="active" >
             <div class="icon index"></div>
             <div class="title">首页</div>
-        </section>
+        </router-link>
         <!--<section class="jd_tab_item">
             <div class="icon poster"></div>
             <div class="title">个性化海报</div>
         </section>-->
-        <section class="jd_tab_item">
+        <router-link class="jd_tab_item" tag="section" to="recommend" active-class="active" >
             <div class="icon recommend"></div>
             <div class="title">推荐</div>
-        </section>
-        <section class="jd_tab_item">
-            <div class="icon me"></div>
+        </router-link>
+        <router-link class="jd_tab_item" tag="section" to="personal" active-class="active" >
+        <div class="icon me"></div>
             <div class="title">我的</div>
-        </section>
+        </router-link>
     </section>
 </template>
 <script>
 export default {
-  name: 'tab'
+  name: 'tab',
+  computed: {
+    showTabbar () {
+      const path = ['/home', '/recommend', '/personal']
+      if (path.includes(this.$route.path) || this.$route.path.indexOf('/publicClassroom') >= 0) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

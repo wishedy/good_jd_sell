@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import 'style/reset.scss'
+import 'style/common.scss'
 import App from './App.vue'
 import router from './router'
 import store from './store'
