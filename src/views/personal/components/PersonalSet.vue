@@ -1,8 +1,8 @@
 <template>
     <section class="personal_set">
-        <SetItem class="order" title="我的订单"></SetItem>
-        <SetItem class="performance" title="代理业绩"></SetItem>
-        <SetItem class="search" title="号码查询"></SetItem>
+        <SetItem class="order" title="我的订单" path="order"></SetItem>
+        <SetItem class="performance" title="代理业绩" path="agency"></SetItem>
+        <SetItem class="search" title="号码查询" path="search"></SetItem>
         <SetItem class="set" title="设置" path="setIndex"></SetItem>
     </section>
 </template>

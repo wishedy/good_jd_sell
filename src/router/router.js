@@ -31,6 +31,18 @@ const Order = (resolve) => {
     resolve(module)
   })
 }
+//订单
+const Agency = (resolve) => {
+  import(/* webpackChunkName: 'Agency' */'@/views/agency/index').then((module) => {
+    resolve(module)
+  })
+}
+//号码查询
+const Search = (resolve) => {
+  import(/* webpackChunkName: 'Search' */'@/views/search/index').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 const router = new Router({
@@ -74,6 +86,24 @@ const router = new Router({
       component: Order,
       meta: {
         title: '我的订单'
+      }
+    },
+    //号码查询
+    {
+      path: '/search',
+      name: 'Search',
+      component: Search,
+      meta: {
+        title: '号码查询'
+      }
+    },
+    //代理业绩
+    {
+      path: '/agency',
+      name: 'Agency',
+      component: Agency,
+      meta: {
+        title: '代理业绩'
       }
     },
     //设置

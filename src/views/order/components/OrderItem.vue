@@ -1,7 +1,7 @@
 <template>
     <section class="jd_order_item">
         <h1 class="order-id">
-            <span class="id-num">订单编号:9876543211025666</span>
+            <span class="id-num">手机号:183****8989</span>
             <span class="order-state">待付款</span>
         </h1>
         <section class="order-content">
