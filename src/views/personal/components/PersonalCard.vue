@@ -1,7 +1,7 @@
 <template>
     <section class="jd_main_personal">
         <section class="header-module">
-            <figure class="logo"></figure>
+            <router-link tag="figure" :to="{path:'/editUserInfo'}" class="logo"></router-link>
             <section class="personal-info">
                 <div class="user-name">吃货世界</div>
                 <div class="user-phone">134****33246</div>
@@ -32,6 +32,7 @@ export default {
                 background:rgba(255,255,255,1);
                 border-radius:50%;
                 margin: 0 26px 0 35px;
+                background: url("~img/personal/headerLogo.png") no-repeat center/cover;
             }
             .personal-info{
                 width: 128px;

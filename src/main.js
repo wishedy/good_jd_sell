@@ -5,6 +5,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'swiper/css/swiper.min.css'
+import AwesomePicker from 'vue-awesome-picker'
+Vue.use(AwesomePicker)
 Vue.config.productionTip = false
 new Vue({
   router,

@@ -1,15 +1,24 @@
 <template>
     <section class="jd_main">
-        <HeaderBar title="号码查询" :back="true"></HeaderBar>
+        <SearchBar></SearchBar>
+        <section class="jd_search_result">
+            <SearchResult></SearchResult>
+        </section>
     </section>
 </template>
 <script>
-import HeaderBar from 'components/HeaderBar/index'
-
+import SearchBar from './components/SearchBar'
+import SearchResult from './components/SearchResult'
 export default {
   name: 'search',
   components: {
-    HeaderBar
+    SearchBar,
+    SearchResult
   }
 }
 </script>
+<style lang="scss" scoped>
+    .jd_search_result{
+        margin-top: 30px;
+    }
+</style>

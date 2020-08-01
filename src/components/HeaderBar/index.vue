@@ -34,6 +34,7 @@ export default {
     returnBack () {
       const _this = this
       _this.$emit('returnOriginal')
+      _this.$router.back(-1)
     },
     subTitleEvent () {
       const _this = this

@@ -43,6 +43,12 @@ const Search = (resolve) => {
     resolve(module)
   })
 }
+//设置个人信息
+const EditUserInfo = (resolve) => {
+  import(/* webpackChunkName: 'EditUserInfo' */'@/views/personal/editUserInfo').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 const router = new Router({
@@ -77,6 +83,15 @@ const router = new Router({
       component: Personal,
       meta: {
         title: '个人中心'
+      }
+    },
+    //设置个人信息
+    {
+      path: '/editUserInfo',
+      name: 'EditUserInfo',
+      component: EditUserInfo,
+      meta: {
+        title: '设置个人信息'
       }
     },
     //我的订单

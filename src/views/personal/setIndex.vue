@@ -1,5 +1,6 @@
 <template>
     <section class="jd_main">
+        <HeaderBar title="设置" :back="true"></HeaderBar>
         <SetItem class="privacy" title="隐私协议"></SetItem>
         <SetItem class="agreement" title="用户协议"></SetItem>
         <div class="bottom-btn">
@@ -8,11 +9,14 @@
     </section>
 </template>
 <script>
+import HeaderBar from 'components/HeaderBar/index'
+
 import SetItem from './components/SetItem'
 export default {
   name: 'setIndex',
   components: {
-    SetItem
+    SetItem,
+    HeaderBar
   }
 }
 </script>
