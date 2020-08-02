@@ -49,6 +49,12 @@ const EditUserInfo = (resolve) => {
     resolve(module)
   })
 }
+//登录注册页
+const Login = (resolve) => {
+  import(/* webpackChunkName: 'Login' */'@/views/login/index').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 const router = new Router({
@@ -137,6 +143,15 @@ const router = new Router({
       component: Recommend,
       meta: {
         title: '素材推荐'
+      }
+    },
+    //登录或注册页
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      meta: {
+        title: '登录注册页'
       }
     },
   ]
