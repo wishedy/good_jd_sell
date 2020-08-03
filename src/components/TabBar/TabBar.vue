@@ -4,13 +4,17 @@
             <div class="icon index"></div>
             <div class="title">首页</div>
         </router-link>
-        <!--<section class="jd_tab_item">
-            <div class="icon poster"></div>
-            <div class="title">个性化海报</div>
-        </section>-->
+        <router-link class="jd_tab_item" tag="section" to="classify" active-class="active" >
+            <div class="icon more"></div>
+            <div class="title">分类</div>
+        </router-link>
         <router-link class="jd_tab_item" tag="section" to="recommend" active-class="active" >
-            <div class="icon recommend"></div>
-            <div class="title">推荐</div>
+            <div class="icon discover"></div>
+            <div class="title">发现</div>
+        </router-link>
+        <router-link class="jd_tab_item" tag="section" to="shopping" active-class="active" >
+            <div class="icon shop"></div>
+            <div class="title">购物车</div>
         </router-link>
         <router-link class="jd_tab_item" tag="section" to="personal" active-class="active" >
         <div class="icon me"></div>
@@ -23,7 +27,7 @@ export default {
   name: 'tab',
   computed: {
     showTabbar () {
-      const path = ['/home', '/recommend', '/personal']
+      const path = ['/home', '/recommend', '/personal', '/classify', '/shopping']
       if (path.includes(this.$route.path) || this.$route.path.indexOf('/publicClassroom') >= 0) {
         return true
       } else {
@@ -71,10 +75,25 @@ export default {
                     height: 45px;
                     background: url("~img/tab/recommend.png") center/cover;
                 }
+                &.discover{
+                    width: 51px;
+                    height: 45px;
+                    background: url("~img/tab/discover.png") center/cover;
+                }
                 &.poster{
                     width: 45px;
                     height: 45px;
                     background: url("~img/tab/poster.png") center/cover;
+                }
+                &.shop{
+                    width: 45px;
+                    height: 45px;
+                    background: url("~img/tab/shop.png") center/cover;
+                }
+                &.more{
+                    width: 45px;
+                    height: 45px;
+                    background: url("~img/tab/more-default.png") center/cover;
                 }
             }
             .title{
@@ -102,10 +121,25 @@ export default {
                             height: 45px;
                             background: url("~img/tab/recommend-active.png") center/cover;
                         }
+                        &.shop{
+                            width: 51px;
+                            height: 45px;
+                            background: url("~img/tab/shop-active.png") center/cover;
+                        }
                         &.poster{
                             width: 45px;
                             height: 45px;
                             background: url("~img/tab/poster-active.png") center/cover;
+                        }
+                        &.discover{
+                            width: 45px;
+                            height: 45px;
+                            background: url("~img/tab/discover-active.png") center/cover;
+                        }
+                        &.more{
+                            width: 45px;
+                            height: 45px;
+                            background: url("~img/tab/More.png") center/cover;
                         }
                     }
                     .title{

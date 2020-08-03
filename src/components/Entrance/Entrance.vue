@@ -28,6 +28,36 @@
             <figure class="icon">
                 <i></i>
             </figure>
+            <h1 class="title">天麻</h1>
+        </section>
+        <section class="entrance-item">
+            <figure class="icon">
+                <i></i>
+            </figure>
+            <h1 class="title">人参</h1>
+        </section>
+        <section class="entrance-item">
+            <figure class="icon">
+                <i></i>
+            </figure>
+            <h1 class="title">人参</h1>
+        </section>
+        <section class="entrance-item">
+            <figure class="icon">
+                <i></i>
+            </figure>
+            <h1 class="title">更多</h1>
+        </section>
+        <section class="entrance-item">
+            <figure class="icon">
+                <i></i>
+            </figure>
+            <h1 class="title">更多</h1>
+        </section>
+        <section class="entrance-item">
+            <figure class="icon">
+                <i></i>
+            </figure>
             <h1 class="title">更多</h1>
         </section>
     </section>
@@ -39,26 +69,34 @@ export default {
 </script>
 <style lang="scss" scoped>
     .jd_entrance{
-        height: 167px;
-        width: 698px;
+        min-height: 167px;
+        height: auto;
+       // width: 612px;
         background: #fff;
         display: flex;
-        padding: 0 26px;
+        padding: 0 43px;
         box-sizing: unset;
         flex-direction: row;
         align-items: flex-start;
         justify-content: space-around;
+        flex-wrap: wrap;
         .entrance-item{
             width: 91px;
+            margin-bottom: 56px;
+            margin-left: 20px;
+            margin-right: 20px;
             .icon{
-                border-radius: 50%;
+                //border-radius: 50%;
                 width: 91px;
+                border-radius:25px;
                 height: 91px;
                 margin-bottom: 19px;
                 i{
+                    border-radius:25px;
                     display: block;
                     width: 100%;
                     height: 100%;
+                    background:linear-gradient(-45deg,rgba(246,72,59,1),rgba(255,133,120,1));
                 }
             }
             .title{

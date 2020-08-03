@@ -1,6 +1,6 @@
 <template>
     <section class="jd_banner">
-        <div class="swiper-container">
+        <div class="swiper-container jd_banner_container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">slider1</div>
                 <div class="swiper-slide">slider2</div>
@@ -22,7 +22,7 @@ export default {
       /*eslint-disable*/
       const _this = this
       _this.$nextTick(()=>{
-        new Swiper('.swiper-container', {
+        new Swiper('.jd_banner_container', {
           autoplay: {
             delay: 2000
           }
@@ -37,13 +37,18 @@ export default {
         width:698px;
         height:297px;
         background: #fff;
-        border-radius:11px;
+        border-radius:16px;
         padding: 10px 26px 30px 26px;
         box-sizing: unset;
+        margin-top: -250px;
+        overflow: hidden;
+        z-index: 3;
         .swiper-container{
             width: 100%;
             height: 100%;
             background: aqua;
+            border-radius:16px;
+            box-shadow:0px 6px 16px rgba(51, 51, 51, 0.59);
         }
     }
 </style>

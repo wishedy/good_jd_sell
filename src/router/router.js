@@ -55,6 +55,24 @@ const Login = (resolve) => {
     resolve(module)
   })
 }
+//分类列表页
+const Classify = (resolve) => {
+  import(/* webpackChunkName: 'Classify' */'@/views/classify/index').then((module) => {
+    resolve(module)
+  })
+}
+//购物车
+const Shopping = (resolve) => {
+  import(/* webpackChunkName: 'Shopping' */'@/views/shopping/index').then((module) => {
+    resolve(module)
+  })
+}
+//确认订单
+const Purchase = (resolve) => {
+  import(/* webpackChunkName: 'Purchase' */'@/views/shopping/order').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 const router = new Router({
@@ -145,6 +163,23 @@ const router = new Router({
         title: '素材推荐'
       }
     },
+    //购物车
+    {
+      path: '/shopping',
+      name: 'Shopping',
+      component: Shopping,
+      meta: {
+        title: '购物车'
+      }
+    },
+    {
+      path: '/classify',
+      name: 'Classify',
+      component: Classify,
+      meta: {
+        title: '分类'
+      }
+    },
     //登录或注册页
     {
       path: '/login',
@@ -154,6 +189,15 @@ const router = new Router({
         title: '登录注册页'
       }
     },
+    //确认订单
+    {
+      path: '/purchase',
+      name: 'Purchase',
+      component: Purchase,
+      meta: {
+        title: '确认订单'
+      }
+    }
   ]
 })
 
