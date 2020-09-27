@@ -1,5 +1,5 @@
 <template>
-    <section class="jd_address_module">
+    <section class="jd_address_module" @click="goAddress">
         <div class="icon"></div>
         <div class="detail">
             <h1 class="title">
@@ -13,7 +13,15 @@
 </template>
 <script>
 export default {
-  name: 'addressModule'
+  name: 'addressModule',
+  methods: {
+    goAddress () {
+      const _this = this
+      _this.$router.push({
+        path: 'myAddress'
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

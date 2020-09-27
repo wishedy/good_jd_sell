@@ -127,6 +127,7 @@ export default {
                 display: block;
                 height: 86px;
                 text-align: center;
+                font-size: 24px;
                 line-height: 86px;
                 &.active{
                     color: #55C47D;

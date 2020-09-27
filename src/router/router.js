@@ -73,6 +73,45 @@ const Purchase = (resolve) => {
     resolve(module)
   })
 }
+//购买成功
+const BuySuccess = (resolve) => {
+  import(/* webpackChunkName: 'BuySuccess' */'@/views/shopping/buySuccess').then((module) => {
+    resolve(module)
+  })
+}
+//商品详情
+const Commodity = (resolve) => {
+  import(/* webpackChunkName: 'Commodity' */'@/views/commodity/index').then((module) => {
+    resolve(module)
+  })
+}
+// 收获地址
+const Address = (resolve) => {
+  import(/* webpackChunkName: 'Address' */'@/views/address/index').then((module) => {
+    resolve(module)
+  })
+}
+// 意见反馈
+const myAddress = (resolve) => {
+  import(/* webpackChunkName: 'myAddress' */'@/views/address/myAddress').then((module) => {
+    resolve(module)
+  })
+}
+const feedBack = (resolve) => {
+  import(/* webpackChunkName: 'feedBack' */'@/views/feedback/index').then((module) => {
+    resolve(module)
+  })
+}
+const helpCenter = (resolve) => {
+  import(/* webpackChunkName: 'helpCenter' */'@/views/helpCenter/index').then((module) => {
+    resolve(module)
+  })
+}
+const message = (resolve) => {
+  import(/* webpackChunkName: 'message' */'@/views/message/index').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 const router = new Router({
@@ -189,6 +228,15 @@ const router = new Router({
         title: '登录注册页'
       }
     },
+    //购买成功
+    {
+      path: '/buySuccess',
+      name: 'BuySuccess',
+      component: BuySuccess,
+      meta: {
+        title: '购买成功'
+      }
+    },
     //确认订单
     {
       path: '/purchase',
@@ -197,7 +245,56 @@ const router = new Router({
       meta: {
         title: '确认订单'
       }
-    }
+    },
+    {
+      path: '/commodity',
+      name: 'Commodity',
+      component: Commodity,
+      meta: {
+        title: '商品详情'
+      }
+    },
+    // 收获地址
+    {
+      path: '/address',
+      name: 'address',
+      component: Address,
+      meta: {
+        title: ''
+      }
+    },
+    {
+      path: '/myAddress',
+      name: 'myAddress',
+      component: myAddress,
+      meta: {
+        title: '我的收获地址'
+      }
+    },
+    {
+      path: '/feedBack',
+      name: 'feedBack',
+      component: feedBack,
+      meta: {
+        title: '意见反馈'
+      }
+    },
+    {
+      path: '/helpCenter',
+      name: 'helpCenter',
+      component: helpCenter,
+      meta: {
+        title: '常见问题'
+      }
+    },
+    {
+      path: '/message',
+      name: 'message',
+      component: message,
+      meta: {
+        title: '常见问题'
+      }
+    },
   ]
 })
 

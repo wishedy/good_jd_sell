@@ -3,9 +3,9 @@
         <!--<HeaderBar title="关东臻品"></HeaderBar>-->
         <section class="jd_home_card">
             <div class="jd_content">
-                <input type="text" placeholder="请输入您的产品">
-                <i class="icon"></i>
-                <i class="message"></i>
+                <input type="text" placeholder="请输入您的产品" @focusin="focus=true" @focusout="focus=false" v-model="searchval">
+                <i class="icon" v-if="!focus"></i>
+                <i class="message" @click="goToMessage"></i>
             </div>
         </section>
         <BannerBar></BannerBar>
@@ -31,6 +31,32 @@ import TabBar from './components/TabBar'
 import OrderItem from './components/OrderItem'
 export default {
   name: 'home',
+  methods: {
+    goToMessage () {
+      const _this = this
+      _this.$router.push({
+        path: 'message'
+      })
+    }
+  },
+  watch: {
+    focus (n) {
+      const _this = this
+      if (!n) {
+        if (_this.searchval) {
+          _this.$router.push({
+            path: 'search'
+          })
+        }
+      }
+    }
+  },
+  data () {
+    return {
+      focus: false,
+      searchval: ''
+    }
+  },
   components: {
     BannerBar,
     // HeaderBar,
@@ -75,11 +101,21 @@ export default {
                     background: url('~img/search/message.png') no-repeat center/cover;
                 }
                 input{
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                    right: 0;
+                    bottom:0;
                     width: 100%;
-                    height: 100%;
+                    height: 60px;
                     outline: none;
                     border: none;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
                     border-radius:30px;
+                    line-height:60px;
+                    font-size:28px;
                     &::placeholder{
                         outline: none;
                         border: none;

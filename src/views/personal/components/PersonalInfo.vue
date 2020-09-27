@@ -1,18 +1,18 @@
 <template>
     <section class="jd_main_personal_statistics">
-        <h1 class="title">我的钱包</h1>
+        <h1 class="title">操作记录</h1>
         <section class="jd_statistics">
             <div class="statistics-item">
                 <span class="statistics-num">89</span>
-                <span class="statistics-title">今日收益</span>
+                <span class="statistics-title">商品收藏</span>
             </div>
             <div class="statistics-item">
                 <span class="statistics-num">1280</span>
-                <span class="statistics-title">累计收益</span>
+                <span class="statistics-title">内容收藏</span>
             </div>
             <div class="statistics-item">
                 <span class="statistics-num">10</span>
-                <span class="statistics-title">今日成交</span>
+                <span class="statistics-title">足迹</span>
             </div>
         </section>
     </section>
@@ -31,6 +31,7 @@ export default {
         margin:0 auto 35px auto;
         .title{
             height: 79px;
+            font-size: 28px;
             border-bottom: 1px solid rgba(233,231,231,1);
             padding-left: 40px;
             line-height: 80px;

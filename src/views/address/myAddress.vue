@@ -1,0 +1,107 @@
+<template>
+  <section class="rouchi-myAddress">
+    <HeaderBar title="我的收获地址" :back="true"></HeaderBar>
+    <section class="address-list" v-show="loadEnd">
+      <AddressItem v-for="(item) in list" :config="item" :key="item.id" @handleDelete="deleteAddress" @click.native="selectAddress(item)"></AddressItem>
+    </section>
+    <EmptyAddress v-if="(list.length===0)&&loadEnd"></EmptyAddress>
+  </section>
+</template>
+<script>
+// import { getExpressAddressList, deleteExpressAddress } from 'api'
+import HeaderBar from 'components/HeaderBar/index'
+
+import AddressItem from './components/AddressItem'
+import EmptyAddress from './components/EmptyAddress'
+export default {
+  name: 'myAddress',
+  components: {
+    AddressItem,
+    EmptyAddress,
+    HeaderBar
+  },
+  data () {
+    const _this = this
+    const goodNo = _this.$route.query.goodNo
+    return {
+      goodNo: goodNo,
+      loadEnd: true,
+      list: [
+        {
+          id: 21,
+          name: '。ggjjltut',
+          mobile: '15633678252',
+          province: '北京市',
+          city: '北京市',
+          district: '东城区',
+          detail: '考虑兔兔',
+          is_default: 1,
+          created_at: '2020-09-04 14:27:54',
+          updated_at: '2020-09-04 14:27:54'
+        }
+      ]
+    }
+  },
+  mounted () {
+    //    const _this = this
+    document.title = ''
+    // _this.getList()
+    // _this.setTitle('我的收货地址')
+  },
+  methods: {
+    selectAddress (item) {
+      const _this = this
+      if (_this.goodNo) {
+        this.$router.push({
+          path: '/orderDetail/' + _this.goodNo,
+          query: {
+            addrId: item.id
+          }
+        })
+      }
+    },
+    async deleteAddress (data) {
+      const _this = this
+      _this.MessageBox({
+        title: '提示',
+        message: '确定要删除该收货地址吗？',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: '取消',
+        confirmButtonText: '确定'
+
+      }).then(
+        async action => {
+          if (action === 'confirm') {
+            // const res = await deleteExpressAddress(data)
+            const res = null
+            console.log(res)
+            if (res) {
+              _this.Toast('已删除')
+              _this.getList()
+            }
+          }
+        }
+      )
+    },
+    addAddress () {
+      const _this = this
+      _this.$router.push({ name: 'address' })
+    },
+    async getList () {
+      const _this = this
+      const res = null
+      console.log(res)
+      _this.list = res
+      _this.loadEnd = true
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+  .rouchi-myAddress{
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+  }
+</style>

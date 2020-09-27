@@ -65,6 +65,7 @@ export default {
                 left: 63px;
                 top:50%;
                 transform: translateY(-50%);
+                overflow: hidden;
                 input{
                     outline: none;
                     border: none;

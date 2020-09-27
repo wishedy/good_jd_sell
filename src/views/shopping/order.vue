@@ -44,8 +44,8 @@
             </div>
         </section>
         <section class="jd_order_submit">
-            <spsn class="sum">合计：<i>￥120</i></spsn>
-            <spsn class="buy-ok">提交订单</spsn>
+            <span class="sum">合计：<i>￥120</i></span>
+            <span class="buy-ok" @click="submitOrder">提交订单</span>
         </section>
     </section>
 </template>
@@ -53,10 +53,18 @@
 import HeaderBar from 'components/HeaderBar/index'
 import AddressModule from './components/AddressModule'
 export default {
-  name: 'order',
+  name: 'sureOrder',
   components: {
     HeaderBar,
     AddressModule
+  },
+  methods: {
+    submitOrder () {
+      const _this = this
+      _this.$router.push({
+        path: 'buySuccess'
+      })
+    }
   }
 }
 </script>
@@ -248,6 +256,36 @@ export default {
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+            position: fixed;
+            bottom:0;
+            left: 0;
+            right: 0;
+            .sum{
+                margin-left: 40px;
+                font-size:38px;
+                font-family:SourceHanSansCN;
+                font-weight:500;
+                color:rgba(51,51,51,1);
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-end;
+                width: 449px;
+                height: 100%;
+                i{
+                    font-style: normal;
+                    color: #E71A27;
+                    margin-right: 42px;
+                }
+            }
+            .buy-ok{
+                width:301px;
+                height:100px;
+                line-height: 100px;
+                text-align: center;
+                color: #fff;
+                background:rgba(85,196,125,1);
+            }
         }
     }
 </style>
