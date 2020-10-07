@@ -2,7 +2,7 @@
     <section class="jd_main">
         <HeaderBar title="文章推荐" :back="true"></HeaderBar>
         <section class="jd_recommend_list">
-            <RecommendItem></RecommendItem>
+            <RecommendItem v-for="(item) in articleList"></RecommendItem>
             <RecommendSub></RecommendSub>
             <RecommendSub></RecommendSub>
             <RecommendSub></RecommendSub>
@@ -12,7 +12,9 @@
     </section>
 </template>
 <script>
-import RecommendItem from './components/RecommendItem'
+  import {getArticleList} from '@/resource'
+
+  import RecommendItem from './components/RecommendItem'
 import RecommendSub from './components/RecommendSub'
 import HeaderBar from 'components/HeaderBar/index'
 export default {
@@ -21,6 +23,29 @@ export default {
     RecommendItem,
     HeaderBar,
     RecommendSub
+  },
+  data(){
+    return {
+      articleList:[]
+    }
+  },
+  methods:{
+    async getArticleData(){
+      const _this = this
+      try {
+        const res = await getArticleList({
+          pageSize:1000,
+          pageNum:1
+        })
+        _this.articleList = res.rows
+      }catch (e) {
+        console.log(e.message||'获取商品数据失败')
+      }
+    }
+  },
+  mounted(){
+    const _this = this
+    _this.getArticleData()
   }
 }
 </script>

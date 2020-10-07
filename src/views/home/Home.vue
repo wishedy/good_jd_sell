@@ -8,17 +8,14 @@
                 <i class="message" @click="goToMessage"></i>
             </div>
         </section>
-        <BannerBar></BannerBar>
-        <EntranceModule></EntranceModule>
+        <BannerBar :bannerList="bannerList"></BannerBar>
+        <EntranceModule :entranceList="entranceList"></EntranceModule>
         <section class="divide-line"></section>
-        <SpecialOffer></SpecialOffer>
+        <SpecialOffer :recommendList="recommendList"></SpecialOffer>
         <section class="divide-line"></section>
         <TabBar></TabBar>
         <section class="jd_order_list">
-            <OrderItem></OrderItem>
-            <OrderItem></OrderItem>
-            <OrderItem></OrderItem>
-            <OrderItem></OrderItem>
+            <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
     </section>
 </template>
@@ -29,9 +26,58 @@ import EntranceModule from './components/EntranceModule'
 import SpecialOffer from 'components/SpecialOffer/SpecialOffer'
 import TabBar from './components/TabBar'
 import OrderItem from './components/OrderItem'
+import {getGoodsList,getBannerList,getEntranceList,getRecommendList} from '@/resource'
 export default {
   name: 'home',
   methods: {
+    async getBannerData(){
+      const _this = this
+      try {
+        const res = await getBannerList({
+          pageSize:1000,
+          pageNum:1
+        })
+        _this.bannerList = res.rows
+      }catch (e) {
+        console.log(e.message||'获取banner数据失败')
+      }
+    },
+    async getGoodsData(){
+      const _this = this
+      try {
+        const res = await getGoodsList({
+          pageSize:1000,
+          pageNum:1
+        })
+        _this.goodList = res.rows
+      }catch (e) {
+        console.log(e.message||'获取商品数据失败')
+      }
+    },
+    async getRecommendData(){
+      const _this = this
+      try {
+        const res = await getRecommendList({
+          pageSize:1000,
+          pageNum:1
+        })
+        _this.recommendList = res.rows
+      }catch (e) {
+        console.log(e.message||'获取推荐数据失败')
+      }
+    },
+    async getEntranceData(){
+      const _this = this
+      try {
+        const res = await getEntranceList({
+          pageSize:1000,
+          pageNum:1
+        })
+        _this.entranceList = res.rows
+      }catch (e) {
+        console.log(e.message||'获取入口数据失败')
+      }
+    },
     goToMessage () {
       const _this = this
       _this.$router.push({
@@ -54,7 +100,11 @@ export default {
   data () {
     return {
       focus: false,
-      searchval: ''
+      searchval: '',
+      entranceList:[],
+      goodList:[],
+      recommendList:[],
+      bannerList:[]
     }
   },
   components: {
@@ -64,6 +114,13 @@ export default {
     SpecialOffer,
     TabBar,
     OrderItem
+  },
+  mounted(){
+    const _this = this
+    _this.getBannerData()
+    _this.getEntranceData()
+    _this.getGoodsData()
+    _this.getRecommendData()
   }
 }
 </script>

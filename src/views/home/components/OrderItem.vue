@@ -1,13 +1,21 @@
 <template>
     <section class="jd_order_item" @click="goToDetail">
-        <figure class="logo" style="background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595586434305&di=117447f4f41cc5ba95d0c5fb3babbfe2&imgtype=0&src=http%3A%2F%2Fpic.jjkk.org%2Fuploads%2Fuserup%2Fjyimg%2F7ed603fe08a485df.jpg') no-repeat center/cover"></figure>
-        <h1 class="title">测试标题测试标题测试标题测试标题测试标题</h1>
+        <figure class="logo" :style="{background:`url('${item.bannerCover}') no-repeat center/cover`}"></figure>
+        <h1 class="title" v-text="config.name">测试标题测试标题测试标题测试标题测试标题</h1>
         <h1 class="price">￥327</h1>
     </section>
 </template>
 <script>
 export default {
   name: 'orderItem',
+  props:{
+    config:{
+      default(){
+        return {}
+      },
+      type:Object
+    }
+  },
   methods: {
     goToDetail () {
       const _this = this

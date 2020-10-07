@@ -1,5 +1,5 @@
 <template>
-    <section class="jd_edit">
+    <section class="jd_edit" id="edit">
         <HeaderBar title="编辑个人信息" :back="true"></HeaderBar>
         <section class="jd_profile">
             <span class="label">上传头像:</span>
@@ -138,7 +138,7 @@ export default {
             width: 168px;
             height: 168px;
             margin-left: 120px;
-            background: url("~img/personal/headerLogo.png") no-repeat center/cover;
+            background: url("~img/personal/uploadHead.png") no-repeat center/80% 80%;
             position: relative;
 
             &::after {
@@ -224,5 +224,50 @@ export default {
         text-decoration: none;
         display: inline-block;
         font-size: 32px;
+    }
+</style>
+<style lang="scss">
+    .jd_edit#edit  .picker-panel {
+        position: relative;
+        height: 226px;
+        padding: 24px 12px;
+        box-sizing: border-box;
+    }
+    .jd_edit#edit  .picker-title h4 {
+        margin: 0;
+        font-weight: 400;
+        height: 88px;
+        line-height: 44px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        text-align: center;
+    }
+    .jd_edit#edit .picker-title span  {
+        position: absolute;
+        height: 88px;
+        line-height: 88px;
+        padding: 0 12px;
+        font-size: 28px;
+    }
+    .jd_edit#edit .picker-title h4{
+        font-size: 28px;
+    }
+    .jd_edit#edit .picker-panel .picker-mask-top{
+        top:24px;
+    }
+    .jd_edit#edit .picker-panel .picker-mask-bottom{
+        bottom:6px;
+    }
+    .jd_edit#edit .picker-wheel-wrapper .wheel-scroll .wheel-item{
+        height: 68px;
+        line-height: 68px;
+        font-size: 34px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #333;
     }
 </style>

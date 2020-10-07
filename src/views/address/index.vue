@@ -1,11 +1,11 @@
 <template>
   <section class="add-address">
     <HeaderBar title="编辑收获地址" :back="true"></HeaderBar>
-    <TextInput labelTitle="联系人：" placeholder="请输入联系人姓名" type="text" v-model="formate.name" :maxlength="usrMaxlength"></TextInput>
+    <TextInput labelTitle="联系人：" placeholder="请输入联系人姓名" type="text" v-model="formate.receiverName" :maxlength="usrMaxlength"></TextInput>
     <TextInput labelTitle="手机号：" placeholder="请填写收货人电话" type="text" v-model="formate.mobile"  :maxlength="mobileMaxlength"></TextInput>
     <TextInput labelTitle="所在地区：" placeholder="请选择收货人所在的地区" type="text" arrow @hanlePicker="onShowArea" readonly :value="localRegion"></TextInput>
-    <TextInput labelTitle="详细地址：" placeholder="写到门牌号、楼层房间号等信息" type="area" v-model="formate.detail" :maxlength="addresslength"></TextInput>
-    <SetDefault @handleSet="onSet" :selected="formate.is_default"></SetDefault>
+    <TextInput labelTitle="详细地址：" placeholder="写到门牌号、楼层房间号等信息" type="area" v-model="formate.address" :maxlength="addresslength"></TextInput>
+    <SetDefault @handleSet="onSet" :selected="formate.defaultStatus"></SetDefault>
     <awesome-picker
       ref="picker"
       :textTitle="textTitle"
@@ -16,7 +16,7 @@
   </section>
 </template>
 <script>
-// import { editExpressAddress, saveExpressAddress, getExpressAddressInfo } from 'api'
+import { editExpressAddress, saveExpressAddress, getExpressAddressInfo } from '@/resource'
 import HeaderBar from 'components/HeaderBar/index'
 
 import area from '@/libs/area'
@@ -41,13 +41,13 @@ export default {
       textTitle: '所在地区',
       formate: {
         addr_id: id,
-        name: '', // 收货人姓名
+        receiverName: '', // 收货人姓名
         mobile: '', // 收货人手机号
         province: '', // 省份
         city: '', // 城市
         district: '', // 地区
-        detail: '', // 详细地址
-        is_default: false// 是否默认，true=默认
+        address: '', // 详细地址
+        defaultStatus: false// 是否默认，true=默认
       },
       area: area,
       anchor: []
@@ -93,7 +93,7 @@ export default {
     },
     onSet (onOff) {
       const _this = this
-      _this.formate.is_default = onOff
+      _this.formate.defaultStatus = onOff?1:0
       console.log(onOff ? '开' : '关')
     },
     onShowArea () {
@@ -113,12 +113,12 @@ export default {
     checkForm (resolve,reject) {
       const _this = this
       const checkKeyName = {
-        'name':'请输入联系人姓名~', // 收货人姓名
+        'receiverName':'请输入联系人姓名~', // 收货人姓名
         'mobile':'请输入手机号码~', // 收货人手机号
         'province':'请选择所在地区~', // 省份
         'city':'请选择所在地区~', // 城市
         'district':'请选择所在地区~', // 地区
-        'detail':'请填写详细地址~', // 详细地址
+        'address':'请填写详细地址~', // 详细地址
       }
       let completeOnOff = false
       let keyArr = Object.keys(checkKeyName)
@@ -133,7 +133,7 @@ export default {
         }
       }
       if(!completeOnOff){
-        if(_this.getLen(_this.formate.name)>50){
+        if(_this.getLen(_this.formate.receiverName)>50){
           completeOnOff = true
           errorMessage = '请输入正确的联系人'
         }
@@ -141,7 +141,7 @@ export default {
           completeOnOff = true
           errorMessage = '请输入正确的手机号'
         }
-        if(_this.getLen(_this.formate.detail)>500){
+        if(_this.getLen(_this.formate.address)>500){
           completeOnOff = true
           errorMessage = '请输入正确的地址'
         }
@@ -158,11 +158,11 @@ export default {
       const _this = this
       _this.checkForm().then(async ()=>{
         let res = null
-        /*if(_this.formate.addr_id){
+        if(_this.formate.addr_id){
            res = await editExpressAddress(_this.formate)
         }else{
            res = await saveExpressAddress(_this.formate)
-        }*/
+        }
         console.log(res)
         if(res){
           _this.Toast(_this.formate.addr_id?'编辑成功':'添加成功')
@@ -189,8 +189,8 @@ export default {
         const res = await getExpressAddressInfo({addr_id:_this.formate.addr_id})
         console.log('---')
         console.log(res)
-        res.is_default = !!res.is_default
-        console.log(res.is_default )
+        res.defaultStatus = !!res.defaultStatus
+        console.log(res.defaultStatus )
         res.addr_id = res.id
         Object.keys(_this.formate).forEach((key)=>{
           _this.formate[key] = res[key]

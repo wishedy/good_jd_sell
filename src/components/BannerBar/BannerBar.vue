@@ -2,9 +2,7 @@
     <section class="jd_banner">
         <div class="swiper-container jd_banner_container">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">slider1</div>
-                <div class="swiper-slide">slider2</div>
-                <div class="swiper-slide">slider3</div>
+                <div class="swiper-slide" v-for="(item,index) in bannerList" :style="{background:`url('${item.bannerCover}') no-repeat center/cover`}" @click.stop="goDetail(item)" :key="index"></div>
             </div>
         </div>
     </section>
@@ -12,12 +10,25 @@
 <script>
 import Swiper from 'swiper'
 export default {
+  props:{
+    bannerList:{
+      default(){
+        return []
+      },
+      type:Array
+    }
+  },
   name: 'banner',
   mounted () {
     const _this = this
     _this.initSwiper()
   },
   methods: {
+    goDetail(item){
+      if(item.bannerLink){
+        location.href = item.bannerLink
+      }
+    },
     initSwiper () {
       /*eslint-disable*/
       const _this = this

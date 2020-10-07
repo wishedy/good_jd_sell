@@ -16,7 +16,7 @@ import { isInvalidString } from 'libs/utils.js'
 import { testPhoneNum } from 'libs/regularTest.js'
 export default {
   computed: {
-    ...mapGetters(['residueNum', 'onCoding', 'phoneNum']),
+    ...mapGetters(['onCoding', 'phoneNum']),
     codeDes () {
       const _this = this
       if (_this.onCoding) {

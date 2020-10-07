@@ -8,7 +8,7 @@
   </section>
 </template>
 <script>
-// import { getExpressAddressList, deleteExpressAddress } from 'api'
+import { getExpressAddressList } from '@/resource'
 import HeaderBar from 'components/HeaderBar/index'
 
 import AddressItem from './components/AddressItem'
@@ -43,10 +43,9 @@ export default {
     }
   },
   mounted () {
-    //    const _this = this
+   const _this = this
     document.title = ''
-    // _this.getList()
-    // _this.setTitle('我的收货地址')
+    _this.getList()
   },
   methods: {
     selectAddress (item) {
@@ -90,7 +89,7 @@ export default {
     },
     async getList () {
       const _this = this
-      const res = null
+      const res = await getExpressAddressList()
       console.log(res)
       _this.list = res
       _this.loadEnd = true

@@ -5,9 +5,9 @@
             <span class="recommend">今日推荐</span>
         </h1>
         <section class="order-list">
-            <section class="order-item">
-                <figure class="logo" style="background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595586434305&di=117447f4f41cc5ba95d0c5fb3babbfe2&imgtype=0&src=http%3A%2F%2Fpic.jjkk.org%2Fuploads%2Fuserup%2Fjyimg%2F7ed603fe08a485df.jpg') no-repeat center/cover"></figure>
-                <h2 class="order-title">
+            <section class="order-item" v-for="(item,index) in recommendList" :key="index" @click.stop="goDetail(item)">
+                <figure class="logo" :style="{background:`url('${item.recommendCover}') no-repeat center/cover`}"></figure>
+                <h2 class="order-title" v-text="item.recommendName">
                     测试标题测试标题测
                 </h2>
             </section>
@@ -34,6 +34,29 @@
 </template>
 <script>
 export default {
+  props:{
+    recommendList:{
+      default(){
+        return []
+      },
+      type:Array
+    }
+  },
+  methods:{
+    goDetail(){
+      const _this = this
+      if(item.recommendLink){
+        location.href = item.recommendLink
+      }else{
+        _this.$router.push({
+          name:'Search',
+          query:{
+            keyname:item.recommendName
+          }
+        })
+      }
+    }
+  },
   name: 'SpecialOffer'
 }
 </script>

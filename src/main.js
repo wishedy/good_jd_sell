@@ -9,7 +9,7 @@ import MintUI, {
 } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import router from './router'
-import store from './store'
+import store from './store/index'
 import 'swiper/css/swiper.min.css'
 import AwesomePicker from 'vue-awesome-picker'
 

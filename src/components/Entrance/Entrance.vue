@@ -1,10 +1,10 @@
 <template>
     <section class="jd_entrance">
-        <section class="entrance-item">
+        <section class="entrance-item" v-for="(item,index) in entranceData" :key="index" @click.stop="goDetail(item)">
             <figure class="icon">
-                <i></i>
+                <i :style="{background:`url('${item.entranceCover}') no-repeat center/cover`}" ></i>
             </figure>
-            <h1 class="title">人参</h1>
+            <h1 class="title" v-text="item.entranceName"></h1>
         </section>
         <section class="entrance-item">
             <figure class="icon">
@@ -64,6 +64,29 @@
 </template>
 <script>
 export default {
+  props:{
+    entranceData:{
+      default(){
+        return []
+      },
+      type:Array
+    }
+  },
+  methods:{
+    goDetail(item){
+      const _this = this
+      if(item.entranceLink){
+        location.href = item.entranceLink
+      }else{
+        _this.$router.push({
+          name:'Search',
+          query:{
+            keyname:item.entranceName
+          }
+        })
+      }
+    }
+  },
   name: 'entrance'
 }
 </script>

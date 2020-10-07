@@ -101,6 +101,24 @@ export default {
                 }
             }
         }
+        &.feedBack{
+            .label{
+                .icon{
+                    width:40px;
+                    height:37px;
+                    background: url("~img/personal/feedBack.png") no-repeat center/cover;
+                }
+            }
+        }
+        &.address{
+            .label{
+                .icon{
+                    width:40px;
+                    height:40px;
+                    background: url("~img/personal/address.png") no-repeat center/cover;
+                }
+            }
+        }
         &.search{
             .label{
                 .icon{

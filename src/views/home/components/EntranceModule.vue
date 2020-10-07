@@ -3,7 +3,7 @@
         <div class="swiper-container swiper-entrance">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <Entrance></Entrance>
+                    <Entrance :entranceData="entranceList"></Entrance>
                 </div>
                 <div class="swiper-slide">
                     <Entrance></Entrance>
@@ -22,6 +22,14 @@ import Swiper from 'swiper'
 
 export default {
   name: 'entranceModule',
+  props:{
+    entranceList:{
+      default(){
+        return []
+      },
+      type:Array
+    }
+  },
   components: {
     Entrance
   },
