@@ -1,21 +1,29 @@
 <template>
     <section class="recommend-sub">
-        <figure class="logo" style="background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595586434305&di=117447f4f41cc5ba95d0c5fb3babbfe2&imgtype=0&src=http%3A%2F%2Fpic.jjkk.org%2Fuploads%2Fuserup%2Fjyimg%2F7ed603fe08a485df.jpg') no-repeat center/cover">
-            <span class="sign">养生</span>
+        <figure class="logo" :style="{background:`url('${config.articleCover}') no-repeat center/cover`}">
+            <span class="sign">{{config.articleCategory}}</span>
         </figure>
         <article class="recommend-info">
-            <h1 class="title">练习瑜伽的好处有哪些？</h1>
+            <h1 class="title">{{config.articleName}}</h1>
             <div class="statistics">
-                <span>浏览量：8889</span>
-                <span>收藏了：1222</span>
+                <span>浏览量：{{config.browseNum}}</span>
+                <span>收藏了：{{config.collectionNum}}</span>
             </div>
-            <article class="recommend-article">瑜伽，不仅只是一套流行或时髦的健身运动这么简单。瑜伽是瑜伽，不仅只是一套流行或时髦的健身运动这么简单。瑜伽是</article>
+            <article class="recommend-article">{{config.articleIntroduction}}</article>
         </article>
     </section>
 </template>
 <script>
 export default {
-  name: 'recommendSub'
+  name: 'recommendSub',
+  props: {
+    config: {
+      default () {
+        return {}
+      },
+      type: Object
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

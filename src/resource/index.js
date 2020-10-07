@@ -21,6 +21,14 @@ export function getGoodsList (params) {
   console.log(params)
   return api.get(`/api/home/getGoodsList?${json2Query(params)}`)
 }
+export function getGoodDetail (params) {
+  console.log(params)
+  return api.get(`/api/home/getGoodsDetail?${json2Query(params)}`)
+}
+export function getGoodsTypeList (params) {
+  console.log(params)
+  return api.get(`/api/home/getCategoryList?${json2Query(params)}`)
+}
 export function getEntranceList (params) {
   console.log(params)
   return api.get(`/api/home/getEntranceList?${json2Query(params)}`)

@@ -22,12 +22,12 @@ import Swiper from 'swiper'
 
 export default {
   name: 'entranceModule',
-  props:{
-    entranceList:{
-      default(){
+  props: {
+    entranceList: {
+      default () {
         return []
       },
-      type:Array
+      type: Array
     }
   },
   components: {

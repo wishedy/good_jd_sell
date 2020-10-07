@@ -43,7 +43,7 @@ export default {
     }
   },
   mounted () {
-   const _this = this
+    const _this = this
     document.title = ''
     _this.getList()
   },

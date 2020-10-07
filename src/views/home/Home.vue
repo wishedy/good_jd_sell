@@ -13,7 +13,7 @@
         <section class="divide-line"></section>
         <SpecialOffer :recommendList="recommendList"></SpecialOffer>
         <section class="divide-line"></section>
-        <TabBar></TabBar>
+        <TabBar :tabData="tabData" @handleTabChange="changeTab"></TabBar>
         <section class="jd_order_list">
             <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
@@ -26,56 +26,74 @@ import EntranceModule from './components/EntranceModule'
 import SpecialOffer from 'components/SpecialOffer/SpecialOffer'
 import TabBar from './components/TabBar'
 import OrderItem from './components/OrderItem'
-import {getGoodsList,getBannerList,getEntranceList,getRecommendList} from '@/resource'
+import { getGoodsList, getBannerList, getEntranceList, getRecommendList, getGoodsTypeList } from '@/resource'
 export default {
   name: 'home',
   methods: {
-    async getBannerData(){
+    async getBannerData () {
       const _this = this
       try {
         const res = await getBannerList({
-          pageSize:1000,
-          pageNum:1
+          pageSize: 1000,
+          pageNum: 1
         })
         _this.bannerList = res.rows
-      }catch (e) {
-        console.log(e.message||'获取banner数据失败')
+      } catch (e) {
+        console.log(e.message || '获取banner数据失败')
       }
     },
-    async getGoodsData(){
+    async getTabData () {
+      const _this = this
+      try {
+        const res = await getGoodsTypeList({
+          pageSize: 1000,
+          pageNum: 1
+        })
+        _this.tabData = res.rows
+        _this.tabConfig = _this.tabData[0]
+      } catch (e) {
+        console.log(e.message || '获取tab数据失败')
+      }
+    },
+    async getGoodsData (id) {
       const _this = this
       try {
         const res = await getGoodsList({
-          pageSize:1000,
-          pageNum:1
+          pageSize: 1000,
+          id: id,
+          pageNum: 1
         })
         _this.goodList = res.rows
-      }catch (e) {
-        console.log(e.message||'获取商品数据失败')
+      } catch (e) {
+        console.log(e.message || '获取商品数据失败')
       }
     },
-    async getRecommendData(){
+    async getRecommendData () {
       const _this = this
       try {
         const res = await getRecommendList({
-          pageSize:1000,
-          pageNum:1
+          pageSize: 1000,
+          pageNum: 1
         })
         _this.recommendList = res.rows
-      }catch (e) {
-        console.log(e.message||'获取推荐数据失败')
+      } catch (e) {
+        console.log(e.message || '获取推荐数据失败')
       }
     },
-    async getEntranceData(){
+    changeTab (data) {
+      const _this = this
+      _this.tabConfig = data
+    },
+    async getEntranceData () {
       const _this = this
       try {
         const res = await getEntranceList({
-          pageSize:1000,
-          pageNum:1
+          pageSize: 1000,
+          pageNum: 1
         })
         _this.entranceList = res.rows
-      }catch (e) {
-        console.log(e.message||'获取入口数据失败')
+      } catch (e) {
+        console.log(e.message || '获取入口数据失败')
       }
     },
     goToMessage () {
@@ -86,6 +104,13 @@ export default {
     }
   },
   watch: {
+    tabConfig: {
+      handler (n) {
+        const _this = this
+        _this.getGoodsData(n.id)
+      },
+      deep: true
+    },
     focus (n) {
       const _this = this
       if (!n) {
@@ -101,10 +126,12 @@ export default {
     return {
       focus: false,
       searchval: '',
-      entranceList:[],
-      goodList:[],
-      recommendList:[],
-      bannerList:[]
+      entranceList: [],
+      tabConfig: {},
+      tabData: [],
+      goodList: [],
+      recommendList: [],
+      bannerList: []
     }
   },
   components: {
@@ -115,11 +142,12 @@ export default {
     TabBar,
     OrderItem
   },
-  mounted(){
+  mounted () {
     const _this = this
     _this.getBannerData()
     _this.getEntranceData()
-    _this.getGoodsData()
+    _this.getTabData()
+    // _this.getGoodsData()
     _this.getRecommendData()
   }
 }

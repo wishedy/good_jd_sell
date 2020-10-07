@@ -2,25 +2,28 @@
     <section class="jd_order_item" @click="goToDetail">
         <figure class="logo" :style="{background:`url('${item.bannerCover}') no-repeat center/cover`}"></figure>
         <h1 class="title" v-text="config.name">测试标题测试标题测试标题测试标题测试标题</h1>
-        <h1 class="price">￥327</h1>
+        <h1 class="price">￥{{config.counterPrice}}</h1>
     </section>
 </template>
 <script>
 export default {
   name: 'orderItem',
-  props:{
-    config:{
-      default(){
+  props: {
+    config: {
+      default () {
         return {}
       },
-      type:Object
+      type: Object
     }
   },
   methods: {
     goToDetail () {
       const _this = this
       _this.$router.push({
-        path: 'commodity'
+        path: 'commodity',
+        query: {
+          id: _this.config.id
+        }
       })
     }
   }

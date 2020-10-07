@@ -1,16 +1,38 @@
 <template>
     <section class="jd_tab">
-        <span class="tab-item active">标题</span>
-        <span class="tab-item">标题</span>
-        <span class="tab-item">标题</span>
-        <span class="tab-item">标题</span>
-        <span class="tab-item">标题</span>
-        <span class="tab-item">标题</span>
+        <span class="tab-item" v-for="(item,index) in tabData" v-text="item.name" :class="{active:index===tabIndex}"  :key="item,id" @click="changeTab(index)"></span>
     </section>
 </template>
 <script>
 export default {
-  name: 'tab'
+  name: 'tab',
+  props: {
+    tabData: {
+      default () {
+        return []
+      },
+      type: Array
+    }
+  },
+  data () {
+    return {
+      tabIndex: 0
+    }
+  },
+  watch: {
+    tabIndex (n) {
+      const _this = this
+      _this.$emit('handleTabChange', _this.tabData[n])
+    }
+  },
+  methods: {
+    changeTab (index) {
+      const _this = this
+      if (_this.tabIndex !== index) {
+        _this.tabIndex = index
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

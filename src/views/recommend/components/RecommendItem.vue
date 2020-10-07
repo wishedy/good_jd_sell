@@ -1,13 +1,12 @@
 <template>
     <section class="jd_recommend_item">
-        <figure class="logo" style="background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595586434305&di=117447f4f41cc5ba95d0c5fb3babbfe2&imgtype=0&src=http%3A%2F%2Fpic.jjkk.org%2Fuploads%2Fuserup%2Fjyimg%2F7ed603fe08a485df.jpg') no-repeat center/cover">
+        <figure class="logo"  :style="{background:`url('${config.articleCover}') no-repeat center/cover`}">
         <span class="sign">今日热门</span>
         </figure>
         <article class="jd_recommend_info">
-            <h1 class="title">
-                限时抢购，数量有限，先到先得限时 抢购，数量有限，先到先得                限时抢购，数量有限，先到先得限时 抢购，数量有限，先到先得
+            <h1 class="title" v-text="config.articleName">
             </h1>
-            <div class="info">
+            <div class="info" v-text="config.articleIntroduction">
 
             </div>
         </article>
@@ -15,7 +14,15 @@
 </template>
 <script>
 export default {
-  name: 'recommendItem'
+  name: 'recommendItem',
+  props: {
+    config: {
+      default () {
+        return {}
+      },
+      type: Object
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

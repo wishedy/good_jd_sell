@@ -1,7 +1,7 @@
 <template>
   <div class="price-wrap" :class="className">
     <span class="current-price">{{coin}}</span>
-    <span class="original-price">{{type !== 2 ? '¥' + displayPrice: ''}}</span>
+    <span class="original-price">{{'¥' + displayPrice}}</span>
   </div>
 </template>
 <script>
