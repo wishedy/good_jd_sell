@@ -8,17 +8,17 @@
                 <figure class="logo"></figure>
                 <span>关东臻品</span>
             </h1>
-            <section class="jd_shopping_item">
+            <section class="jd_shopping_item" v-for="(item) in cartData.cartList" :key="item.id">
                 <div class="radio"></div>
                 <figure class="logo"></figure>
                 <article class="shopping-detail">
-                    <h1 class="title">千图柠檬无公害绿色</h1>
+                    <h1 class="title" v-text="item.goodsName"></h1>
                     <div class="des">规格：6个/份     重量：  1kg</div>
-                    <div class="price">￥67</div>
+                    <div class="price">￥{{item.retailPrice}}</div>
                 </article>
                 <div class="changeNum">
                     <span class="minus">-</span>
-                    <span class="num">1111</span>
+                    <span class="num">{{item.number}}</span>
                     <span class="add">+</span>
                 </div>
             </section>
@@ -31,9 +31,9 @@
             <span class="price">
                 <div class="jd_title">
                     <span>合计：</span>
-                    <span class="num">￥600.00</span>
+                    <span class="num">￥{{cartData.goodsAmount}}</span>
                 </div>
-                <div class="jd_subTitle">已优惠：10元</div>
+                <div class="jd_subTitle">已优惠：{{cartData.goodsDiscount}}元</div>
             </span>
             <span class="submit">去结算</span>
         </section>
@@ -41,11 +41,28 @@
 </template>
 <script>
 import HeaderBar from 'components/HeaderBar/index'
+import { getGoodCart } from '@/resource'
 
 export default {
   name: 'shopping',
   components: {
     HeaderBar
+  },
+  data () {
+    return {
+      cartData: []
+    }
+  },
+  methods: {
+    async getGoodCartList () {
+      const _this = this
+      try {
+        const res = await getGoodCart()
+        _this.cartData = res.rows
+      } catch (e) {
+        console.log(e.message || '获取tab数据失败')
+      }
+    }
   }
 }
 </script>

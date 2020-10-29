@@ -20,7 +20,7 @@ function setInterceptors (axiosIns) {
     console.log('------')
     console.log(res)
     console.timeEnd(res.config.method.toUpperCase() + ' ' + res.config.url)
-    if (res.status >= 200 && res.status < 300 && (!res.data.code || res.data.code === 200)) {
+    if (parseInt(res.status,10) >= 200 && parseInt(res.status,10) < 300 && (!parseInt(res.data.code,10) || parseInt(res.data.code,10) === 200)) {
       return res.data.data || res.data
     }
     return Promise.reject(res.data)

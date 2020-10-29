@@ -22,7 +22,7 @@
             <div class="commodity-desc" v-html="goodDetail.frontDesc" ></div>
         </div>
         <section class="exchange-btn-wrap">
-            <span class="exchange-btn" @click="goShopping">立即购买</span>
+            <span class="exchange-btn" @click="goShopping(goodDetail.id)">立即购买</span>
         </section>
         <div class="commodity-model" v-if="modelFlag" @click="handleCloseModel()">
             <div class="commodity-banner swiper-container" id="swiper2">
@@ -36,13 +36,12 @@
                 <div class="swiper-pagination swiper2-pagination"></div>
             </div>
         </div>
-        <div class="commodity-add-bus">加入购物车</div>
-        <Register ref="register"></Register>
+        <div class="commodity-add-bus" @click="addGoodCart">加入购物车</div>
     </div>
 </template>
 <script>
-import { getGoodDetail } from '@/resource'
-import Register from '@/components/RegisterModal'
+import { mapGetters } from 'vuex'
+import { getGoodDetail, addCart } from '@/resource'
 import Price from './components/Price'
 import Swiper from 'swiper/js/swiper.js'
 export default {
@@ -76,6 +75,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['token']),
     /*eslint-disable*/
       exchangeDes () {
         /*eslint-disable*/
@@ -101,8 +101,7 @@ export default {
       }
     },
     components: {
-      Price,
-      Register
+      Price
     },
     mounted () {
       const _this = this
@@ -144,6 +143,30 @@ export default {
       })
     },
     methods: {
+      async addGoodCart(){
+        const _this = this
+        try{
+          _this.$login().then(res => {
+            console.log('登录成功')
+            //location.reload()
+            const param = {
+              goodsId:_this.id,
+              number:1
+            }
+            const addFun = async ()=>{
+              const res = await addCart(param)
+              if(res){
+                _this.Toast('加入购物车成功')
+              }
+            }
+            addFun()
+          }).catch(err => {
+            console.log(err)
+          })
+        }catch (e) {
+          _this.Toast(e.message||'加入购物车失败')
+        }
+      },
       handleViewImage (index) {
         this.modelFlag = true
         setTimeout(() => {
@@ -153,12 +176,18 @@ export default {
       handleCloseModel () {
         this.modelFlag = false
       },
-      goShopping(){
+      goShopping(id){
         const _this = this
-       /* _this.$router.push({
-          path:'purchase'
-        })*/
-        _this.$refs.register.show()
+        /*if(_this.token){
+
+        }*/
+        _this.$router.push({
+          path:'purchase',
+          query:{
+            type:0,//单一商品购买
+            id:id
+          }
+        })
       },
       async getGoodDetail(){
         const _this = this

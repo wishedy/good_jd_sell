@@ -64,24 +64,24 @@
 </template>
 <script>
 export default {
-  props:{
-    entranceData:{
-      default(){
+  props: {
+    entranceData: {
+      default () {
         return []
       },
-      type:Array
+      type: Array
     }
   },
-  methods:{
-    goDetail(item){
+  methods: {
+    goDetail (item) {
       const _this = this
-      if(item.entranceLink){
+      if (item.entranceLink) {
         location.href = item.entranceLink
-      }else{
+      } else {
         _this.$router.push({
-          name:'Search',
-          query:{
-            keyname:item.entranceName
+          name: 'Search',
+          query: {
+            keyname: item.entranceName
           }
         })
       }

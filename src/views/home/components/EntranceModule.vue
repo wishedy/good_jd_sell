@@ -39,6 +39,7 @@ export default {
       const _this = this
       _this.$nextTick(()=>{
         new Swiper('.swiper-entrance', {
+          autoplay:false,
           pagination: {
             el: '.swiper-pagination',
           },

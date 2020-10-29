@@ -81,13 +81,15 @@ module.exports = {
     overlay: {
       warnings: true,
       error: true
+    },
+    proxy: {
+      '/api': {
+        target: 'http://39.106.209.74:8099',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/api'
+        }
+      }
     }
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://localhost:9100',
-    //     ws: true,
-    //     changeOrigin: true
-    //   },
-    // }
   }
 }

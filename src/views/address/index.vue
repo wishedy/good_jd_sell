@@ -47,7 +47,7 @@ export default {
         city: '', // 城市
         district: '', // 地区
         address: '', // 详细地址
-        defaultStatus: false// 是否默认，true=默认
+        defaultStatus: 0// 是否默认，true=默认
       },
       area: area,
       anchor: []

@@ -14,7 +14,7 @@
         <SpecialOffer :recommendList="recommendList"></SpecialOffer>
         <section class="divide-line"></section>
         <TabBar :tabData="tabData" @handleTabChange="changeTab"></TabBar>
-        <section class="jd_order_list">
+        <section class="jd_order_list" v-if="goodList.length">
             <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
     </section>
@@ -37,8 +37,12 @@ export default {
           pageSize: 1000,
           pageNum: 1
         })
+        console.log('获取到的数据', res)
         _this.bannerList = res.rows
+        console.log('获取banner' + _this.bannerList)
       } catch (e) {
+        console.log('这里这里')
+        console.log(e)
         console.log(e.message || '获取banner数据失败')
       }
     },

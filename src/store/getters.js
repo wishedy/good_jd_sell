@@ -1,4 +1,7 @@
 const getters = {
+  token (state) {
+    return state.token
+  },
   onCoding (state) {
     return state.onCoding
   },

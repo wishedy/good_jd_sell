@@ -1,5 +1,6 @@
 
 const state = {
+  token: '',
   onCoding: '',
   codeNum: '',
   phoneNum: ''

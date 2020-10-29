@@ -1,6 +1,6 @@
 <template>
     <transition name="confirm-fade">
-    <secton class="jd_main"  v-show="shareVisible">
+    <div class="jd_main"  v-show="shareVisible">
         <section class="jd_register">
             <i class="closeIcon"></i>
             <h1 class="title">请输入手机号</h1>
@@ -14,7 +14,7 @@
                 <span class="code_input">
                     <input type="text" placeholder="请输入验证码" v-model="form.validCode">
                 </span>
-                <span class="jd_code_label">获取验证码</span>
+                <span class="jd_code_label active">获取验证码</span>
             </figure>
             <figure class="agreement">
                 <span class="label"></span>
@@ -22,7 +22,7 @@
             </figure>
             <section class="submit" :class="{active:right}" @click="submitInfo">登录</section>
         </section>
-    </secton>
+    </div>
     </transition>
 </template>
 <script>
@@ -30,7 +30,7 @@ import { setHttpAuth } from '@/resource/create-api'
 
 import { testPhoneNum } from 'libs/regularTest.js'
 import { isInvalidString } from 'libs/utils.js'
-import { mapActions } from 'vuex'
+import { mapActions,mapGetters } from 'vuex'
 import { userLogin } from '@/resource'
 export default {
   name: 'register',
@@ -45,11 +45,20 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['token']),
     right () {
       const _this = this
       const phoneOnOff = testPhoneNum(_this.form.username)
       const codeOnOff = !isInvalidString(_this.form.validCode)
       return phoneOnOff && codeOnOff
+    }
+  },
+  created(){
+    const _this = this
+    if(_this.token){
+      _this.success&&_this.success()
+    }else{
+      _this.shareVisible = true
     }
   },
   methods: {
@@ -61,16 +70,15 @@ export default {
         if (res) {
           setHttpAuth(res.data.accessToken)
           _this.saveToken(res.data.accessToken)
+          _this.success && _this.success(res.data)
         }
       } catch (e) {
         _this.Toast(e.message || '登录失败')
+        _this.fail && _this.fail(e)
+
       }
-      _this.$emit('userBehavior', 'clickConfirm', _this.outerData)
+      //_this.$emit('userBehavior', 'clickConfirm', _this.outerData)
       _this.hidden()
-    },
-    clickFun (type) {
-      this.$emit('userBehavior', type, this.outerData)
-      this.hidden()
     },
     show () {
       this.shareVisible = true
@@ -123,6 +131,7 @@ export default {
             .title{
                 width: 209px;
                 height: 122px;
+                margin: 0 auto;
                 font-size: 34px;
                 font-family: PingFangSC-Regular, PingFang SC;
                 font-weight: 400;
@@ -161,7 +170,7 @@ export default {
                     font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;
                     color: #ddd;
-                    border-right:1px solid #E7E7E7;
+                    border-left:1px solid #E7E7E7;
                     &.active{
                         color: rgb(18, 201, 138);
                     }
@@ -179,6 +188,7 @@ export default {
                         border: none;
                         line-height: 88px;
                         font-size: 32px;
+                        background: none;
                         font-family: PingFangSC-Regular, PingFang SC;
                         font-weight: 400;
                         color: #333;
@@ -222,10 +232,13 @@ export default {
                     align-items: center;
                     justify-content: center;
                     input{
+                        width: 60%;
                         outline: none;
                         border: none;
                         line-height: 88px;
                         font-size: 32px;
+                        background: none;
+
                         font-family: PingFangSC-Regular, PingFang SC;
                         font-weight: 400;
                         color: #333;
@@ -262,12 +275,12 @@ export default {
                 }
             }
             .agreement{
-                width: 520px;
+                width: 100%;
                 height: 24px;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: flex-start;
+                justify-content: center;
 
                 font-size: 24px;
                 font-family: PingFangSC-Regular, PingFang SC;

@@ -7,12 +7,15 @@ import MintUI, {
   MessageBox,
   Indicator
 } from 'mint-ui'
-import 'mint-ui/lib/style.css'
+import '@/assets/styles/reset-mint-ui.scss'
 import router from './router'
 import store from './store/index'
 import 'swiper/css/swiper.min.css'
 import AwesomePicker from 'vue-awesome-picker'
-
+import vConsole from 'vconsole'
+import '@/libs/mixin/Register'
+/*eslint-disable*/
+new vConsole()
 Vue.use(AwesomePicker)
 Vue.config.productionTip = false
 Vue.prototype.MessageBox = MessageBox

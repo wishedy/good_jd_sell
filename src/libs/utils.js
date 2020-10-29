@@ -23,3 +23,6 @@ export const json2Query = function (json) {
           encodeURIComponent(json[key])
     })).join('&')
 }
+export const getBasicAuth = (token) => {
+    return token ? 'login_tokens:' + token : ''
+}

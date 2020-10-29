@@ -1,5 +1,5 @@
 <template>
-    <section class="jd_banner">
+    <section class="jd_banner" v-if="bannerList.length">
         <div class="swiper-container jd_banner_container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(item,index) in bannerList" :style="{background:`url('${item.bannerCover}') no-repeat center/cover`}" @click.stop="goDetail(item)" :key="index"></div>
@@ -10,12 +10,12 @@
 <script>
 import Swiper from 'swiper'
 export default {
-  props:{
-    bannerList:{
-      default(){
+  props: {
+    bannerList: {
+      default () {
         return []
       },
-      type:Array
+      type: Array
     }
   },
   name: 'banner',
@@ -24,21 +24,23 @@ export default {
     _this.initSwiper()
   },
   methods: {
-    goDetail(item){
-      if(item.bannerLink){
+    goDetail (item) {
+      if (item.bannerLink) {
         location.href = item.bannerLink
       }
     },
     initSwiper () {
       /*eslint-disable*/
       const _this = this
-      _this.$nextTick(()=>{
-        new Swiper('.jd_banner_container', {
-          autoplay: {
-            delay: 2000
-          }
+      setTimeout(()=>{
+        _this.$nextTick(()=>{
+          new Swiper('.jd_banner_container', {
+            autoplay: {
+              delay: 2000
+            }
+          })
         })
-      })
+      },1000)
     }
   }
 }

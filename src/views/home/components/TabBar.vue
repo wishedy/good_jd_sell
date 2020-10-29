@@ -1,6 +1,6 @@
 <template>
     <section class="jd_tab">
-        <span class="tab-item" v-for="(item,index) in tabData" v-text="item.name" :class="{active:index===tabIndex}"  :key="item,id" @click="changeTab(index)"></span>
+        <span class="tab-item" v-for="(item,index) in tabData" v-text="item.name" :class="{active:index===tabIndex}"  :key="item.id" @click="changeTab(index)"></span>
     </section>
 </template>
 <script>

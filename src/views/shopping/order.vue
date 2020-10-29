@@ -5,7 +5,7 @@
         <section class="jd_shopping_list">
             <h1 class="jd_shopping_title">
                 <span>关东臻品</span>
-                <span class="num">共3件</span>
+                <span class="num" v-if="type===1">共3件</span>
             </h1>
             <section class="jd_shopping_item">
                 <figure class="logo"></figure>
@@ -50,6 +50,8 @@
     </section>
 </template>
 <script>
+import { previewGoodDetail, submitGood } from '@/resource'
+
 import HeaderBar from 'components/HeaderBar/index'
 import AddressModule from './components/AddressModule'
 export default {
@@ -58,12 +60,60 @@ export default {
     HeaderBar,
     AddressModule
   },
+  data () {
+    const _this = this
+    const type = parseInt(_this.$route.query.type, 10)
+    const id = _this.$route.query.id
+    return {
+      type: type,
+      id: id,
+      submitData: [],
+      goodDetail: {}
+    }
+  },
+  mounted () {
+    const _this = this
+    _this.checkType()
+  },
   methods: {
-    submitOrder () {
+    async getGoodDetail () {
       const _this = this
-      _this.$router.push({
-        path: 'buySuccess'
-      })
+      try {
+        const res = await previewGoodDetail({
+          previewOrderList: _this.submitData
+        })
+        _this.goodDetail = res.rows
+      } catch (e) {
+        console.log(e.message || '获取商品数据失败')
+      }
+    },
+    checkType () {
+      const _this = this
+      if (_this.type === 0) {
+        _this.submitData = [{
+          goodsId: _this.id,
+          goodsNum: 1
+        }]
+        _this.getGoodDetail()
+      } /* else if (_this.type === 1) {
+
+      } */
+    },
+    async submitOrder () {
+      const _this = this
+      try {
+        const res = await submitGood({
+          receiverInfoId: 1,
+          submitDetailList: _this.submitData
+        })
+        if (res) {
+          _this.$router.push({
+            path: 'buySuccess'
+          })
+        }
+      } catch (e) {
+        _this.Toast(e.message || '订单提交失败')
+      }
     }
   }
 }
