@@ -3,10 +3,10 @@
         <div class="icon"></div>
         <div class="detail">
             <h1 class="title">
-                <span>收货人：趁先生</span>
-                <span>15577377152</span>
+                <span>收货人：{{config.userName}}</span>
+                <span v-text="config.mobile"></span>
             </h1>
-            <article class="address-info">收货地址：千图城千图市千图镇千图家园102</article>
+            <article class="address-info">收货地址：{{config.address}}</article>
         </div>
         <div class="arrow"></div>
     </section>
@@ -14,6 +14,14 @@
 <script>
 export default {
   name: 'addressModule',
+  props: {
+    config: {
+      default () {
+        return {}
+      },
+      type: Object
+    }
+  },
   methods: {
     goAddress () {
       const _this = this

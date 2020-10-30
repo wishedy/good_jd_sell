@@ -8,6 +8,7 @@ import MintUI, {
   Indicator
 } from 'mint-ui'
 import '@/assets/styles/reset-mint-ui.scss'
+import '@/assets/styles/picker.scss'
 import router from './router'
 import store from './store/index'
 import 'swiper/css/swiper.min.css'

@@ -91,7 +91,7 @@ export default {
       const _this = this
       const res = await getExpressAddressList()
       console.log(res)
-      _this.list = res
+      _this.list = res.rows
       _this.loadEnd = true
     }
   }

@@ -6,6 +6,8 @@
     <TextInput labelTitle="所在地区：" placeholder="请选择收货人所在的地区" type="text" arrow @hanlePicker="onShowArea" readonly :value="localRegion"></TextInput>
     <TextInput labelTitle="详细地址：" placeholder="写到门牌号、楼层房间号等信息" type="area" v-model="formate.address" :maxlength="addresslength"></TextInput>
     <SetDefault @handleSet="onSet" :selected="formate.defaultStatus"></SetDefault>
+    <section class="add-address-submit" @click="submitAddress">确认无误，提交</section>
+
     <awesome-picker
       ref="picker"
       :textTitle="textTitle"
@@ -47,7 +49,7 @@ export default {
         city: '', // 城市
         district: '', // 地区
         address: '', // 详细地址
-        defaultStatus: 0// 是否默认，true=默认
+        defaultStatus: 1// 是否默认，true=默认
       },
       area: area,
       anchor: []
@@ -187,10 +189,6 @@ export default {
         //编辑模式
         appTitle = '编辑收货地址'
         const res = await getExpressAddressInfo({addr_id:_this.formate.addr_id})
-        console.log('---')
-        console.log(res)
-        res.defaultStatus = !!res.defaultStatus
-        console.log(res.defaultStatus )
         res.addr_id = res.id
         Object.keys(_this.formate).forEach((key)=>{
           _this.formate[key] = res[key]
@@ -203,9 +201,9 @@ export default {
     }
   },
   mounted(){
-    //const _this = this
+    const _this = this
     document.title = ''
-   // _this.checkEditType()
+   _this.checkEditType()
   }
 }
 </script>
@@ -215,5 +213,22 @@ export default {
     width: 100%;
     overflow: hidden;
     background: #fff;
+    .add-address-submit{
+      display: block;
+      width: 600px;
+      height: 90px;
+      background:linear-gradient(90deg,rgba(51,218,138,1),rgba(18,201,138,1));
+      border-radius: 45px;
+      font-size: 39px;
+      font-family: PingFang SC Medium, PingFang SC Medium-Medium;
+      font-weight: 500;
+      text-align: center;
+      color: #ffffff;
+      line-height: 90px;
+      margin: 40px auto;
+      letter-spacing: 0px;
+      text-shadow: 0px 3px 5px 0px rgba(69,7,0,0.43);
+
+    }
   }
 </style>

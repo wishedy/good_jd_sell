@@ -178,15 +178,14 @@ export default {
       },
       goShopping(id){
         const _this = this
-        /*if(_this.token){
-
-        }*/
-        _this.$router.push({
-          path:'purchase',
-          query:{
-            type:0,//单一商品购买
-            id:id
-          }
+        _this.$login().then(res => {
+          _this.$router.push({
+            path:'purchase',
+            query:{
+              type:0,//单一商品购买
+              id:id
+            }
+          })
         })
       },
       async getGoodDetail(){

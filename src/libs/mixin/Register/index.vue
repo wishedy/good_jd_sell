@@ -53,10 +53,13 @@ export default {
       return phoneOnOff && codeOnOff
     }
   },
-  created(){
+  mounted(){
     const _this = this
     if(_this.token){
-      _this.success&&_this.success()
+      _this.$nextTick(()=>{
+        setHttpAuth(_this.token)
+        _this.success&&_this.success()
+      })
     }else{
       _this.shareVisible = true
     }
@@ -68,9 +71,9 @@ export default {
       try {
         const res = await userLogin(_this.form)
         if (res) {
-          setHttpAuth(res.data.accessToken)
-          _this.saveToken(res.data.accessToken)
-          _this.success && _this.success(res.data)
+          setHttpAuth(res.accessToken)
+          _this.saveToken(res.accessToken)
+          _this.success && _this.success(res)
         }
       } catch (e) {
         _this.Toast(e.message || '登录失败')

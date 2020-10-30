@@ -4,7 +4,7 @@ import store from '@/store/index.js'
 const LoginConstructor = Vue.extend(myLogin)
 let newInstance = null
 const theLogin = function (content) {
-  console.log('这里')
+  console.log('1',newInstance)
   return new Promise((resolve, reject) => {
     if (!newInstance) {
       newInstance = new LoginConstructor({
@@ -13,6 +13,7 @@ const theLogin = function (content) {
       })
       document.body.appendChild(newInstance.$el)
     }
+    console.log('走做')
     newInstance.success = function (data) {
       resolve(data)
       if (newInstance) {

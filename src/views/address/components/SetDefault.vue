@@ -12,9 +12,9 @@ export default {
   props: {
     selected: {
       default () {
-        return false
+        return 0
       },
-      type: Boolean
+      type: Number
     }
   },
   data () {

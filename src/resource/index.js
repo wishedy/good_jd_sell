@@ -12,7 +12,7 @@ export function getRecommendList (params) {
 }
 export function getExpressAddressList (params) {
   const query = params?`?${json2Query(params)}`:''
-  return api.get(`/api/discover/getReceiverInfolist${query}`)
+  return api.get(`/api/receiver/getReceiverInfolist${query}`)
 }
 export function getArticleList (params) {
   console.log(params)

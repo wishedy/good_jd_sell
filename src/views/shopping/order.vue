@@ -1,27 +1,27 @@
 <template>
     <section class="jd_main jd_order">
         <HeaderBar title="确认订单"  :back="true"></HeaderBar>
-        <AddressModule></AddressModule>
+        <AddressModule :config="addressConfig"></AddressModule>
         <section class="jd_shopping_list">
             <h1 class="jd_shopping_title">
                 <span>关东臻品</span>
                 <span class="num" v-if="type===1">共3件</span>
             </h1>
-            <section class="jd_shopping_item">
+            <section class="jd_shopping_item" v-for="(item) in goodDetail.goodsList" :key="item.goodsId">
                 <figure class="logo"></figure>
                 <article class="shopping-detail">
-                    <h1 class="title">千图柠檬无公害绿色</h1>
+                    <h1 class="title" v-text="item.goodsName"></h1>
                     <div class="des">规格：6个/份     重量：  1kg</div>
 
                 </article>
-                <div class="price">￥67</div>
+                <div class="price">￥{{item.marketPrice}}</div>
                 <div class="changeNum">
-                    <span class="num">X 1</span>
+                    <span class="num">X {{item.number}}</span>
                 </div>
             </section>
             <div class="amount">
                 <span class="amount-title">合计：</span>
-                <span class="amount-price">￥289</span>
+                <span class="amount-price">￥{{goodDetail.orderPrice}}</span>
             </div>
         </section>
         <section class="jd_pay">
@@ -68,7 +68,8 @@ export default {
       type: type,
       id: id,
       submitData: [],
-      goodDetail: {}
+      goodDetail: {},
+      addressConfig: {}
     }
   },
   mounted () {
@@ -82,7 +83,14 @@ export default {
         const res = await previewGoodDetail({
           previewOrderList: _this.submitData
         })
-        _this.goodDetail = res.rows
+        const resData = res.rows
+        _this.goodDetail = resData
+        _this.addressConfig = {
+          userName: resData.receiverInfo,
+          mobile: resData.mobile,
+          address: resData.province + '-' + resData.city + '-' + resData.district + '-' + resData.address
+        }
+        console.log(_this.addressConfig)
       } catch (e) {
         console.log(e.message || '获取商品数据失败')
       }

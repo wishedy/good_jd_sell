@@ -146,14 +146,18 @@ export default {
       border: none;
       background: none;
       height: 100%;
+      font-size: 28px;
       textarea,input{
         width: 100%;
         height: 100%;
         background: none;
         border: none;
         outline: none;
+        font-size: 28px;
         &::placeholder{
           color: #b1afb2;
+          font-size: 28px;
+
         }
       }
       textarea{
