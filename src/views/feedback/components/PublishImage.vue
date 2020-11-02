@@ -15,13 +15,13 @@
         <section class="ml-publish-imageItem ml-publish-imageBar" v-if="publishOnOff">
             <i class="icon"></i>
             <p>上传照片</p>
-            <input accept="image/*" name="img" id="upload_file" type="file" class="ml-upload-image">
+            <input accept="image/*" name="img" id="upload_file" type="file" class="ml-upload-image" @change="publishImage">
         </section>
     </section>
 </template>
 <script>
-// import axios from 'axios'
-// import { checkInvalid } from '@/utils/common.js'
+import axios from 'axios'
+import { isInvalidString } from '@/libs/utils.js'
 export default {
   props: {
     publishMaxLen: {
@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    /* publishImage (e) {
+    publishImage (e) {
       const _this = this
       const file = e.target.files[0]
       const param = new FormData() // 创建form对象
@@ -67,48 +67,43 @@ export default {
           clearInterval(uploadTimer)
         } else {
           console.log(upLoadProgress)
-          _this.$progress(`${upLoadProgress++}%`)
+          _this.Toast(`${upLoadProgress++}%`)
         }
       }, 80)
       const config = {
         headers: { 'Content-Type': 'multipart/form-data' }
       } // 添加请求头
-      axios.post('/api/upload/uploadImg', param, config)
+      axios.defaults.timeout = 30000
+      axios.post('/api/system/oss/upload', param, config)
         .then(response => {
           console.log(response.data)
-          if (!checkInvalid(response.data.result.url)) {
-            _this.$progress('100%')
-            _this.$progress('√')
-            _this.$progress('上传成功')
+          if (!isInvalidString(response.data.data)) {
+            _this.Toast('100%')
+            _this.Toast('√')
+            _this.Toast('上传成功')
             clearInterval(uploadTimer)
 
-            _this.$emit('insertPhoto', response.data.result.url)
+            _this.$emit('insertPhoto', response.data.data)
           } else {
-            _this.$progress('上传失败')
+            _this.Toast('上传失败')
             clearInterval(uploadTimer)
           }
         }).catch(function (error) {
           console.log(error)
-          _this.$progress('上传失败')
+          _this.Toast('上传失败')
           clearInterval(uploadTimer)
         })
-    }, */
+    },
     closeItem (index) {
       const _this = this
-      _this.$confirm({
-        title: '您确定要删除这张照片？',
-        sureBack () {
-          _this.$emit('deleteItem', index)
-        }
+      _this.MessageBox.confirm('您确定要删除这张照片').then(action => {
+        _this.$emit('deleteItem', index)
       })
     },
     closeOriginalItem (index) {
       const _this = this
-      _this.$confirm({
-        title: '您确定要删除这张照片？',
-        sureBack () {
-          _this.$emit('deleteOriginal', index)
-        }
+      _this.MessageBox.confirm('您确定要删除这张照片').then(action => {
+        _this.$emit('deleteItem', index)
       })
     }
   },

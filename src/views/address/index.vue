@@ -42,7 +42,7 @@ export default {
       localAddress: null,
       textTitle: '所在地区',
       formate: {
-        addr_id: id,
+        id: id,
         receiverName: '', // 收货人姓名
         mobile: '', // 收货人手机号
         province: '', // 省份
@@ -160,20 +160,21 @@ export default {
       const _this = this
       _this.checkForm().then(async ()=>{
         let res = null
-        if(_this.formate.addr_id){
+        if(_this.formate.id){
            res = await editExpressAddress(_this.formate)
         }else{
            res = await saveExpressAddress(_this.formate)
         }
         console.log(res)
         if(res){
-          _this.Toast(_this.formate.addr_id?'编辑成功':'添加成功')
+          _this.Toast(_this.formate.id?'编辑成功':'添加成功')
+          debugger
           setTimeout(()=>{
             _this.$router.go(-1)
           },2000)
         }
       }).catch((errorMessage)=>{
-        _this.Toast(errorMessage)
+        _this.Toast(_this.formate.id?'编辑失败':'添加失败')
       })
     },
     handlePickerConfirm (value) {
@@ -185,13 +186,12 @@ export default {
     async checkEditType(){
       const _this = this
       let appTitle = ''
-      if(_this.formate.addr_id){
+      if(_this.formate.id){
         //编辑模式
         appTitle = '编辑收货地址'
-        const res = await getExpressAddressInfo({addr_id:_this.formate.addr_id})
-        res.addr_id = res.id
+        const res = await getExpressAddressInfo({id:_this.formate.id})
         Object.keys(_this.formate).forEach((key)=>{
-          _this.formate[key] = res[key]
+          _this.formate[key] = res.rows[0][key]
         })
       }else{
         //新增模式

@@ -6,6 +6,7 @@ const token = Cookies.get(tokenKey)
 setHttpAuth(token)
 const state = {
   token: token || '',
+  user: {},
   onCoding: '',
   codeNum: '',
   phoneNum: ''

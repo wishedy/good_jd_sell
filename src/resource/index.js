@@ -34,7 +34,7 @@ export function getGoodDetail (params) {
 export function getExpressAddressInfo (params) {
   const query = params?`?${json2Query(params)}`:''
 
-  return api.get(`/api/discover/getReceiverInfolist${query}`)
+  return api.get(`/api/receiver/getReceiverInfolist${query}`)
 }
 export function getGoodCart (params) {
   console.log(params)
@@ -56,7 +56,7 @@ export function getEntranceList (params) {
 }
 export function editExpressAddress (params) {
   console.log(params)
-  return api.post('/admin/category/add', params)
+  return api.post('/api/receiver/edit', params)
 }
 export function saveExpressAddress (params) {
   console.log(params)
@@ -65,6 +65,14 @@ export function saveExpressAddress (params) {
 export function addCategory (params) {
   console.log(params)
   return api.post('/admin/category/add', params)
+}
+export function saveSuggestion (params) {
+  console.log(params)
+  return api.post('/api/customer/suggestion/saveSuggestion', params)
+}
+export function editUserInfo (params) {
+  console.log(params)
+  return api.post('/api/customer/edit', params)
 }
 export function previewGoodDetail (params) {
   console.log(params)
@@ -77,6 +85,10 @@ export function submitGood (params) {
 export function addCart (params) {
   console.log(params)
   return api.post('/api/cart/add', params)
+}
+export function getUserInfo (params) {
+  console.log(params)
+  return api.get('/api/customer/loginUser', params)
 }
 export function userLogin (params) {
   console.log(params)

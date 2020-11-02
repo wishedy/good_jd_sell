@@ -1,12 +1,14 @@
-import store from '@/store'
+import { tokenKey } from '@/libs/constant'
+import Cookies from 'js-cookie'
+
+const token = Cookies.get(tokenKey)
 import router from './router.js'
 const setTitle = (obj) => {
   document.title = obj.meta.title+'关东臻品'
 }
 // 针对活动页添加的神策公共属性
-let info
 router.beforeEach((to, from, next) => {
-  if (store.state.user&&store.state.user.token ) {
+  if (token ) {
     next()
   } else {
     if (to.matched.some(record => record.meta.auth)) {

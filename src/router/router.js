@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 // 首页相关
 const Home = (resolve) => {
   import(/* webpackChunkName: 'Home' */'@/views/home/Home').then((module) => {
@@ -145,7 +144,8 @@ const router = new Router({
       name: 'Personal',
       component: Personal,
       meta: {
-        title: '个人中心'
+        title: '个人中心',
+        auth:true
       }
     },
     //设置个人信息
@@ -154,7 +154,8 @@ const router = new Router({
       name: 'EditUserInfo',
       component: EditUserInfo,
       meta: {
-        title: '设置个人信息'
+        title: '设置个人信息',
+        auth:true
       }
     },
     //我的订单
@@ -163,7 +164,8 @@ const router = new Router({
       name: 'Order',
       component: Order,
       meta: {
-        title: '我的订单'
+        title: '我的订单',
+        auth:true
       }
     },
     //号码查询
@@ -268,7 +270,8 @@ const router = new Router({
       name: 'myAddress',
       component: myAddress,
       meta: {
-        title: '我的收获地址'
+        title: '我的收获地址',
+        auth:true
       }
     },
     {
@@ -276,7 +279,8 @@ const router = new Router({
       name: 'feedBack',
       component: feedBack,
       meta: {
-        title: '意见反馈'
+        title: '意见反馈',
+        auth:true
       }
     },
     {

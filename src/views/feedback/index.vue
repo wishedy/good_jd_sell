@@ -3,20 +3,20 @@
     <HeaderBar title="用户反馈" :back="true"></HeaderBar>
     <section class="speakContainer">
       <figure class="container">
-        <textarea name="" id="" cols="30" rows="10" placeholder="说说您想对ta说的话"></textarea>
-        <span class="num">50/50</span>
+        <textarea name="" id="" cols="30" rows="10" placeholder="您的意见和建议是我们提升服务的源头活水" v-model="suggestion"></textarea>
+        <span class="num">{{suggestion.length}}/50</span>
       </figure>
     </section>
     <section class="ml-feedBack-publish">
-      <PublishImage></PublishImage>
+      <PublishImage @insertPhoto="addPhoto" :exhibitionData="attIdList" @deleteItem="deleteItem"></PublishImage>
     </section>
-    <SureBtn txt="保存" class="save-btn"></SureBtn>
-    <CancelBtn txt="取消"></CancelBtn>
+    <SureBtn txt="保存" class="save-btn" @click.native="saveAdvice"></SureBtn>
+    <CancelBtn txt="取消" @click.native="returnBack"></CancelBtn>
   </section>
 </template>
 <script>
 import HeaderBar from 'components/HeaderBar/index'
-
+import { saveSuggestion } from '@/resource'
 import PublishImage from './components/PublishImage.vue'
 import SureBtn from './components/SureBtn.vue'
 import CancelBtn from './components/CancelBtn.vue'
@@ -30,10 +30,52 @@ export default {
   data () {
     const editTitle = ''
     return {
+      browseType: 1,
+      suggestion: '',
+      attIdList: [],
       headerConfig: {
         backOnOff: true,
         title: decodeURIComponent(editTitle)
       }
+    }
+  },
+  watch: {
+    suggestion (n) {
+      const _this = this
+      if (n.length > 50) {
+        _this.suggestion = n.substring(0, 50)
+      }
+    }
+  },
+  methods: {
+    returnBack () {
+      const _this = this
+      _this.$router.go(-1)
+    },
+    async saveAdvice () {
+      const _this = this
+      const param = {
+        browseType: 1,
+        suggestion: _this.suggestion,
+        attIdList: _this.attIdList
+      }
+      try {
+        const res = await saveSuggestion(param)
+        console.log(res)
+        if (res) {
+          _this.Toast('已收到您的反馈，我们会尽快处理')
+        }
+      } catch (e) {
+        _this.Toast('反馈提交失败')
+      }
+    },
+    deleteItem (index) {
+      const _this = this
+      _this.attIdList.splice(index, 1)
+    },
+    addPhoto (url) {
+      const _this = this
+      _this.attIdList.push({ imageUrl: url })
     }
   },
   mounted () {

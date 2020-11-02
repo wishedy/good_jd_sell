@@ -1,18 +1,22 @@
 <template>
     <section class="jd_main_personal">
         <section class="header-module">
-            <router-link tag="figure" :to="{path:'/editUserInfo'}" class="logo"></router-link>
+            <router-link tag="figure" :to="{path:'/editUserInfo'}" class="logo" :style="{background:`url('${user.avatar}') no-repeat center/cover`}"></router-link>
             <section class="personal-info">
-                <div class="user-name">吃货世界</div>
-                <div class="user-phone">134****33246</div>
+                <div class="user-name" v-text="user.userName"></div>
+                <div class="user-phone" v-text="user.phonenumber"></div>
             </section>
             <div class="sign">马上签到</div>
         </section>
     </section>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'personalCard'
+  name: 'personalCard',
+  computed: {
+    ...mapGetters(['user'])
+  }
 }
 </script>
 <style lang="scss" scoped>

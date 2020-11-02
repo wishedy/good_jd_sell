@@ -2,12 +2,12 @@
   <section class="address-item">
     <div class="user-info">
       <span class="lable-title">收货人：</span>
-      <span class="user-name" v-text="config.name"></span>
+      <span class="user-receiverName" v-text="config.receiverName"></span>
       <span class="user-mobile" v-text="config.mobile"></span>
       <span class="defaultAddress" v-if="parseInt(config.is_default,10)===1"><i>默认</i></span>
     </div>
     <div class="user-address">
-      <article class="address-content" v-text="`收货地址：${config.province?config.province:''}${config.city?config.city:''}-${config.district?config.district:''}${config.detail?config.detail:''}`"></article>
+      <article class="address-content" v-text="`收货地址：${config.province?config.province:''}${config.city?config.city:''}-${config.district?config.district:''}${config.address?config.address:''}`"></article>
       <div class="handle-bar">
         <span class="handle-delete icon" @click.stop="deleteAddress"></span>
         <span class="handle-edit icon" @click.stop="editAddress"></span>
@@ -17,7 +17,7 @@
 </template>
 <script>
 export default {
-  name: 'addressItem',
+  receiverName: 'addressItem',
   props: {
     config: {
       default () {
@@ -56,7 +56,7 @@ export default {
       .lable-title{
         color:#333;
       }
-      .user-mobile,.user-name{
+      .user-mobile,.user-receiverName{
         font-weight: 600;
         color: #333333;
         margin-left: 15px;

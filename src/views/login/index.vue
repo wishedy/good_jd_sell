@@ -14,7 +14,7 @@
         </section>
         <section class="ml-open-metion" :class="{'active':submitOnOff}" @click.stop="loginFunc">登录</section>
         <section class="ml-authorization">
-            <article class="register">快速注册</article>
+            <article class="register" style="visibility: hidden;">快速注册</article>
             <p class="third-line">第三方</p>
             <figure class="third-logo"></figure>
             <section class="userAgreement">登录表示您同意 <em>《用户协议》</em></section>
@@ -25,13 +25,14 @@
 <script type="text/ecmascript-6">
 // import Slogan from 'components/Slogan'
 import HeaderBar from 'components/HeaderBar/index'
+import { userLogin } from '@/resource'
+import { setHttpAuth } from '@/resource/create-api'
 
 import InputPhone from './components/InputPhone.vue'
 import VerificationCode from './components/VerificationCode.vue'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { isInvalidString } from 'libs/utils.js'
 import { testPhoneNum } from 'libs/regularTest.js'
-import axios from 'axios'
 export default {
   components: {
     // Slogan,
@@ -40,8 +41,11 @@ export default {
     VerificationCode
   },
   data () {
+    const _this = this
+    const redirectPath = _this.$route.query.redirect || ''
+    console.log(redirectPath)
     return {
-
+      redirectPath: redirectPath
     }
   },
   beforeMount () {
@@ -54,29 +58,27 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['saveToken']),
     reBack () {
       window.history.back()
     },
-    loginFunc () {
+    async loginFunc () {
       const _this = this
-      axios.get('/api/customer/login', {
-        params: {
-          phone: _this.phoneNum,
-          smsCode: _this.codeNum
+      try {
+        const params = {
+          username: _this.phoneNum,
+          validCode: _this.codeNum
         }
-      })
-        .then(function (response) {
-          console.log(response)
-          if (parseInt(response.data.code, 10) === 200) {
-            localStorage.setItem('customerId', response.data.result.id)
-            _this.reBack()
-          } else {
-            alert('登录失败')
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+        const res = await userLogin(params)
+        if (res.accessToken) {
+          setHttpAuth(res.accessToken)
+          _this.saveToken(res.accessToken)
+          console.log(_this.redirectPath || '/')
+          location.replace(location.origin + _this.redirectPath)
+        }
+      } catch (e) {
+        _this.Toast(e.message || '登录失败')
+      }
     }
   },
   watch: {

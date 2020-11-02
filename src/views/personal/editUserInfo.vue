@@ -3,40 +3,37 @@
         <HeaderBar title="编辑个人信息" :back="true"></HeaderBar>
         <section class="jd_profile">
             <span class="label">上传头像:</span>
-            <figure class="jd_user_logo"></figure>
+            <figure class="jd_user_logo">
+                <img :src="formate.avatar" alt="" v-if="formate.avatar" class="avatarImage">
+                <input accept="image/*" name="img" id="upload_file" type="file" class="ml-upload-image" @change="publishImage">
+            </figure>
         </section>
-        <TextInput labelTitle="名称：" placeholder="请输入联系人姓名" type="text" v-model="formate.name" :maxlength="usrMaxlength"></TextInput>
-        <TextInput labelTitle="手机号：" placeholder="请填写收货人电话" type="text" v-model="formate.mobile"  :maxlength="mobileMaxlength"></TextInput>
+        <TextInput labelTitle="名称：" placeholder="请输入您的人姓名" type="text" v-model="formate.userName" :maxlength="usrMaxlength"></TextInput>
+        <TextInput labelTitle="名称：" placeholder="请输入您的昵称" type="text" v-model="formate.loginName" :maxlength="usrMaxlength"></TextInput>
+        <TextInput labelTitle="手机号：" placeholder="请填您的电话" type="text" v-model="formate.phonenumber"  :maxlength="mobileMaxlength"></TextInput>
         <section class="jd_sex">
             <span class="text-label">性别:</span>
             <section class="jd-radio-wrapper">
-                <div class="jd-radio active">
+                <div class="jd-radio" :class="{active:parseInt(formate.sex,10)===0}" @click="changeSex(0)">
                     <i class="icon"></i>
                     <span>男</span>
                 </div>
-                <div class="jd-radio">
+                <div class="jd-radio" :class="{active:parseInt(formate.sex,10)===1}" @click="changeSex(1)">
                     <i class="icon"></i>
                     <span>女</span>
                 </div>
             </section>
         </section>
-        <TextInput labelTitle="所在地区：" placeholder="请选择收货人所在的地区" type="text" arrow @hanlePicker="onShowArea" readonly :value="localRegion"></TextInput>
-        <div class="bottom-btn">
+        <div class="bottom-btn" @click="saveInfo">
             保存信息
         </div>
-        <awesome-picker
-                ref="picker"
-                :textTitle="textTitle"
-                :data="area"
-                :anchor="anchor"
-                @confirm="handlePickerConfirm">
-        </awesome-picker>
     </section>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import axios from 'axios'
 import HeaderBar from 'components/HeaderBar/index'
-import area from 'libs/area'
-
+import { editUserInfo } from '@/resource'
 import TextInput from './components/TextInput'
 export default {
   name: 'editUserInfo',
@@ -44,28 +41,134 @@ export default {
     TextInput,
     HeaderBar
   },
-  watch: {
-    localAddress: {
-      handler (n) {
-        const _this = this
-        if (n) {
-          const selectData = JSON.parse(n)
-          _this.formate.province = selectData[0].value
-          _this.formate.city = selectData[1].value
-          _this.formate.district = selectData[2].value
-        } else {
-          _this.formate.province = ''
-          _this.formate.city = ''
-          _this.formate.district = ''
-        }
-      },
-      deep: true
-    }
+  computed: {
+    ...mapGetters(['user'])
+  },
+  mounted () {
+    const _this = this
+    _this.getUserData()
   },
   methods: {
-    onShowArea () {
+    getUserData () {
       const _this = this
-      _this.$refs.picker.show()
+      for (const key in _this.formate) {
+        _this.formate[key] = _this.user[key]
+      }
+    },
+    saveInfo () {
+      const _this = this
+      try {
+        _this.checkForm().then(async () => {
+          const res = await editUserInfo(_this.formate)
+          console.log('------++++')
+          console.log(res)
+          if (res) {
+            _this.Toast('保存成功')
+            setTimeout(() => {
+              _this.$router.go(-1)
+            }, 1000)
+          }
+        }).catch((msg) => {
+          _this.Toast(msg.msg || '保存失败')
+        })
+      } catch (e) {
+        _this.Toast('信息保存失败')
+      }
+    },
+    getLen (str) {
+      // 获得字符串实际长度，中文2，英文1
+      // 要获得长度的字符串
+      let realLength = 0; const len = str.length; let charCode = -1
+      for (let i = 0; i < len; i++) {
+        charCode = str.charCodeAt(i)
+        if (charCode >= 0 && charCode <= 128) { realLength += 1 } else { realLength += 2 }
+      }
+      return realLength
+    },
+    checkForm (resolve, reject) {
+      const _this = this
+      const checkKeyName = {
+        avatar: '请选择您的头像',
+        loginName: '请输入您的昵称',
+        userName: '请输入您的姓名', // 收货人姓名
+        phonenumber: '请输入手机号~' // 收货人手机号
+      }
+      let completeOnOff = false
+      const keyArr = Object.keys(checkKeyName)
+      let errorMessage = ''
+      for (let num = 0; num < keyArr.length; num++) {
+        const keyName = keyArr[num]
+        console.log(_this.formate[keyName], _this.isInvalidString(_this.formate[keyName]))
+        completeOnOff = _this.isInvalidString(_this.formate[keyName])
+        if (completeOnOff) {
+          errorMessage = (checkKeyName[keyName])
+          break
+        }
+      }
+      if (!completeOnOff) {
+        if (_this.getLen(_this.formate.loginName) > _this.usrMaxlength) {
+          completeOnOff = true
+          errorMessage = '请输入正确的昵称50字内'
+        }
+        if (_this.getLen(_this.formate.userName) > _this.usrMaxlength) {
+          completeOnOff = true
+          errorMessage = '请输入正确的姓名'
+        }
+        if (!(/^1[23456789]\d{9}$/.test(_this.formate.phonenumber))) {
+          completeOnOff = true
+          errorMessage = '请输入正确的手机号'
+        }
+      }
+      return new Promise((resolve, reject) => {
+        if (!completeOnOff) {
+          resolve && resolve()
+        } else {
+          reject && reject(errorMessage)
+        }
+      })
+    },
+    publishImage (e) {
+      const _this = this
+      const file = e.target.files[0]
+      const param = new FormData() // 创建form对象
+      param.append('file', file, file.name)// 通过append向form对象添加数据
+      param.append('chunk', '0')// 添加form表单中其他数据
+      console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let upLoadProgress = 0
+      const uploadTimer = setInterval(() => {
+        if (upLoadProgress > 95) {
+          clearInterval(uploadTimer)
+        } else {
+          console.log(upLoadProgress)
+          _this.Toast(`${upLoadProgress++}%`)
+        }
+      }, 80)
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      } // 添加请求头
+      axios.defaults.timeout = 30000
+      axios.post('/api/system/oss/upload', param, config)
+        .then(response => {
+          console.log(response.data)
+          if (!_this.isInvalidString(response.data.data)) {
+            _this.Toast('100%')
+            _this.Toast('√')
+            _this.Toast('上传成功')
+            clearInterval(uploadTimer)
+            _this.formate.avatar = response.data.data
+          } else {
+            _this.Toast('上传失败')
+            clearInterval(uploadTimer)
+          }
+        }).catch(function (error) {
+          console.log(error)
+          _this.Toast('上传失败')
+          clearInterval(uploadTimer)
+        })
+    },
+    changeSex (sex) {
+      const _this = this
+      _this.formate.sex = sex
     },
     isInvalidString (val) {
       /*eslint-disable*/
@@ -74,41 +177,20 @@ export default {
       } else {
         return false
       }
-    },
-    handlePickerConfirm (value) {
-      const _this = this
-      _this.anchor = value
-      console.log(value)
-      _this.localAddress = value ? JSON.stringify(value) : null
-    }
-  },
-  computed: {
-    localRegion () {
-      const _this = this
-      const onOff = !(_this.isInvalidString(_this.formate.province) || _this.isInvalidString(_this.formate.city) || _this.isInvalidString(_this.formate.district))
-      if (onOff) {
-        return `${_this.formate.province}-${_this.formate.city}-${_this.formate.district}`
-      } else {
-        return ''
-      }
     }
   },
   data () {
     return {
-      area: area,
       usrMaxlength: 50,
       localAddress: null,
       mobileMaxlength: 11,
-      addresslength: 500,
       textTitle: '所在地区',
-      anchor: [],
       formate: {
-        addr_id: '',
-        name: '', // 收货人姓名
-        mobile: '', // 收货人手机号
-        province: '', // 省份
-        city: '', // 城市
-        district: '' // 地区
+        avatar:'',
+        sex:1,
+        loginName:'',
+        userName: '', // 收货人姓名
+        phonenumber: '', // 收货人手机号
       }
     }
   }
@@ -140,7 +222,32 @@ export default {
             margin-left: 120px;
             background: url("~img/personal/uploadHead.png") no-repeat center/80% 80%;
             position: relative;
-
+            .avatarImage{
+                position: absolute;
+                top:0;
+                right: 0;
+                bottom:0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                font-size: 0;
+                outline: none;
+                border: none;
+                border-radius: 50%;
+            }
+            .ml-upload-image{
+                position: absolute;
+                top:0;
+                right: 0;
+                bottom:0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                font-size: 0;
+                outline: none;
+                border: none;
+                opacity: 0;
+            }
             &::after {
                 content: " ";
                 position: absolute;

@@ -8,7 +8,7 @@
                 <figure class="logo"></figure>
                 <span>关东臻品</span>
             </h1>
-            <section class="jd_shopping_item" v-for="(item) in cartData.cartList" :key="item.id">
+            <section class="jd_shopping_item" v-for="(item) in cartData.cartList" :key="item.id" @click="selectItem(item)" :class="{selected:item.select}">
                 <div class="radio"></div>
                 <figure class="logo"></figure>
                 <article class="shopping-detail">
@@ -17,9 +17,9 @@
                     <div class="price">￥{{item.retailPrice}}</div>
                 </article>
                 <div class="changeNum">
-                    <span class="minus">-</span>
+                    <span class="minus" @click.stop="changeNum(item,0)">-</span>
                     <span class="num">{{item.number}}</span>
-                    <span class="add">+</span>
+                    <span class="add" @click.stop="changeNum(item,1)">+</span>
                 </div>
             </section>
         </section>
@@ -50,15 +50,62 @@ export default {
   },
   data () {
     return {
-      cartData: []
+      cartData: [],
+      selectData: []
     }
   },
+  mounted () {
+    const _this = this
+    _this.getGoodCartList()
+  },
   methods: {
+    changeNum (data, dir) {
+      if (dir) {
+        // +
+        data.number++
+      } else {
+        // -
+        if (data.number > 1) {
+          data.number--
+        }
+      }
+    },
+    selectItem (data) {
+      const _this = this
+      const resultList = []
+      let hasOnOff = false
+      for (let num = 0; num < _this.selectData.length; num++) {
+        const item = _this.selectData[num]
+        if (data.id === item.id) {
+          data.select = 0
+          hasOnOff = true
+          continue
+        }
+      }
+      if (!hasOnOff) {
+        data.select = 1
+        resultList.push(data)
+      }
+      _this.selectData = resultList
+      console.log(_this.cartData)
+    },
     async getGoodCartList () {
       const _this = this
       try {
         const res = await getGoodCart()
-        _this.cartData = res.rows
+        const formatte = (data) => {
+          const resultList = []
+          const originalList = JSON.parse(JSON.stringify(data.cartList))
+          for (let num = 0; num < originalList.length; num++) {
+            const item = originalList[num]
+            item.select = 0
+            resultList.push(item)
+          }
+          data.cartList = resultList
+          return data
+        }
+        _this.cartOriginalData = formatte(res.rows)
+        _this.cartData = JSON.parse(JSON.stringify(_this.cartOriginalData))
       } catch (e) {
         console.log(e.message || '获取tab数据失败')
       }
