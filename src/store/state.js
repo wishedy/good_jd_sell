@@ -7,6 +7,7 @@ setHttpAuth(token)
 const state = {
   token: token || '',
   user: {},
+  goodsCart: [],
   onCoding: '',
   codeNum: '',
   phoneNum: ''

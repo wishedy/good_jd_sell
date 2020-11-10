@@ -1,7 +1,7 @@
 <template>
     <section class="jd_main jd_shopping">
         <section class="jd_shopping_card">
-            <HeaderBar title="购物车" subTitle="删除" class="shopping-header" :back="true"></HeaderBar>
+            <HeaderBar title="购物车" subTitle="删除" class="shopping-header" :back="true" @handleEvent="handleDeleteCart"></HeaderBar>
         </section>
         <section class="jd_shopping_list">
             <h1 class="jd_shopping_title">
@@ -24,7 +24,7 @@
             </section>
         </section>
         <section class="jd_shopping_buy">
-            <span class="select_all">
+            <span class="select_all" @click="selectAllGoods" :class="{selected:selectAll}">
                 <i class="icon"></i>
                 全选
             </span>
@@ -35,14 +35,14 @@
                 </div>
                 <div class="jd_subTitle">已优惠：{{cartData.goodsDiscount}}元</div>
             </span>
-            <span class="submit">去结算</span>
+            <span class="submit" @click="submitOrder">去结算</span>
         </section>
     </section>
 </template>
 <script>
 import HeaderBar from 'components/HeaderBar/index'
-import { getGoodCart } from '@/resource'
-
+import { getGoodCart, clearCart, deleteCart } from '@/resource'
+import { mapActions } from 'vuex'
 export default {
   name: 'shopping',
   components: {
@@ -58,8 +58,62 @@ export default {
     const _this = this
     _this.getGoodCartList()
   },
+  computed: {
+    selectAll () {
+      const _this = this
+      let allOnOff = true
+      console.log(_this.selectData)
+      if (_this.selectData.length) {
+        for (let num = 0; num < _this.selectData.length; num++) {
+          const item = _this.selectData[num]
+          if (parseInt(item.select, 10) === 0) {
+            allOnOff = false
+          }
+        }
+      } else {
+        allOnOff = false
+      }
+      return allOnOff
+    }
+  },
   methods: {
+    ...mapActions(['saveGoodCart']),
+    selectAllGoods () {
+      const _this = this
+      if (_this.selectData.length) {
+        _this.selectData = []
+        for (let num = 0; num < _this.cartData.cartList.length; num++) {
+          const item = _this.cartData.cartList[num]
+          item.select = 0
+        }
+      } else {
+        _this.selectData = JSON.parse(JSON.stringify(_this.cartData.cartList))
+        for (let num = 0; num < _this.selectData.length; num++) {
+          const item = _this.selectData[num]
+          item.select = 1
+          _this.cartData.cartList[num].select = 1
+        }
+      }
+    },
+    submitOrder () {
+      const _this = this
+      const resultData = []
+      for (let num = 0; num < _this.selectData.length; num++) {
+        const item = _this.selectData[num]
+        const jsonData = {
+          goodsId: item.goodsId,
+          goodsNum: item.number
+        }
+        resultData.push(jsonData)
+      }
+      if (resultData.length) {
+        _this.saveGoodCart(resultData)
+      } else {
+        _this.Toast('请选择您要购买的商品')
+      }
+    },
     changeNum (data, dir) {
+      const _this = this
       if (dir) {
         // +
         data.number++
@@ -69,6 +123,57 @@ export default {
           data.number--
         }
       }
+      _this.changeItemNumber(data)
+    },
+    changeItemNumber (data) {
+      const _this = this
+      const resultList = []
+      let hasOnOff = false
+      for (let num = 0; num < _this.selectData.length; num++) {
+        const item = _this.selectData[num]
+        if (data.id === item.id) {
+          data.select = 1
+          item.number = data.number
+          hasOnOff = true
+          continue
+        }
+      }
+      if (!hasOnOff) {
+        data.select = 1
+      }
+      resultList.push(data)
+      _this.selectData = resultList
+    },
+    handleDeleteCart () {
+      const _this = this
+      _this.MessageBox.confirm(`您确定要${_this.selectAll ? '清空' : '删除'}购物车商品`).then(async () => {
+        if (_this.selectAll) {
+          // 全选既是清空
+          console.log('清空购物车')
+          const res = await clearCart()
+          if (res) {
+            // location.reload()
+          }
+        } else {
+          // 单独删除购物车商品
+          const resultData = []
+          for (let num = 0; num < _this.selectData.length; num++) {
+            const item = _this.selectData[num]
+            resultData.push(item.id)
+          }
+          if (resultData.length) {
+            try {
+              const res = await deleteCart({ ids: resultData.join(',') })
+              console.log(res)
+              if (res) {
+                // location.reload()
+              }
+            } catch (e) {
+              _this.Toast(e.message || '删除失败')
+            }
+          }
+        }
+      })
     },
     selectItem (data) {
       const _this = this
@@ -87,7 +192,6 @@ export default {
         resultList.push(data)
       }
       _this.selectData = resultList
-      console.log(_this.cartData)
     },
     async getGoodCartList () {
       const _this = this
@@ -127,6 +231,7 @@ export default {
             width:694px;
             box-shadow:-1px 8px 1px 0px rgba(161,161,161,0.06);
             min-height:490px;
+            padding-bottom: 40px;
             height: auto;
             background:rgba(255,255,255,1);
             border-radius:14px;
@@ -269,6 +374,12 @@ export default {
                     border:1px solid rgba(181,181,181,1);
                     border-radius:50%;
                     margin-right: 20px;
+                }
+                &.selected{
+                    i{
+                        border: 1px solid #33da8a;
+                        background: url("~img/shopping/selected.png") center/cover;
+                    }
                 }
 
             }

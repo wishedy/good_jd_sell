@@ -1,12 +1,18 @@
 <template>
-  <section class="empty-address">
+  <section class="empty-address" @click="addAddress">
     <figure class="logo"></figure>
-    <p class="des">暂无收货地址</p>
+    <p class="des">暂无收货地址～点击添加</p>
   </section>
 </template>
 <script>
 export default {
-  name: 'emptyAddress'
+  name: 'emptyAddress',
+  methods: {
+    addAddress () {
+      const _this = this
+      _this.$router.push({ name: 'address' })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

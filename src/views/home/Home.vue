@@ -67,7 +67,7 @@ export default {
           id: id,
           pageNum: 1
         })
-        _this.goodList = res.rows
+        _this.goodList = res.rows[0].goodsList
       } catch (e) {
         console.log(e.message || '获取商品数据失败')
       }

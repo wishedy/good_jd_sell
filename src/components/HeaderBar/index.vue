@@ -38,7 +38,7 @@ export default {
     },
     subTitleEvent () {
       const _this = this
-      _this.$emit('haneldEvent')
+      _this.$emit('handleEvent')
     }
   }
 }

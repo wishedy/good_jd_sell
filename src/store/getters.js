@@ -5,6 +5,9 @@ const getters = {
   user (state) {
     return state.user
   },
+  goodsCart (state) {
+    return state.goodsCart
+  },
   onCoding (state) {
     return state.onCoding
   },

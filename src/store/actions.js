@@ -5,6 +5,9 @@ const actions = {
   saveUser ({ commit, state }, user) {
     commit('saveUser', user)
   },
+  saveGoodCart ({ commit, state }, data) {
+    commit('saveGoodCart', data)
+  },
   changeCodeNum ({ commit, state }, num) {
     commit('changeCodeNum', num)
   },

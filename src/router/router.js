@@ -210,7 +210,8 @@ const router = new Router({
       name: 'Shopping',
       component: Shopping,
       meta: {
-        title: '购物车'
+        title: '购物车',
+        auth:true
       }
     },
     {

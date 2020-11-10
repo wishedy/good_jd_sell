@@ -12,6 +12,9 @@ const mutations = {
   saveUser (state, user) {
     state.user = user
   },
+  saveGoodCart (state, data) {
+    state.goodsCart = data
+  },
   changeCodeNum (state, num) {
     state.codeNum = num
   }

@@ -51,7 +51,6 @@ export function getGoodsTypeList (params) {
 export function getEntranceList (params) {
   console.log(params)
   const query = params?`?${json2Query(params)}`:''
-
   return api.get(`/api/home/getEntranceList${query}`)
 }
 export function editExpressAddress (params) {
@@ -85,6 +84,14 @@ export function submitGood (params) {
 export function addCart (params) {
   console.log(params)
   return api.post('/api/cart/add', params)
+}
+export function deleteCart (params) {
+  console.log(params)
+  return api.post('/api/cart/delete', params)
+}
+export function clearCart (params) {
+  console.log(params)
+  return api.post('/api/cart/clear', params)
 }
 export function getUserInfo (params) {
   console.log(params)

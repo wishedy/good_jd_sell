@@ -60,8 +60,6 @@ export default {
       try {
         _this.checkForm().then(async () => {
           const res = await editUserInfo(_this.formate)
-          console.log('------++++')
-          console.log(res)
           if (res) {
             _this.Toast('保存成功')
             setTimeout(() => {

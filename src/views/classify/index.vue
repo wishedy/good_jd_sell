@@ -3,108 +3,89 @@
         <HeaderBar title="分类" :back="true"></HeaderBar>
         <section class="jd_classify_container">
             <div class="jd_tab">
-                <span class="jd_tab_item active">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
-                <span class="jd_tab_item">分类</span>
+                <span class="jd_tab_item"  :class="{active:index===tabIndex}" v-for="(item,index) in tabData" v-text="item.name" :key="item.id"  @click="changeTab(index)"></span>
             </div>
             <section class="jd_content">
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
-                </span>
-                <span class="jd_content_item">
-                    <figure class="jd_logo"></figure>
-                    <h1 class="title">测试标题</h1>
+                <span class="jd_content_item" v-for="(item) in goodList" :key="item.id"  @click="goToDetail(item)">
+                    <figure class="jd_logo"  :style="{background:`url('${item.primaryPicUrl}') no-repeat center/cover`}"></figure>
+                    <h1 class="title" v-text="item.name"></h1>
                 </span>
             </section>
         </section>
     </section>
 </template>
 <script>
+import { getGoodsList, getGoodsTypeList } from '@/resource'
 import HeaderBar from 'components/HeaderBar/index'
 export default {
   name: 'classify',
   components: {
     HeaderBar
+  },
+  data () {
+    return {
+      tabData: [],
+      goodList: [],
+      tabIndex: 0,
+      tabConfig: {}
+    }
+  },
+  watch: {
+    tabConfig: {
+      handler (n) {
+        const _this = this
+        _this.getGoodsData(n.id)
+      },
+      deep: true
+    }
+  },
+  mounted () {
+    const _this = this
+    _this.getOrderList()
+  },
+  methods: {
+    goToDetail (config) {
+      const _this = this
+      _this.$router.push({
+        path: 'commodity',
+        query: {
+          id: config.id
+        }
+      })
+    },
+    async getGoodsData (id) {
+      const _this = this
+      try {
+        const res = await getGoodsList({
+          pageSize: 1000,
+          id: id,
+          pageNum: 1
+        })
+        _this.goodList = res.rows[0].goodsList
+      } catch (e) {
+        console.log(e.message || '获取商品数据失败')
+      }
+    },
+    changeTab (index) {
+      const _this = this
+      if (_this.tabIndex !== index) {
+        _this.tabIndex = index
+        _this.tabConfig = _this.tabData[index]
+      }
+    },
+    async getOrderList () {
+      const _this = this
+      try {
+        const res = await getGoodsTypeList({
+          pageSize: 1000,
+          pageNum: 1
+        })
+        _this.tabData = res.rows
+        _this.tabConfig = _this.tabData[_this.tabIndex]
+      } catch (e) {
+        _this.Toast(e.msg || '获取分类信息失败')
+      }
+    }
   }
 }
 </script>
