@@ -1,13 +1,12 @@
 import { tokenKey } from '@/libs/constant'
 import Cookies from 'js-cookie'
-
-const token = Cookies.get(tokenKey)
 import router from './router.js'
 const setTitle = (obj) => {
   document.title = obj.meta.title+'关东臻品'
 }
 // 针对活动页添加的神策公共属性
 router.beforeEach((to, from, next) => {
+  const token = Cookies.get(tokenKey)
   if (token ) {
     next()
   } else {

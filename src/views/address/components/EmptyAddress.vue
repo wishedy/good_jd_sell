@@ -18,7 +18,6 @@ export default {
 <style lang="scss" scoped>
   .empty-address{
     width: 100%;
-    height: 100vh;
     .logo{
       margin: 300px auto 35px auto;
       width: 256px;

@@ -39,7 +39,7 @@ export default {
 </script>
 <style lang="scss" scoped>
     .jd_tab{
-        width: 100%;
+        width: 100vw;
         height:99px;
         box-shadow:0px -1px 1px 0px rgba(204,204,204,0.5);
         display: flex;

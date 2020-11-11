@@ -8,7 +8,7 @@
                 <span class="num" v-if="type===1">共3件</span>
             </h1>
             <section class="jd_shopping_item" v-for="(item) in goodDetail.goodsList" :key="item.goodsId">
-                <figure class="logo"></figure>
+                <figure class="logo"  :style="{background:`url('${item.primaryPicUrl}') no-repeat center/cover`}"></figure>
                 <article class="shopping-detail">
                     <h1 class="title" v-text="item.goodsName"></h1>
                     <div class="des">规格：6个/份     重量：  1kg</div>
@@ -86,6 +86,7 @@ export default {
         const resData = res.rows
         _this.goodDetail = resData
         _this.addressConfig = {
+          receiverId: resData.receiverId,
           userName: resData.receiverInfo,
           mobile: resData.mobile,
           address: resData.province + '-' + resData.city + '-' + resData.district + '-' + resData.address
@@ -109,18 +110,26 @@ export default {
     },
     async submitOrder () {
       const _this = this
-      try {
-        const res = await submitGood({
-          receiverInfoId: 1,
-          submitDetailList: _this.submitData
-        })
-        if (res) {
-          _this.$router.push({
-            path: 'buySuccess'
+      if (_this.addressConfig.receiverId) {
+        try {
+          const res = await submitGood({
+            receiverInfoId: _this.addressConfig.receiverId,
+            submitDetailList: _this.submitData
           })
+          if (res) {
+            console.log(_this.addressConfig.receiverId)
+            _this.Toast('下单成功')
+            setTimeout(() => {
+              _this.$router.push({
+                path: 'buySuccess'
+              })
+            }, 1000)
+          }
+        } catch (e) {
+          _this.Toast(e.message || '订单提交失败')
         }
-      } catch (e) {
-        _this.Toast(e.message || '订单提交失败')
+      } else {
+        _this.Toast('暂无发货地址-请添加')
       }
     }
   }

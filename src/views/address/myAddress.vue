@@ -26,20 +26,7 @@ export default {
     return {
       goodNo: goodNo,
       loadEnd: true,
-      list: [
-        {
-          id: 21,
-          name: '。ggjjltut',
-          mobile: '15633678252',
-          province: '北京市',
-          city: '北京市',
-          district: '东城区',
-          detail: '考虑兔兔',
-          is_default: 1,
-          created_at: '2020-09-04 14:27:54',
-          updated_at: '2020-09-04 14:27:54'
-        }
-      ]
+      list: []
     }
   },
   mounted () {

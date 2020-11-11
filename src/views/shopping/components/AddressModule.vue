@@ -1,12 +1,15 @@
 <template>
     <section class="jd_address_module" @click="goAddress">
         <div class="icon"></div>
-        <div class="detail">
+        <div class="detail" v-if="config.receiverId">
             <h1 class="title">
                 <span>收货人：{{config.userName}}</span>
                 <span v-text="config.mobile"></span>
             </h1>
             <article class="address-info">收货地址：{{config.address}}</article>
+        </div>
+        <div class="detail" v-if="!config.receiverId">
+            暂无收货人信息，点击添加
         </div>
         <div class="arrow"></div>
     </section>
@@ -25,9 +28,15 @@ export default {
   methods: {
     goAddress () {
       const _this = this
-      _this.$router.push({
-        path: 'myAddress'
-      })
+      if (_this.config.receiverId) {
+        _this.$router.push({
+          path: 'myAddress'
+        })
+      } else {
+        _this.$router.push({
+          path: 'address'
+        })
+      }
     }
   }
 }
@@ -51,6 +60,10 @@ export default {
             background: url("~img/shopping/address.png") no-repeat center/cover;
         }
         .detail{
+            font-size:29px;
+            font-family:SourceHanSansCN;
+            font-weight:500;
+            color: rgb(38, 38, 38);
             .title{
                 height:28px;
                 font-size:29px;

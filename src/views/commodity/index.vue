@@ -13,13 +13,13 @@
         <div class="price-outer">
             <Price :displayPrice="goodDetail.counterPrice" :coin="goodDetail.retailPrice" :className="'big'"/>
         </div>
-        <p class="commodity-intro">{{goodDetail.name}}</p>
+        <p class="commodity-intro">{{goodDetail.categoryName+'-'+goodDetail.name}}</p>
         <div class="commodity-detail">
             <div class="commodity-title">
                 <i class="commodity-flag"></i>
                 <span class="title">商品详情</span>
             </div>
-            <div class="commodity-desc" v-html="goodDetail.frontDesc" ></div>
+            <div class="commodity-desc" v-html="goodDetail.goodsDesc" ></div>
         </div>
         <section class="exchange-btn-wrap">
             <span class="exchange-btn" @click="goShopping(goodDetail.id)">立即购买</span>
@@ -301,7 +301,7 @@ export default {
             right: 0;
             left: 0;
             height:auto;
-            padding: 16px 68px 40px 68px;
+            padding: 16px 68px 16px 68px;
             background:rgba(255,255,255,1);
             width: 100%;
             display: flex;
@@ -324,6 +324,8 @@ export default {
             font-weight:400;
             text-align: center;
             line-height: 84px;
+            background-color: rgb(18, 201, 138); /* Green */
+            color: #fff;
             &.on-shelf {
                 color:rgba(255,255,255,1);
                 background-color: rgb(18, 201, 138); /* Green */

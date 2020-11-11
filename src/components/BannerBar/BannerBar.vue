@@ -59,7 +59,7 @@ export default {
         .swiper-container{
             width: 100%;
             height: 100%;
-            background: aqua;
+            //background: aqua;
             border-radius:16px;
             box-shadow:0px 6px 16px rgba(51, 51, 51, 0.59);
         }
