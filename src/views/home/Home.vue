@@ -120,7 +120,10 @@ export default {
       if (!n) {
         if (_this.searchval) {
           _this.$router.push({
-            path: 'search'
+            path: 'search',
+            query: {
+              title: _this.searchval
+            }
           })
         }
       }

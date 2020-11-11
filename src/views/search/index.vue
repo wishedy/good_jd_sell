@@ -2,15 +2,14 @@
     <section class="jd_main">
         <SearchBar></SearchBar>
         <TabBar></TabBar>
-        <section class="jd_order_list">
-            <OrderItem></OrderItem>
-            <OrderItem></OrderItem>
-            <OrderItem></OrderItem>
-            <OrderItem></OrderItem>
+        <section class="jd_order_list" v-if="goodList.length">
+            <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
     </section>
 </template>
 <script>
+import { getGoodsList } from '@/resource'
+
 import SearchBar from './components/SearchBar'
 import TabBar from '../home/components/TabBar'
 import OrderItem from '../home/components/OrderItem'
@@ -20,6 +19,33 @@ export default {
     SearchBar,
     TabBar,
     OrderItem
+  },
+  data () {
+    const _this = this
+    const title = _this.$route.query.title
+    return {
+      title: title,
+      goodList: []
+    }
+  },
+  methods: {
+    async getGoodsData () {
+      const _this = this
+      try {
+        const res = await getGoodsList({
+          pageSize: 1000,
+          name: _this.title,
+          pageNum: 1
+        })
+        _this.goodList = res.rows[0].goodsList
+      } catch (e) {
+        console.log(e.message || '获取商品数据失败')
+      }
+    }
+  },
+  mounted () {
+    const _this = this
+    _this.getGoodsData()
   }
 }
 </script>
