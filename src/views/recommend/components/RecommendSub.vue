@@ -1,7 +1,7 @@
 <template>
-    <section class="recommend-sub">
+    <section class="recommend-sub" @click="goDetail">
         <figure class="logo" :style="{background:`url('${config.articleCover}') no-repeat center/cover`}">
-            <span class="sign">{{config.articleCategory}}</span>
+            <span class="sign">11111{{config.articleCategory}}</span>
         </figure>
         <article class="recommend-info">
             <h1 class="title">{{config.articleName}}</h1>
@@ -22,6 +22,17 @@ export default {
         return {}
       },
       type: Object
+    }
+  },
+  methods: {
+    goDetail () {
+      const _this = this
+      _this.$router.push({
+        path: 'recommendDetail',
+        query: {
+          id: _this.config.id
+        }
+      })
     }
   }
 }

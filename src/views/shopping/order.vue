@@ -44,14 +44,14 @@
             </div>
         </section>
         <section class="jd_order_submit">
-            <span class="sum">合计：<i>￥120</i></span>
+            <span class="sum">合计：<i>￥{{goodDetail.orderPrice}}</i></span>
             <span class="buy-ok" @click="submitOrder">提交订单</span>
         </section>
     </section>
 </template>
 <script>
 import { previewGoodDetail, submitGood } from '@/resource'
-
+import { mapActions, mapGetters } from 'vuex'
 import HeaderBar from 'components/HeaderBar/index'
 import AddressModule from './components/AddressModule'
 export default {
@@ -72,11 +72,15 @@ export default {
       addressConfig: {}
     }
   },
+  computed: {
+    ...mapGetters(['goodsCart'])
+  },
   mounted () {
     const _this = this
     _this.checkType()
   },
   methods: {
+    ...mapActions(['saveGoodCart']),
     async getGoodDetail () {
       const _this = this
       try {
@@ -91,6 +95,9 @@ export default {
           mobile: resData.mobile,
           address: resData.province + '-' + resData.city + '-' + resData.district + '-' + resData.address
         }
+        if (parseInt(_this.type, 10) === 1) {
+          _this.saveGoodCart([])
+        }
         console.log(_this.addressConfig)
       } catch (e) {
         console.log(e.message || '获取商品数据失败')
@@ -103,10 +110,10 @@ export default {
           goodsId: _this.id,
           goodsNum: 1
         }]
-        _this.getGoodDetail()
-      } /* else if (_this.type === 1) {
-
-      } */
+      } else if (_this.type === 1) {
+        _this.submitData = _this.goodsCart
+      }
+      _this.getGoodDetail()
     },
     async submitOrder () {
       const _this = this
@@ -169,6 +176,7 @@ export default {
             margin-left: auto;
             margin-right: auto;
             margin-bottom: 20px;
+            padding-bottom: 50px;
             .amount{
                 justify-content: flex-end;
                 margin-right: 70px;

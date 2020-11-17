@@ -10,7 +10,7 @@
             </h1>
             <section class="jd_shopping_item" v-for="(item) in cartData.cartList" :key="item.id" @click="selectItem(item)" :class="{selected:item.select}">
                 <div class="radio"></div>
-                <figure class="logo"></figure>
+                <figure class="logo" :style="{background:`url('${item.primaryPicUrl}') no-repeat center/cover`}"></figure>
                 <article class="shopping-detail">
                     <h1 class="title" v-text="item.goodsName"></h1>
                     <div class="des">规格：6个/份     重量：  1kg</div>
@@ -107,7 +107,16 @@ export default {
         resultData.push(jsonData)
       }
       if (resultData.length) {
+        console.log(resultData)
         _this.saveGoodCart(resultData)
+        setTimeout(() => {
+          _this.$router.push({
+            path: 'purchase',
+            query: {
+              type: 1// 购物车商品
+            }
+          })
+        }, 300)
       } else {
         _this.Toast('请选择您要购买的商品')
       }
@@ -255,6 +264,8 @@ export default {
                     height: 50px;
                     background: #ccc;
                     margin-right: 20px;
+                    background: url("~img/shopping/logo.png") center/cover;
+
                 }
             }
             .jd_shopping_item{

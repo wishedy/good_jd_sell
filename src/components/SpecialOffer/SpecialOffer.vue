@@ -33,6 +33,8 @@
     </section>
 </template>
 <script>
+import { testLink } from '@/libs/regularTest'
+
 export default {
   props: {
     recommendList: {
@@ -45,13 +47,13 @@ export default {
   methods: {
     goDetail (item) {
       const _this = this
-      if (item.recommendLink) {
+      if (!testLink(item.recommendLink)) {
         location.href = item.recommendLink
       } else {
         _this.$router.push({
-          name: 'Search',
+          path: 'search',
           query: {
-            keyname: item.recommendName
+            title: item.recommendName
           }
         })
       }

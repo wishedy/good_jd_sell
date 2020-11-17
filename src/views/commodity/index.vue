@@ -1,9 +1,10 @@
 <template>
     <div class="commodity" v-if="goodDetail">
-        <div class="commodity-banner swiper-container" id="swiper1">
+      <HeaderBar title="商品详情" :back="true"></HeaderBar>
+      <div class="commodity-banner swiper-container" id="swiper1">
             <ul class="commodity-wrapper swiper-wrapper">
-                <li class="swiper-slide" v-for="(imgItem, index) in detail.images" :key="imgItem+index" @click="handleViewImage(index)">
-                    <img  class="swiper-img" :src="imgItem" alt="" srcset="">
+                <li class="swiper-slide" v-for="(imgItem, index) in goodDetail.attachmentList" :key="imgItem+index" @click="handleViewImage(index)">
+                    <img  class="swiper-img" :src="imgItem.goodsAttUrl" alt="" srcset="">
                 </li>
             </ul>
             <div class="page-wrap">
@@ -27,8 +28,8 @@
         <div class="commodity-model" v-if="modelFlag" @click="handleCloseModel()">
             <div class="commodity-banner swiper-container" id="swiper2">
                 <ul class="commodity-wrapper swiper-wrapper">
-                    <li class="swiper-slide" v-for="(imgItem,index) in goodDetail.images" :key="index+imgItem">
-                        <img  class="swiper-img" :src="imgItem" alt="" srcset="">
+                    <li class="swiper-slide" v-for="(imgItem,index) in goodDetail.attachmentList" :key="index+imgItem">
+                        <img  class="swiper-img" :src="imgItem.goodsAttUrl" alt="" srcset="">
                     </li>
                 </ul>
             </div>
@@ -40,6 +41,8 @@
     </div>
 </template>
 <script>
+import HeaderBar from 'components/HeaderBar/index'
+
 import { mapGetters } from 'vuex'
 import { getGoodDetail, addCart } from '@/resource'
 import Price from './components/Price'
@@ -101,7 +104,8 @@ export default {
       }
     },
     components: {
-      Price
+      Price,
+      HeaderBar
     },
     mounted () {
       const _this = this

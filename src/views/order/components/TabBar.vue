@@ -1,16 +1,53 @@
 <template>
     <section class="jd_order_tab">
-        <section class="order-item active">全部</section>
-        <section class="order-item">查看</section>
-        <section class="order-item">待付款</section>
-        <section class="order-item">待发货</section>
-        <section class="order-item">待收货</section>
-        <section class="order-item">完成</section>
+        <section class="order-item" v-for="(item,index) in status" :key="index" v-text="item.des" :class="{active:tabIndex===index}" @click="changeTab(item,index)"></section>
     </section>
 </template>
 <script>
 export default {
-  name: 'orderTab'
+  name: 'orderTab',
+  props: {
+    tabIndex: {
+      default () {
+        return 0
+      },
+      type: Number
+    }
+  },
+  methods: {
+    changeTab (data, index) {
+      const _this = this
+      _this.$emit('handleTab', { param: data, index })
+    }
+  },
+  data () {
+    return {
+      status: [
+        {
+          des: '全部'
+        },
+        {
+          des: '待付款',
+          payStatus: 1
+        },
+        {
+          des: '待发货',
+          payStatus: 5,
+          shippingStatus: 1
+        },
+        {
+          des: '待收货',
+          payStatus: 5,
+          shippingStatus: 5
+        },
+        {
+          des: '完成',
+          payStatus: 5,
+          shippingStatus: 15
+        }
+      ]
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

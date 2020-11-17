@@ -8,6 +8,8 @@
     </section>
 </template>
 <script>
+import { testLink } from '@/libs/regularTest'
+
 import Swiper from 'swiper'
 export default {
   props: {
@@ -25,8 +27,18 @@ export default {
   },
   methods: {
     goDetail (item) {
+      const _this = this
       if (item.bannerLink) {
-        location.href = item.bannerLink
+        if (!testLink(item.bannerLink)) {
+          _this.$router.push({
+            path: 'search',
+            query: {
+              title: item.bannerName
+            }
+          })
+        } else {
+          location.href = item.bannerLink
+        }
       }
     },
     initSwiper () {

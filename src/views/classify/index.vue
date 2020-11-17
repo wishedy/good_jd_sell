@@ -136,7 +136,9 @@ export default {
                 }
                 .title{
                     width: 107px;
-                    height:24px;
+                    min-height:24px;
+                    height: auto;
+                    text-align: center;
                     font-size:25px;
                     font-family:SourceHanSansCN;
                     font-weight:400;

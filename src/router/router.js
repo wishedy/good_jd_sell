@@ -111,6 +111,11 @@ const message = (resolve) => {
     resolve(module)
   })
 }
+const recommendDetail = (resolve) => {
+  import(/* webpackChunkName: 'recommendDetail' */'@/views/recommend/detail').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 const router = new Router({
@@ -174,7 +179,7 @@ const router = new Router({
       name: 'Search',
       component: Search,
       meta: {
-        title: '号码查询'
+        title: '搜索'
       }
     },
     //代理业绩
@@ -298,6 +303,14 @@ const router = new Router({
       component: message,
       meta: {
         title: '常见问题'
+      }
+    },
+    {
+      path: '/recommendDetail',
+      name: 'recommendDetail',
+      component: recommendDetail,
+      meta: {
+        title: '文章详情'
       }
     },
   ]

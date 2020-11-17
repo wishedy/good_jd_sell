@@ -101,3 +101,9 @@ export function userLogin (params) {
   console.log(params)
   return api.post('/api/customer/login', params)
 }
+export function getOrderList (params) {
+  console.log(params)
+  const query = params?`?${json2Query(params)}`:''
+
+  return api.get(`/api/order/getOrderList${query}`)
+}

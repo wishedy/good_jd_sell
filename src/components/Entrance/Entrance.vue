@@ -63,6 +63,8 @@
     </section>
 </template>
 <script>
+import { testLink } from '@/libs/regularTest'
+
 export default {
   props: {
     entranceData: {
@@ -75,13 +77,13 @@ export default {
   methods: {
     goDetail (item) {
       const _this = this
-      if (item.entranceLink) {
+      if (!testLink(item.entranceLink)) {
         location.href = item.entranceLink
       } else {
         _this.$router.push({
-          name: 'Search',
+          path: 'search',
           query: {
-            keyname: item.entranceName
+            title: item.entranceName
           }
         })
       }

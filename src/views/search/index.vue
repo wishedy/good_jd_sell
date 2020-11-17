@@ -1,7 +1,9 @@
 <template>
     <section class="jd_main">
         <SearchBar></SearchBar>
+<!--
         <TabBar></TabBar>
+-->
         <section class="jd_order_list" v-if="goodList.length">
             <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
@@ -11,13 +13,17 @@
 import { getGoodsList } from '@/resource'
 
 import SearchBar from './components/SearchBar'
+/*
 import TabBar from '../home/components/TabBar'
+*/
 import OrderItem from '../home/components/OrderItem'
 export default {
   name: 'search',
   components: {
     SearchBar,
+    /*
     TabBar,
+*/
     OrderItem
   },
   data () {
@@ -34,7 +40,7 @@ export default {
       try {
         const res = await getGoodsList({
           pageSize: 1000,
-          name: _this.title,
+          searchParam: _this.title,
           pageNum: 1
         })
         _this.goodList = res.rows[0].goodsList
@@ -63,6 +69,6 @@ export default {
         height: auto;
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: flex-start;
     }
 </style>

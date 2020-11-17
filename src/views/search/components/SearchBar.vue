@@ -4,7 +4,7 @@
         <figure class="jd_search_wrapper">
             <i class="icon"></i>
             <span class="input-wrapper">
-                <input type="text" placeholder="请输入您搜索的手机号">
+                <input type="text" placeholder="请输入您搜索的商品名">
             </span>
         </figure>
         <figure class="jd_search_label">搜索</figure>

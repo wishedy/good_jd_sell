@@ -1,5 +1,5 @@
 <template>
-    <section class="jd_recommend_item">
+    <section class="jd_recommend_item" @click="goDetail">
         <figure class="logo"  :style="{background:`url('${config.articleCover}') no-repeat center/cover`}">
         <span class="sign">今日热门</span>
         </figure>
@@ -21,6 +21,17 @@ export default {
         return {}
       },
       type: Object
+    }
+  },
+  methods: {
+    goDetail () {
+      const _this = this
+      _this.$router.push({
+        path: 'recommendDetail',
+        query: {
+          id: _this.config.id
+        }
+      })
     }
   }
 }

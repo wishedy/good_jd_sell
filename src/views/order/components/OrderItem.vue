@@ -1,35 +1,35 @@
 <template>
     <section class="jd_order_item">
         <h1 class="order-id">
-            <span class="id-num">手机号:183****8989</span>
+            <span class="id-num">手机号:{{config.mobile}}</span>
             <span class="order-state">待付款</span>
         </h1>
         <section class="order-content">
-            <figure class="logo" style="background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595586434305&di=117447f4f41cc5ba95d0c5fb3babbfe2&imgtype=0&src=http%3A%2F%2Fpic.jjkk.org%2Fuploads%2Fuserup%2Fjyimg%2F7ed603fe08a485df.jpg') no-repeat center/cover"></figure>
+            <figure class="logo" :style="{background:`url('${config.goodsList[0].primaryPicUrl}') no-repeat center/cover`}"></figure>
             <article class="order-detail">
-                <h1 class="title">绿萝盆栽吸出甲醛室内办室小绿植</h1>
+                <h1 class="title" v-text="config.goodsList[0].goodsName">绿萝盆栽吸出甲醛室内办室小绿植</h1>
                 <span class="des">人参-干货</span>
             </article>
             <div class="order-price">￥678.00</div>
             <div class="order-num">x1</div>
         </section>
         <section class="order-info">
-            <div class="mail-deduct">
+            <!--<div class="mail-deduct">
                 <span class="des">
                     您的提成：
                 </span>
                 <span class="price">￥45.90</span>
-            </div>
-            <div class="mail-detail">
+            </div>-->
+            <div class="mail-detail" style="margin-left: 25px;">
                 <span class="des">
                     付款：
                 </span>
-                <span class="price">￥45.90</span>
+                <span class="price">￥{{config.orderPrice}}</span>
                 <span class="des mail-info">(含运费￥0.00）</span>
             </div>
         </section>
         <section class="handle-bar">
-            <div class="order-time">2005-11-5 13:21:25</div>
+            <div class="order-time" v-text="config.createTime"></div>
             <div class="order-btn">
                 <section class="btn-item">查看详情</section>
             </div>
@@ -38,7 +38,52 @@
 </template>
 <script>
 export default {
-  name: 'orderItem'
+  name: 'orderItem',
+  props: {
+    config: {
+      default () {
+        return {}
+      },
+      type: Object
+    }
+  },
+  computed: {
+    status () {
+      /* "shippingStatus": 0,物流状态（1、未发货 5、 发货中 10、已到达 15、已签收 20-退货中 25-已退货） <number>   "orderStatus": null,订单状态(1-未付款 5-交易成功 10-已退款 15-交易关闭) <string>
+      * "payStatus": null,支付状态（1-未支付 5-已支付 10-超时未支付） <string> */
+      const _this = this
+      let resultStr = ''
+      switch (parseInt(_this.config.payStatus, 10)) {
+        case 1:
+          resultStr = '待付款'
+          break
+        case 5:
+          switch (parseInt(_this.config.shippingStatus, 10)) {
+            case 1:
+              resultStr = '待发货'
+              break
+            case 5:
+              resultStr = '待收货'
+              break
+            case 15:
+              resultStr = '交易完成'
+              break
+            case 20:
+              resultStr = '退货中'
+              break
+            default:
+              switch (parseInt(_this.config.orderStatus, 10)) {
+                case 10:
+                  resultStr = '已退款'
+                  break
+              }
+              break
+          }
+          break
+      }
+      return resultStr
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
