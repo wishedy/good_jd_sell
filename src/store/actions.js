@@ -8,6 +8,9 @@ const actions = {
   saveGoodCart ({ commit, state }, data) {
     commit('saveGoodCart', data)
   },
+  changeCodeState ({ commit, state }, data) {
+    commit('changeCodeState', data)
+  },
   changeCodeNum ({ commit, state }, num) {
     commit('changeCodeNum', num)
   },

@@ -9,6 +9,9 @@ const mutations = {
   setPhoneNum (state, num) {
     state.phoneNum = num
   },
+  changeCodeState (state, status) {
+    state.onCoding = status
+  },
   saveUser (state, user) {
     state.user = user
   },

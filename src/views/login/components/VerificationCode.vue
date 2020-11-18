@@ -11,7 +11,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import axios from 'axios'
+import { sendCode } from '@/resource'
 import { isInvalidString } from 'libs/utils.js'
 import { testPhoneNum } from 'libs/regularTest.js'
 export default {
@@ -57,33 +57,32 @@ export default {
   },
   methods: {
     ...mapActions(['changeCodeState', 'changeResidueNum', 'changeCodeNum']),
-    getCode () {
+    async getCode () {
       const _this = this
-      const residueNum = _this.residueNum - 1
-      _this.changeResidueNum(residueNum)
       if (parseInt(_this.residueNum, 10) > 0) {
         if ((!isInvalidString(_this.phoneNum)) && testPhoneNum(_this.phoneNum)) {
           _this.changeCodeState(true)
-          axios.get('/api/customer/sendSmsCode', {
-            params: {
-              phone: _this.phoneNum
+          try {
+            const param = {
+              codeType: 1,
+              mobile: _this.phoneNum
             }
-          })
-            .then(function (response) {
-              console.log(response)
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
+            const res = await sendCode(param)
+            if (res) {
+              console.log(res)
+            }
+          } catch (e) {
+            _this.Toast(e.msg || '获取验证码失败')
+          }
         } else {
           if (!isInvalidString(_this.phoneNum)) {
-            alert('请输入您的手机号')
+            _this.Toast('请输入您的手机号')
           } else {
-            alert('请输入正确的手机号')
+            _this.Toast('请输入正确的手机号')
           }
         }
       } else {
-        alert('对不起，今日验证码次数已用完')
+        _this.Toast('对不起，今日验证码次数已用完')
       }
     }
   },

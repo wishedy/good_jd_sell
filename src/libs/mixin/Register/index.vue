@@ -14,7 +14,7 @@
                 <span class="code_input">
                     <input type="text" placeholder="请输入验证码" v-model="form.validCode">
                 </span>
-                <span class="jd_code_label active">获取验证码</span>
+                <span class="jd_code_label" :class="{active:phoneRight}" @click="getCode">{{codeDes}}</span>
             </figure>
             <figure class="agreement">
                 <span class="label"></span>
@@ -31,7 +31,7 @@ import { setHttpAuth } from '@/resource/create-api'
 import { testPhoneNum } from 'libs/regularTest.js'
 import { isInvalidString } from 'libs/utils.js'
 import { mapActions,mapGetters } from 'vuex'
-import { userLogin } from '@/resource'
+import { sendCode, userLogin } from '@/resource'
 export default {
   name: 'register',
   data () {
@@ -40,17 +40,61 @@ export default {
         username: '',
         validCode: ''
       },
+      time: 60,
+      residueNum:5,
       shareVisible: false,
       outerData: null
     }
   },
+  watch: {
+    onCoding (n) {
+      const _this = this
+      if (n) {
+        const timer = setInterval(() => {
+          _this.time > 0 ? _this.time-- : clearInterval(timer)
+        }, 1000)
+      }
+    },
+    code (n) {
+      const _this = this
+      _this.changeCodeNum(n)
+    },
+    time (n) {
+      const _this = this
+      if (parseInt(n, 10) === 0) {
+        _this.changeCodeState(false)
+        _this.time = 60
+      }
+    }
+  },
   computed: {
-    ...mapGetters(['token']),
+    ...mapGetters(['token','onCoding']),
     right () {
       const _this = this
       const phoneOnOff = testPhoneNum(_this.form.username)
       const codeOnOff = !isInvalidString(_this.form.validCode)
       return phoneOnOff && codeOnOff
+    },
+    codeDes () {
+      const _this = this
+      if (_this.onCoding) {
+        return _this.time + '秒'
+      } else {
+        if (_this.residueNum === 5) {
+          return '获取验证码'
+        } else {
+          return '重新获取'
+        }
+      }
+    },
+    residueNumDes () {
+      const _this = this
+      return '今日还剩' + _this.residueNum + '次'
+    },
+    phoneRight () {
+      const _this = this
+      const phoneOnOff = testPhoneNum(_this.form.username)
+      return phoneOnOff
     }
   },
   mounted(){
@@ -65,7 +109,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['saveToken']),
+    ...mapActions(['saveToken','setPhoneNum','changeCodeNum','changeCodeState']),
     async submitInfo () {
       const _this = this
       try {
@@ -82,6 +126,34 @@ export default {
       }
       //_this.$emit('userBehavior', 'clickConfirm', _this.outerData)
       _this.hidden()
+    },
+    async getCode () {
+      const _this = this
+      if (parseInt(_this.residueNum, 10) > 0) {
+        if ((!isInvalidString(_this.form.username)) && testPhoneNum(_this.form.username)) {
+          _this.changeCodeState(true)
+          try {
+            const param = {
+              codeType: 1,
+              mobile: _this.form.username
+            }
+            const res = await sendCode(param)
+            if (res) {
+              console.log(res)
+            }
+          } catch (e) {
+            _this.Toast(e.msg || '获取验证码失败')
+          }
+        } else {
+          if (!isInvalidString(_this.form.username)) {
+            _this.Toast('请输入您的手机号')
+          } else {
+            _this.Toast('请输入正确的手机号')
+          }
+        }
+      } else {
+        _this.Toast('对不起，今日验证码次数已用完')
+      }
     },
     show () {
       this.shareVisible = true

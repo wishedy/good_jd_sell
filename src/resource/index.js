@@ -89,6 +89,10 @@ export function deleteCart (params) {
   console.log(params)
   return api.post('/api/cart/delete', params)
 }
+export function sendCode (params) {
+  console.log(params)
+  return api.post('/api/customer/sms/code/send', params)
+}
 export function clearCart (params) {
   console.log(params)
   return api.post('/api/cart/clear', params)

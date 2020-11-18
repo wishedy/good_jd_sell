@@ -8,7 +8,7 @@ const state = {
   token: token || '',
   user: {},
   goodsCart: [],
-  onCoding: '',
+  onCoding: false,
   codeNum: '',
   phoneNum: ''
 }

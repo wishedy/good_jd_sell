@@ -150,6 +150,8 @@ export default {
       async addGoodCart(){
         const _this = this
         try{
+          const elementBody = document.body
+          elementBody.style.overflow = 'hidden'
           _this.$login().then(res => {
             console.log('登录成功')
             //location.reload()
@@ -157,6 +159,8 @@ export default {
               goodsId:_this.id,
               number:1
             }
+            elementBody.style.overflow = 'auto'
+
             const addFun = async ()=>{
               const res = await addCart(param)
               if(res){
@@ -165,6 +169,7 @@ export default {
             }
             addFun()
           }).catch(err => {
+            elementBody.style.overflow = 'auto'
             console.log(err)
           })
         }catch (e) {
