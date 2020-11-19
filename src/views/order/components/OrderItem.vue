@@ -2,7 +2,7 @@
     <section class="jd_order_item">
         <h1 class="order-id">
             <span class="id-num">手机号:{{config.mobile}}</span>
-            <span class="order-state">待付款</span>
+            <span class="order-state" v-text="status.statusDes">待付款</span>
         </h1>
         <section class="order-content">
             <figure class="logo" :style="{background:`url('${config.goodsList[0].primaryPicUrl}') no-repeat center/cover`}"></figure>
@@ -31,7 +31,7 @@
         <section class="handle-bar">
             <div class="order-time" v-text="config.createTime"></div>
             <div class="order-btn">
-                <section class="btn-item">查看详情</section>
+                <section class="btn-item" v-if="status.checkDes" v-text="status.checkDes"></section>
             </div>
         </section>
     </section>
@@ -53,35 +53,45 @@ export default {
       * "payStatus": null,支付状态（1-未支付 5-已支付 10-超时未支付） <string> */
       const _this = this
       let resultStr = ''
+      let btnStatus = ''
       switch (parseInt(_this.config.payStatus, 10)) {
         case 1:
           resultStr = '待付款'
+          btnStatus = '去付款'
           break
         case 5:
           switch (parseInt(_this.config.shippingStatus, 10)) {
             case 1:
               resultStr = '待发货'
+              btnStatus = '提醒发货'
               break
             case 5:
               resultStr = '待收货'
+              btnStatus = '查看物流'
               break
             case 15:
               resultStr = '交易完成'
+              btnStatus = ''
               break
             case 20:
               resultStr = '退货中'
+              btnStatus = ''
               break
             default:
               switch (parseInt(_this.config.orderStatus, 10)) {
                 case 10:
                   resultStr = '已退款'
+                  btnStatus = ''
                   break
               }
               break
           }
           break
       }
-      return resultStr
+      return {
+        statusDes:resultStr,
+        checkDes:btnStatus
+      }
     }
   }
 }
