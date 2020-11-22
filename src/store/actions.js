@@ -14,6 +14,9 @@ const actions = {
   changeCodeNum ({ commit, state }, num) {
     commit('changeCodeNum', num)
   },
+  changeResidueNum ({ commit, state }, num) {
+    commit('changeResidueNum', num)
+  },
   saveToken ({ commit, state }, token) {
     commit('saveToken', token)
   }

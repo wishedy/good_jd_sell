@@ -1,7 +1,7 @@
 <template>
     <section class="jd_main_personal">
         <section class="header-module">
-            <router-link tag="figure" :to="{path:'/editUserInfo'}" class="logo" :style="{background:`url('${user.avatar}') no-repeat center/cover`}"></router-link>
+            <router-link tag="figure" :to="{path:'/editUserInfo'}" class="logo" :style="{background:`url('${user.avatar?user.avatar:userLogo}') no-repeat center/cover`}"></router-link>
             <section class="personal-info">
                 <div class="user-name" v-text="user.userName"></div>
                 <div class="user-phone" v-text="user.phonenumber"></div>
@@ -14,6 +14,11 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'personalCard',
+  data () {
+    return {
+      userLogo: require('../../../assets/images/personal/userLogo.png')
+    }
+  },
   computed: {
     ...mapGetters(['user'])
   }

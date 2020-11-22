@@ -6,7 +6,7 @@
             </figure>
             <div class="ml-code-time" v-text="codeDes" @click.stop="getCode"></div>
         </section>
-        <div class="ml-residue-num" v-text="residueNumDes"></div>
+        <div class="ml-residue-num" v-text="residueNumDes" v-if="residueNum>0"></div>
     </section>
 </template>
 <script>
@@ -16,22 +16,22 @@ import { isInvalidString } from 'libs/utils.js'
 import { testPhoneNum } from 'libs/regularTest.js'
 export default {
   computed: {
-    ...mapGetters(['onCoding', 'phoneNum']),
+    ...mapGetters(['onCoding', 'phoneNum', 'residueNum']),
     codeDes () {
       const _this = this
       if (_this.onCoding) {
         return _this.time + '秒'
       } else {
-        if (_this.residueNum === 5) {
-          return '获取验证码'
-        } else {
-          return '重新获取'
-        }
+        return '获取验证码'
       }
     },
     residueNumDes () {
       const _this = this
-      return '今日还剩' + _this.residueNum + '次'
+      if (parseInt(_this.residueNum, 10)) {
+        return '今日还剩' + _this.residueNum + '次'
+      } else {
+        return '今日获取验证码次数已用完'
+      }
     }
   },
   watch: {
@@ -59,37 +59,37 @@ export default {
     ...mapActions(['changeCodeState', 'changeResidueNum', 'changeCodeNum']),
     async getCode () {
       const _this = this
-      if (parseInt(_this.residueNum, 10) > 0) {
-        if ((!isInvalidString(_this.phoneNum)) && testPhoneNum(_this.phoneNum)) {
-          _this.changeCodeState(true)
-          try {
-            const param = {
-              codeType: 1,
-              mobile: _this.phoneNum
-            }
-            const res = await sendCode(param)
-            if (res) {
-              console.log(res)
-            }
-          } catch (e) {
-            _this.Toast(e.msg || '获取验证码失败')
+      if ((!isInvalidString(_this.phoneNum)) && testPhoneNum(_this.phoneNum)) {
+        _this.changeCodeState(true)
+        try {
+          const param = {
+            codeType: 1,
+            mobile: _this.phoneNum
           }
-        } else {
-          if (!isInvalidString(_this.phoneNum)) {
-            _this.Toast('请输入您的手机号')
-          } else {
-            _this.Toast('请输入正确的手机号')
+          const res = await sendCode(param)
+          if (res) {
+            console.log(parseInt(res, 10), !isNaN(parseInt(res, 10)))
+            if (!isNaN(parseInt(res))) {
+              _this.changeResidueNum(res)
+            }
+            console.log(res)
           }
+        } catch (e) {
+          _this.changeResidueNum(0)
+          _this.Toast(e.msg || '获取验证码失败')
         }
       } else {
-        _this.Toast('对不起，今日验证码次数已用完')
+        if (!isInvalidString(_this.phoneNum)) {
+          _this.Toast('请输入您的手机号')
+        } else {
+          _this.Toast('请输入正确的手机号')
+        }
       }
     }
   },
   data () {
     return {
       time: 60,
-      residueNum: 5,
       code: ''
     }
   }

@@ -8,7 +8,7 @@
             </div>
             <div class="statistics-item">
                 <span class="statistics-num">1280</span>
-                <span class="statistics-title">内容收藏</span>
+                <span class="statistics-title">我的订单</span>
             </div>
             <div class="statistics-item">
                 <span class="statistics-num">10</span>

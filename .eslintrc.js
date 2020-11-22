@@ -13,7 +13,7 @@ module.exports = {
     "wx":true
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',//非开发环境下禁止使用console
+    //'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',//非开发环境下禁止使用console
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',//非开发环境下禁止使用debugger
     'no-alert': process.env.NODE_ENV === 'production' ? 'error' : 'off',//非开发环境下禁止使用alert
     "no-tabs": 0,// 禁止使用tabs

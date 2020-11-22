@@ -62,10 +62,9 @@ export default {
     selectAll () {
       const _this = this
       let allOnOff = true
-      console.log(_this.selectData)
-      if (_this.selectData.length) {
-        for (let num = 0; num < _this.selectData.length; num++) {
-          const item = _this.selectData[num]
+      if (_this.cartData.cartList.length) {
+        for (let num = 0; num < _this.cartData.cartList.length; num++) {
+          const item = _this.cartData.cartList[num]
           if (parseInt(item.select, 10) === 0) {
             allOnOff = false
           }
@@ -155,34 +154,36 @@ export default {
     },
     handleDeleteCart () {
       const _this = this
-      _this.MessageBox.confirm(`您确定要${_this.selectAll ? '清空' : '删除'}购物车商品`).then(async () => {
-        if (_this.selectAll) {
-          // 全选既是清空
-          console.log('清空购物车')
-          const res = await clearCart()
-          if (res) {
-            // location.reload()
-          }
-        } else {
-          // 单独删除购物车商品
-          const resultData = []
-          for (let num = 0; num < _this.selectData.length; num++) {
-            const item = _this.selectData[num]
-            resultData.push(item.id)
-          }
-          if (resultData.length) {
-            try {
-              const res = await deleteCart({ ids: resultData.join(',') })
-              console.log(res)
-              if (res) {
-                // location.reload()
+      if (_this.selectData.length) {
+        _this.MessageBox.confirm(`您确定要${_this.selectAll ? '清空' : '删除'}购物车商品`).then(async () => {
+          if (_this.selectAll) {
+            // 全选既是清空
+            console.log('清空购物车')
+            const res = await clearCart()
+            if (res) {
+              // location.reload()
+            }
+          } else {
+            // 单独删除购物车商品
+            const resultData = []
+            for (let num = 0; num < _this.selectData.length; num++) {
+              const item = _this.selectData[num]
+              resultData.push(item.id)
+            }
+            if (resultData.length) {
+              try {
+                const res = await deleteCart({ ids: resultData.join(',') })
+                console.log(res)
+                if (res) {
+                  // location.reload()
+                }
+              } catch (e) {
+                _this.Toast(e.message || '删除失败')
               }
-            } catch (e) {
-              _this.Toast(e.message || '删除失败')
             }
           }
-        }
-      })
+        })
+      }
     },
     selectItem (data) {
       const _this = this

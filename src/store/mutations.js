@@ -20,6 +20,9 @@ const mutations = {
   },
   changeCodeNum (state, num) {
     state.codeNum = num
+  },
+  changeResidueNum (state, num) {
+    state.residueNum = num
   }
 }
 export default mutations

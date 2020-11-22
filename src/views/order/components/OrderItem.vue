@@ -89,8 +89,8 @@ export default {
           break
       }
       return {
-        statusDes:resultStr,
-        checkDes:btnStatus
+        statusDes: resultStr,
+        checkDes: btnStatus
       }
     }
   }

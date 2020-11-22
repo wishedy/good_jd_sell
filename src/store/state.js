@@ -9,6 +9,7 @@ const state = {
   user: {},
   goodsCart: [],
   onCoding: false,
+  residueNum: -1,
   codeNum: '',
   phoneNum: ''
 }

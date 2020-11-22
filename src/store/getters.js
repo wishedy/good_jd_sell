@@ -14,6 +14,9 @@ const getters = {
   codeNum (state) {
     return state.codeNum
   },
+  residueNum (state) {
+    return state.residueNum
+  },
   phoneNum (state) {
     return state.phoneNum
   }
