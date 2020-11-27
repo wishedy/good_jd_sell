@@ -422,3 +422,8 @@ export default {
         }
     }
 </style>
+<style lang="scss">
+img{
+  max-width:100% !important;
+}
+</style>
