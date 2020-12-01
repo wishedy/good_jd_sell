@@ -23,7 +23,16 @@
             <div class="commodity-desc" v-html="goodDetail.goodsDesc" ></div>
         </div>
         <section class="exchange-btn-wrap">
+          <section class="handle-module">
+            <span class="collect-item" :class="{activity:collectOnOff}" @click="handleCollect"></span>
+            <span class="car-item"  @click="addGoodCart">
+              <i class="num">9</i>
+            </span>
+          </section>
+          <section class="buy-module"  @click="goShopping(goodDetail.id)">立即购买</section>
+<!--
             <span class="exchange-btn" @click="goShopping(goodDetail.id)">立即购买</span>
+-->
         </section>
         <div class="commodity-model" v-if="modelFlag" @click="handleCloseModel()">
             <div class="commodity-banner swiper-container" id="swiper2">
@@ -37,7 +46,9 @@
                 <div class="swiper-pagination swiper2-pagination"></div>
             </div>
         </div>
+<!--
         <div class="commodity-add-bus" @click="addGoodCart">加入购物车</div>
+-->
     </div>
 </template>
 <script>
@@ -55,6 +66,7 @@ export default {
       id: id,
       modelFlag: false,
       goodDetail: null,
+      collectOnOff: false,
       detail: {
         type: 1,
         name: '鲸鱼精美学生练习本（4本）',
@@ -147,6 +159,10 @@ export default {
       })
     },
     methods: {
+      handleCollect(){
+        const _this = this
+        _this.collectOnOff = !_this.collectOnOff
+      },
       async addGoodCart(){
         const _this = this
         try{
@@ -309,14 +325,66 @@ export default {
             bottom:0;
             right: 0;
             left: 0;
-            height:auto;
-            padding: 16px 68px 16px 68px;
             background:rgba(255,255,255,1);
             width: 100%;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
+            height: 101px;
+            background: #FFFFFF;
+            box-shadow: 0px 1px 10px 1px rgba(161, 161, 161, 0.23);
+          .handle-module{
+             width: 289px;
+            height: 100%;
+            box-sizing: unset;
+            padding: 0 30px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            .collect-item{
+              width: 55px;
+              height: 51px;
+              background: url("~img/shopping/collect.png") no-repeat center/cover;
+              &.activity{
+                background: url("~img/shopping/collect-activity.png") no-repeat center/cover;
+              }
+            }
+            .car-item{
+              width: 55px;
+              height: 51px;
+              background: url("~img/shopping/buyCar.png") no-repeat center/cover;
+              position: relative;
+              .num{
+                width: 32px;
+                height: 32px;
+                position: absolute;
+                top:-13px;
+                right: -13px;
+                font-style: normal;
+                background: #E71A27;
+                border-radius: 50%;
+                text-align: center;
+                font-size: 16px;
+                line-height: 32px;
+                font-family: SourceHanSansCN;
+                font-weight: 400;
+                color: #FFFFFF;
+              }
+            }
+          }
+          .buy-module{
+            width: 401px;
+            height: 100%;
+            background: #55C47D;
+            line-height: 100px;
+            text-align: center;
+            font-size: 32px;
+            font-family: SourceHanSansCN;
+            font-weight: 400;
+            color: #FFFFFF;
+          }
         }
         .exchange-btn {
             /*position: fixed;
