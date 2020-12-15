@@ -105,6 +105,10 @@ export function userLogin (params) {
   console.log(params)
   return api.post('/api/customer/login', params)
 }
+export function getSignature (params) {
+  console.log(params)
+  return api.post('/api/wechat/getSignature', params)
+}
 export function getOrderList (params) {
   console.log(params)
   const query = params?`?${json2Query(params)}`:''
