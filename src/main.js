@@ -15,6 +15,7 @@ import 'swiper/css/swiper.min.css'
 import AwesomePicker from 'vue-awesome-picker'
 import vConsole from 'vconsole'
 import '@/libs/mixin/Register'
+import { getOpenId, setDomain } from 'libs/utils'
 /*eslint-disable*/
 new vConsole()
 Vue.use(AwesomePicker)
@@ -23,8 +24,11 @@ Vue.prototype.MessageBox = MessageBox
 Vue.prototype.Toast = Toast
 Vue.prototype.Indicator = Indicator
 Vue.use(MintUI)
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+setDomain()
+if(getOpenId()){
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+}

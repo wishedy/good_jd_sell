@@ -3,6 +3,8 @@ const Resource = require('./create-api')
 const { api } = Resource
 export function getBannerList (params) {
   const query = params?`?${json2Query(params)}`:''
+  console.log('这里')
+  console.log(api,api.get)
   return api.get(`/api/home/getBannerList${query}`)
 }
 export function getRecommendList (params) {
@@ -105,6 +107,14 @@ export function userLogin (params) {
   console.log(params)
   return api.post('/api/customer/login', params)
 }
+export function getUserOpenId (params) {
+  const query = params?`?${json2Query(params)}`:''
+  return api.get(`/api/pay/getOpenId${query}`)
+}
+export function getJsapiTicket (params) {
+  const query = params?`?${json2Query(params)}`:''
+  return api.get(`/api/pay/getJsapiTicket${query}`)
+}
 export function getSignature (params) {
   console.log(params)
   return api.post('/api/wechat/getSignature', params)
@@ -114,4 +124,8 @@ export function getOrderList (params) {
   const query = params?`?${json2Query(params)}`:''
 
   return api.get(`/api/order/getOrderList${query}`)
+}
+export function doPay (params) {
+  console.log(params)
+  return api.post('/api/pay/wxPay', params)
 }

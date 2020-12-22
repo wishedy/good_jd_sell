@@ -50,8 +50,10 @@
     </section>
 </template>
 <script>
-import { previewGoodDetail, submitGood } from '@/resource'
+import Cookies from 'js-cookie'
+import { doPay, previewGoodDetail, submitGood } from '@/resource'
 import { mapActions, mapGetters } from 'vuex'
+import { isWeiXin } from 'libs/utils'
 import HeaderBar from 'components/HeaderBar/index'
 import AddressModule from './components/AddressModule'
 export default {
@@ -64,7 +66,9 @@ export default {
     const _this = this
     const type = parseInt(_this.$route.query.type, 10)
     const id = _this.$route.query.id
+    const openId = Cookies.get('openId')
     return {
+      openId,
       type: type,
       id: id,
       submitData: [],
@@ -124,13 +128,63 @@ export default {
             submitDetailList: _this.submitData
           })
           if (res) {
+            console.log(res.rows)
+            const param = {
+              orderSn: res.rows,
+              payType: isWeiXin() ? 1 : 4,
+              notifyUrl: location.href,
+              openId: _this.openId ? _this.openId : ''
+            }
             console.log(_this.addressConfig.receiverId)
-            _this.Toast('下单成功')
+            if (isWeiXin()) {
+              // 微信环境下
+              const payConfig = await doPay(param)
+              // wx.chooseWXPay(payConfig)
+              /*eslint-disable*/
+              const payFun = () => {
+                WeixinJSBridge.invoke(
+                  'getBrandWCPayRequest', payConfig,
+                  function (res) {
+                    // alert(res.err_msg);
+                    if (res.err_msg === 'get_brand_wcpay_request:ok') {
+                      // 使用以上方式判断前端返回,微信团队郑重提示：
+                      console.log('支付成功')
+                    } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+                      console.log('用户取消支付')
+                    } else if (res.err_msg === 'get_brand_wcpay_request:fail') {
+                      console.log('支付失败')
+                    }
+                  })
+              }
+
+              if (typeof WeixinJSBridge === 'undefined') {
+                if (document.addEventListener) {
+                  document.addEventListener('WeixinJSBridgeReady', function () {
+                    payFun()
+                  }, false)
+                } else if (document.attachEvent) {
+                  document.attachEvent('WeixinJSBridgeReady', function () {
+                    payFun()
+                  })
+                  document.attachEvent('onWeixinJSBridgeReady', function () {
+                    payFun()
+                  })
+                }
+              } else {
+                payFun()
+              }
+            } else {
+              // 非微信环境下
+              const payConfig = await doPay(param)
+              const payUrl = payConfig.url
+              location.href = payUrl
+            }
+            /* _this.Toast('下单成功')
             setTimeout(() => {
               _this.$router.push({
                 path: 'buySuccess'
               })
-            }, 1000)
+            }, 1000) */
           }
         } catch (e) {
           _this.Toast(e.message || '订单提交失败')
