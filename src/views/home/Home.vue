@@ -25,9 +25,12 @@ import EntranceModule from './components/EntranceModule'
 import SpecialOffer from 'components/SpecialOffer/SpecialOffer'
 import TabBar from './components/TabBar'
 import OrderItem from './components/OrderItem'
+import ShareMixin from 'libs/mixin/ShareMixin'
+import { isWeiXin } from 'libs/utils'
 import { getGoodsList, getBannerList, getEntranceList, getRecommendList, getGoodsTypeList } from '@/resource'
 export default {
   name: 'home',
+  mixins: [ShareMixin],
   methods: {
     async getBannerData () {
       const _this = this
@@ -130,6 +133,10 @@ export default {
   },
   data () {
     return {
+      title: '关东臻品',
+      desc: '一站式山货购物，是真品，更是臻品',
+      imgUrl: 'https://goodjd.oss-cn-beijing.aliyuncs.com/goodjd/20201222/rvbIUnaqDXnZfgAnFBrgiANZEMlGjwkc.png',
+      url: location.href,
       focus: false,
       searchval: '',
       entranceList: [],
@@ -154,6 +161,9 @@ export default {
     _this.getEntranceData()
     _this.getTabData()
     _this.getRecommendData()
+    if (isWeiXin()) {
+      _this.share()
+    }
   }
 }
 </script>

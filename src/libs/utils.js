@@ -18,55 +18,26 @@ export const cleanArray = function (actual) {
     }
     return newArray
 }
-export const  addUrlParam =  (url, key, value)=> {
-    var returnUrl = ''
-    if (url.indexOf('?') == -1) {
-        returnUrl += url + '?' + key + '=' + value
-    } else {
-        if (url.indexOf('?' + key + '=') == -1 && url.indexOf('&' + key + '=') == -1) {
-            returnUrl += url + '&' + key + '=' + value
-        } else {
-            let isDone = false
-            let startIndex = 0
-            let endIndex = url.length - 1
-            let parm = '?' + key + '='
-            for (let i = 0; i < url.length; i++) {
-                if (url.substr(i, parm.length) == parm) {
-                    startIndex = i + parm.length
-                    for (let j = startIndex; j < url.length; j++) {
-                        if (url[j] == '&') {
-                            endIndex = j
-                            break
-                        } else if (j == url.length - 1) {
-                            endIndex = url.length
-                        }
-                    }
-                    isDone = true
-                    break
-                }
-            }
-            if (!isDone) {
-                parm = '&' + key + '='
-                for (let i = 0; i < url.length; i++) {
-                    if (url.substr(i, parm.length) == parm) {
-                        startIndex = i + parm.length
-                        for (const j = startIndex; j < url.length; j++) {
-                            if (url[j] == '&') {
-                                endIndex = j
-                                break
-                            } else if (j == url.length - 1) {
-                                endIndex = url.length
-                            }
-                        }
-                        break
-                    }
-                }
-            }
-            let parmKeyValue = parm + url.substring(startIndex, endIndex)
-            returnUrl = url.replace(parmKeyValue, parm + value)
+ /*
+* url 目标url
+* arg 需要替换的参数名称
+* arg_val 替换后的参数的值
+* return url 参数替换后的url
+*/
+export const changeURLArg = function (url,arg,arg_val){
+    var pattern=arg+'=([^&]*)';
+    var replaceText=arg+'='+arg_val;
+    if(url.match(pattern)){
+        var tmp='/('+ arg+'=)([^&]*)/gi';
+        tmp=url.replace(eval(tmp),replaceText);
+        return tmp;
+    }else{
+        if(url.match('[\?]')){
+            return url+'&'+replaceText;
+        }else{
+            return url+'?'+replaceText;
         }
     }
-    return returnUrl
 }
 export const json2Query = function (json) {
     if (!json) return ''

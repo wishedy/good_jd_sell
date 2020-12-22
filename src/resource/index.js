@@ -129,3 +129,8 @@ export function doPay (params) {
   console.log(params)
   return api.post('/api/pay/wxPay', params)
 }
+export function checkOrderStatus(params){
+  const query = params?`?${json2Query(params)}`:''
+
+  return api.get(`/api/order/getOrderByOrderSn${query}`)
+}

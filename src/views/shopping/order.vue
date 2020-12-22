@@ -51,9 +51,9 @@
 </template>
 <script>
 import Cookies from 'js-cookie'
-import { doPay, previewGoodDetail, submitGood } from '@/resource'
+import { checkOrderStatus, doPay, previewGoodDetail, submitGood } from '@/resource'
 import { mapActions, mapGetters } from 'vuex'
-import { isWeiXin } from 'libs/utils'
+import { isInvalidString, changeURLArg, isWeiXin } from 'libs/utils'
 import HeaderBar from 'components/HeaderBar/index'
 import AddressModule from './components/AddressModule'
 export default {
@@ -65,12 +65,16 @@ export default {
   data () {
     const _this = this
     const type = parseInt(_this.$route.query.type, 10)
+    const paySuccess = !isInvalidString(_this.$route.query.pay_success)
+    const orderSn = _this.$route.query.orderSn
     const id = _this.$route.query.id
     const openId = Cookies.get('openId')
     return {
       openId,
       type: type,
       id: id,
+      orderSn: orderSn,
+      paySuccess: paySuccess,
       submitData: [],
       goodDetail: {},
       addressConfig: {}
@@ -82,9 +86,45 @@ export default {
   mounted () {
     const _this = this
     _this.checkType()
+    _this.checkQuery()
   },
   methods: {
     ...mapActions(['saveGoodCart']),
+    async asyncCheckStatus () {
+      const _this = this
+      try {
+        const res = await checkOrderStatus({ orderSn: _this.orderSn })
+        console.log(res)
+      } catch (e) {
+        _this.Toast(e.msg || '支付状态查询失败，请在设置-反馈中联系客服')
+      }
+    },
+    checkQuery () {
+      const _this = this
+
+      if (_this.paySuccess) {
+        // 检索到有支付成功的标识
+        /*eslint-disable*/
+        _this.$login().then(res => {
+          _this.MessageBox.confirm('支付成功').then(action => {
+            if (action === 'confirm') {
+              _this.checkStatus()
+              // 点击取消
+            } else if (action === 'cancel') {
+              _this.Toast('请在设置-反馈中向客服反馈')
+            }
+        })
+        })
+      }
+    },
+    async checkStatus(){
+      const _this = this
+      if(isInvalidString(_this.orderSn)){
+        _this.Toast('支付参数有误')
+      }else{
+        _this.asyncCheckStatus()
+      }
+    },
     async getGoodDetail () {
       const _this = this
       try {
@@ -127,12 +167,14 @@ export default {
             receiverInfoId: _this.addressConfig.receiverId,
             submitDetailList: _this.submitData
           })
+          const successUrlFirst = changeURLArg(location.href, 'pay_success', 'success')
+          const successUrlSecond = changeURLArg(successUrlFirst, 'orderSn', res.rows)
           if (res) {
             console.log(res.rows)
             const param = {
               orderSn: res.rows,
               payType: isWeiXin() ? 1 : 4,
-              notifyUrl: location.href,
+              notifyUrl: encodeURIComponent(successUrlSecond),
               openId: _this.openId ? _this.openId : ''
             }
             console.log(_this.addressConfig.receiverId)
@@ -179,12 +221,6 @@ export default {
               const payUrl = payConfig.url
               location.href = payUrl
             }
-            /* _this.Toast('下单成功')
-            setTimeout(() => {
-              _this.$router.push({
-                path: 'buySuccess'
-              })
-            }, 1000) */
           }
         } catch (e) {
           _this.Toast(e.message || '订单提交失败')

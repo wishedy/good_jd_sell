@@ -1,26 +1,17 @@
-import { getSignature } from 'api/index'
+import { getWxConfig } from '@/libs/utils'
 import wx from 'wx'
 export default {
   methods: {
     async share () {
       const _this = this
-      try {
-        const config = await getSignature()
-
-        if (config && !config.code) {
-          wx.config(config)
-          wx.ready(() => {
-            _this.wxJsSdkConfig()
-          })
-          wx.error(function (err) {
-            console.log('报错了')
-            console.log(err)
-          })
-        }
-      } catch (e) {
+      getWxConfig().then(()=>{
+        console.log('成功')
+        _this.wxJsSdkConfig()
+      }).catch((e)=>{
+        console.log('失败')
         console.log(e)
         return _this.Toast(e.message)
-      }
+      })
     },
     wxJsSdkConfig () {
       // 分享到朋友圈
