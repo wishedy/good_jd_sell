@@ -15,7 +15,7 @@ export default {
   components: {
     TabBar
   },
-  created () {
+  beforeCreate () {
     if (isWeiXin()) {
       remoteLoad('//res.wx.qq.com/open/js/jweixin-1.4.0.js')
     }

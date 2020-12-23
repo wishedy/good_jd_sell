@@ -1,5 +1,5 @@
 <template>
-    <section class="jd_main">
+    <section class="jd_main">222
         <!--<HeaderBar title="关东臻品"></HeaderBar>-->
         <section class="jd_home_card">
             <div class="jd_content">
