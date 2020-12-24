@@ -96,17 +96,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
-/***/ "./node_modules/_core-js@3.7.0@core-js/internals/inherit-if-required.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/_core-js@3.7.0@core-js/internals/inherit-if-required.js ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var isObject = __webpack_require__(/*! ../internals/is-object */ \"./node_modules/_core-js@3.7.0@core-js/internals/is-object.js\");\nvar setPrototypeOf = __webpack_require__(/*! ../internals/object-set-prototype-of */ \"./node_modules/_core-js@3.7.0@core-js/internals/object-set-prototype-of.js\");\n\n// makes subclassing work correct for wrapped built-ins\nmodule.exports = function ($this, dummy, Wrapper) {\n  var NewTarget, NewTargetPrototype;\n  if (\n    // it can work only with native `setPrototypeOf`\n    setPrototypeOf &&\n    // we haven't completely correct pre-ES6 way for getting `new.target`, so use this\n    typeof (NewTarget = dummy.constructor) == 'function' &&\n    NewTarget !== Wrapper &&\n    isObject(NewTargetPrototype = NewTarget.prototype) &&\n    NewTargetPrototype !== Wrapper.prototype\n  ) setPrototypeOf($this, NewTargetPrototype);\n  return $this;\n};\n\n\n//# sourceURL=webpack:///./node_modules/_core-js@3.7.0@core-js/internals/inherit-if-required.js?");
-
-/***/ }),
-
 /***/ "./node_modules/_core-js@3.7.0@core-js/internals/string-trim.js":
 /*!**********************************************************************!*\
   !*** ./node_modules/_core-js@3.7.0@core-js/internals/string-trim.js ***!
