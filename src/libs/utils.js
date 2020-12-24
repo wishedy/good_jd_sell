@@ -89,6 +89,7 @@ export const getWxConfig = ()=>{
         url = encodeURIComponent(url)
         const res = await getJsapiTicket({ url: url })
         res.jsApiList = jsApiList
+        console.log(res)
         wx.config(res)
         wx.ready(() => {
             resolve({
