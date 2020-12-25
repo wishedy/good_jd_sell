@@ -58,11 +58,18 @@ import { mapGetters } from 'vuex'
 import { getGoodDetail, addCart } from '@/resource'
 import Price from './components/Price'
 import Swiper from 'swiper/js/swiper.js'
+import { isWeiXin } from 'libs/utils'
+import ShareMixin from 'libs/mixin/ShareMixin'
 export default {
+  mixins: [ShareMixin],
   data () {
     const _this = this
     const id = _this.$route.query.id
     return {
+      title: '关东臻品',
+      desc: '一站式山货购物，是真品，更是臻品',
+      imgUrl: 'https://shop.goodjd.cn/static/img/home-active.56a05ebd.png',
+      url: location.href,
       id: id,
       modelFlag: false,
       goodDetail: null,
@@ -140,6 +147,9 @@ export default {
       },1000)
       //this.getMyCoin()
       //this.getCommodityDetail()
+      if (isWeiXin()) {
+        _this.share()
+      }
     },
     updated () {
       /* eslint-disable no-new */

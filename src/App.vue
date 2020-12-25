@@ -6,19 +6,12 @@
 </template>
 
 <script>
-import { isWeiXin } from 'libs/utils'
-import remoteLoad from 'libs/remoteLoad'
 import TabBar from 'components/TabBar/TabBar'
 
 export default {
   name: 'App',
   components: {
     TabBar
-  },
-  beforeCreate () {
-    if (isWeiXin()) {
-      remoteLoad('//res.wx.qq.com/open/js/jweixin-1.4.0.js')
-    }
   }
 }
 </script>
