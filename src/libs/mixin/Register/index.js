@@ -4,7 +4,7 @@ import store from '@/store/index.js'
 const LoginConstructor = Vue.extend(myLogin)
 let newInstance = null
 const theLogin = function (content) {
-  console.log('1',newInstance)
+  console.log('1', newInstance)
   return new Promise((resolve, reject) => {
     if (!newInstance) {
       newInstance = new LoginConstructor({

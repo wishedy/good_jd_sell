@@ -30,7 +30,7 @@ import { setHttpAuth } from '@/resource/create-api'
 
 import { testPhoneNum } from 'libs/regularTest.js'
 import { isInvalidString } from 'libs/utils.js'
-import { mapActions,mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { sendCode, userLogin } from '@/resource'
 export default {
   name: 'register',
@@ -41,7 +41,7 @@ export default {
         validCode: ''
       },
       time: 60,
-      residueNum:5,
+      residueNum: 5,
       shareVisible: false,
       outerData: null
     }
@@ -68,7 +68,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['token','onCoding']),
+    ...mapGetters(['token', 'onCoding']),
     right () {
       const _this = this
       const phoneOnOff = testPhoneNum(_this.form.username)
@@ -97,19 +97,19 @@ export default {
       return phoneOnOff
     }
   },
-  mounted(){
+  mounted () {
     const _this = this
-    if(_this.token){
-      _this.$nextTick(()=>{
+    if (_this.token) {
+      _this.$nextTick(() => {
         setHttpAuth(_this.token)
-        _this.success&&_this.success()
+        _this.success && _this.success()
       })
-    }else{
+    } else {
       _this.shareVisible = true
     }
   },
   methods: {
-    ...mapActions(['saveToken','setPhoneNum','changeCodeNum','changeCodeState']),
+    ...mapActions(['saveToken', 'setPhoneNum', 'changeCodeNum', 'changeCodeState']),
     async submitInfo () {
       const _this = this
       try {
@@ -122,9 +122,8 @@ export default {
       } catch (e) {
         _this.Toast(e.message || '登录失败')
         _this.fail && _this.fail(e)
-
       }
-      //_this.$emit('userBehavior', 'clickConfirm', _this.outerData)
+      // _this.$emit('userBehavior', 'clickConfirm', _this.outerData)
       _this.hidden()
     },
     async getCode () {
