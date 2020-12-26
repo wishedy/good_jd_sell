@@ -6,6 +6,8 @@ export const api = getAxios({
     'Content-Type': 'application/json'
   }
 })
+console.log('z这里这里这里')
+console.log(api)
 export const setHttpAuth = (token) => {
   const basicAuth = getBasicAuth(token)
     ;[api].forEach(instance => {
