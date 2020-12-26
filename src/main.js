@@ -11,11 +11,13 @@ import '@/assets/styles/reset-mint-ui.scss'
 import '@/assets/styles/picker.scss'
 import router from './router'
 import store from './store/index'
+import { sync } from 'vuex-router-sync'
 import 'swiper/css/swiper.min.css'
 import AwesomePicker from 'vue-awesome-picker'
 import vConsole from 'vconsole'
 import '@/libs/mixin/Register'
 import { getOpenId, setDomain } from 'libs/utils'
+import VueLazyLoad from 'vue-lazyload'
 /*eslint-disable*/
 new vConsole()
 Vue.use(AwesomePicker)
@@ -24,8 +26,10 @@ Vue.prototype.MessageBox = MessageBox
 Vue.prototype.Toast = Toast
 Vue.prototype.Indicator = Indicator
 Vue.use(MintUI)
+Vue.use(VueLazyLoad)
 setDomain()
 if(getOpenId()){
+  sync(store, router)
   new Vue({
     router,
     store,
