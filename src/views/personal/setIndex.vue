@@ -1,7 +1,7 @@
 <template>
     <section class="jd_main">
         <HeaderBar title="设置" :back="true"></HeaderBar>
-        <SetItem class="privacy" title="隐私协议"></SetItem>
+        <SetItem class="privacy" title="隐私协议" @click.native="personalAgreement"></SetItem>
         <SetItem class="agreement" title="用户协议"></SetItem>
         <div class="bottom-btn">
             退出登录
@@ -17,6 +17,14 @@ export default {
   components: {
     SetItem,
     HeaderBar
+  },
+  methods: {
+    personalAgreement () {
+      const _this = this
+      _this.$router.push({
+        path: 'agreement'
+      })
+    }
   }
 }
 </script>

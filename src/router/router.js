@@ -116,6 +116,11 @@ const recommendDetail = (resolve) => {
     resolve(module)
   })
 }
+const agreement = (resolve) => {
+  import(/* webpackChunkName: 'agreement' */'@/views/agreement/agreement').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 const router = new Router({
@@ -311,6 +316,14 @@ const router = new Router({
       component: recommendDetail,
       meta: {
         title: '文章详情'
+      }
+    },
+    {
+      path: '/agreement',
+      name: 'agreement',
+      component: agreement,
+      meta: {
+        title: '隐私协议'
       }
     },
   ]
