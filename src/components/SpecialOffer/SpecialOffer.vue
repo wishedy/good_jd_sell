@@ -107,6 +107,7 @@ export default {
                     font-size:24px;
                     font-family:PingFang;
                     font-weight:500;
+                    text-align: center;
                     line-height: 32px;
                     color:rgba(51,51,51,1);
                 }

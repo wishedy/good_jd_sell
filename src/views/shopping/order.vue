@@ -85,6 +85,7 @@ export default {
   },
   mounted () {
     const _this = this
+    alert(isWeiXin())
     _this.checkType()
     _this.checkQuery()
   },
@@ -95,6 +96,15 @@ export default {
       try {
         const res = await checkOrderStatus({ orderSn: _this.orderSn })
         console.log(res)
+        if (parseInt(res.payStatus, 10) === 5) {
+          // 5支付成功
+          _this.$router.push({
+            path: 'buySuccess',
+            query: {
+              orderSn: _this.orderSn
+            }
+          })
+        }
       } catch (e) {
         _this.Toast(e.msg || '支付状态查询失败，请在设置-反馈中联系客服')
       }
@@ -119,6 +129,7 @@ export default {
     },
     async checkStatus(){
       const _this = this
+      console.log('订单号========'+_this.orderSn)
       if(isInvalidString(_this.orderSn)){
         _this.Toast('支付参数有误')
       }else{
@@ -190,7 +201,10 @@ export default {
                     // alert(res.err_msg);
                     if (res.err_msg === 'get_brand_wcpay_request:ok') {
                       // 使用以上方式判断前端返回,微信团队郑重提示：
-                      console.log('支付成功')
+                      console.log('支付成功===')
+                      _this.paySuccess = true
+                      _this.orderSn = param.orderSn
+                      _this.checkQuery()
                     } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
                       console.log('用户取消支付')
                     } else if (res.err_msg === 'get_brand_wcpay_request:fail') {

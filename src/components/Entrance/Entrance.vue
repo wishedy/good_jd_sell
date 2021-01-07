@@ -103,7 +103,7 @@ export default {
         box-sizing: unset;
         flex-direction: row;
         align-items: flex-start;
-        justify-content: space-around;
+        justify-content: flex-start;
         flex-wrap: wrap;
         .entrance-item{
             width: 91px;

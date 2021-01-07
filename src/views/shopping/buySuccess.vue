@@ -4,7 +4,7 @@
         <section class="jd-success-logo">
             <figure class="logo"></figure>
             <h1 class="title">支付成功</h1>
-            <h1 class="price">¥888.00</h1>
+            <h1 class="price" v-text="config&&config.orderPrice?config.orderPrice:''"></h1>
             <div class="handleBar">
                 <span class="handleItem" @click="buyAgain">再来一单</span>
                 <span class="handleItem" @click="checkMyOrder">查看订单</span>
@@ -14,13 +14,35 @@
 </template>
 <script>
 import HeaderBar from 'components/HeaderBar/index'
+import { checkOrderStatus } from 'api'
 
 export default {
   name: 'buySuccess',
   components: {
     HeaderBar
   },
+  data () {
+    return {
+      config: null
+    }
+  },
+  mounted () {
+
+  },
   methods: {
+    async asyncCheckStatus () {
+      const _this = this
+      try {
+        const res = await checkOrderStatus({ orderSn: _this.orderSn })
+        console.log(res)
+        if (parseInt(res.payStatus, 10) === 5) {
+          // 5支付成功
+          _this.config = res
+        }
+      } catch (e) {
+        _this.Toast(e.msg || '支付状态查询失败，请在设置-反馈中联系客服')
+      }
+    },
     checkMyOrder () {
       const _this = this
       _this.$router.push({

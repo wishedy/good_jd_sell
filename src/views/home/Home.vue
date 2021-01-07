@@ -3,7 +3,7 @@
         <!--<HeaderBar title="关东臻品"></HeaderBar>-->
         <section class="jd_home_card">
             <div class="jd_content">
-                <input type="text" placeholder="请输入您的产品111" @focusin="focus=true" @focusout="focus=false" v-model="searchval">
+                <input type="text" placeholder="请输入您的产品" @focusin="focus=true" @focusout="focus=false" v-model="searchval">
                 <i class="icon" v-if="!focus"></i>
                 <i class="message" @click="goToMessage"></i>
             </div>
@@ -187,7 +187,7 @@ export default {
                     height: 26px;
                     position: absolute;
                     top:50%;
-                    left: 28%;
+                    left: 22%;
                     transform: translate(0,-50%);
                     background: url('~img/search/search.png') no-repeat center/cover;
                 }
@@ -259,6 +259,6 @@ export default {
             height: auto;
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: flex-start;
         }
 </style>
