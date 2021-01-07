@@ -5,12 +5,10 @@ export default {
     async share () {
       const _this = this
       getWxConfig().then(() => {
-        console.log('成功111111111')
         _this.wxJsSdkConfig()
       }).catch((e) => {
-        console.log('失败')
         console.log(e)
-        return _this.Toast(e.message)
+        return _this.Toast('微信授权失败')
       })
     },
     wxJsSdkConfig () {

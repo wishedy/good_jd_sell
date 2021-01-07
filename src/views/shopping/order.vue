@@ -85,7 +85,6 @@ export default {
   },
   mounted () {
     const _this = this
-    alert(isWeiXin())
     _this.checkType()
     _this.checkQuery()
   },
