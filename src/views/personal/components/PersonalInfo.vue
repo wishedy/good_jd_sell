@@ -2,15 +2,15 @@
     <section class="jd_main_personal_statistics">
         <h1 class="title">操作记录</h1>
         <section class="jd_statistics">
-            <div class="statistics-item">
+            <div class="statistics-item" @click="goCollect">
                 <span class="statistics-num">89</span>
                 <span class="statistics-title">商品收藏</span>
             </div>
-            <div class="statistics-item">
+            <div class="statistics-item" @click="goOrder">
                 <span class="statistics-num">1280</span>
                 <span class="statistics-title">我的订单</span>
             </div>
-            <div class="statistics-item">
+            <div class="statistics-item" @click="goBrowse">
                 <span class="statistics-num">10</span>
                 <span class="statistics-title">足迹</span>
             </div>
@@ -19,7 +19,28 @@
 </template>
 <script>
 export default {
-  name: 'statistics'
+  name: 'statistics',
+  methods: {
+    goBrowse () {
+      const _this = this
+      _this.$router.push({
+        name: 'browse'
+      })
+    },
+    goOrder () {
+      const _this = this
+      _this.$router.push({
+        name: 'Order'
+      })
+    },
+    goCollect () {
+      console.log('111')
+      const _this = this
+      _this.$router.push({
+        name: 'collect'
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

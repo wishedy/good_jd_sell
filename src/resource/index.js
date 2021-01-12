@@ -129,6 +129,28 @@ export function doPay (params) {
   console.log(params)
   return api.post('/api/pay/wxPay', params)
 }
+export function addCollectGoods (params) {
+  console.log(params)
+  return api.post('/api/collection/addGoods', params)
+}
+export function deleteCollectGoods (params) {
+  console.log(params)
+  const query = params?`?${json2Query(params)}`:''
+
+  return api.get(`/api/collection/deleteGoods${query}`)
+}
+export function checkCollectGoods (params) {
+  console.log(params)
+  const query = params?`?${json2Query(params)}`:''
+
+  return api.get(`/api/collection/isCollGoods${query}`)
+}
+export function getCollectGoods (params) {
+  console.log(params)
+  const query = params?`?${json2Query(params)}`:''
+
+  return api.get(`/api/collection/queryGoods${query}`)
+}
 export function checkOrderStatus(params){
   const query = params?`?${json2Query(params)}`:''
 

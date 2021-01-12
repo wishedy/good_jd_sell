@@ -26,7 +26,7 @@
           <section class="handle-module">
             <span class="collect-item" :class="{activity:collectOnOff}" @click="handleCollect"></span>
             <span class="car-item"  @click="addGoodCart">
-              <i class="num">9</i>
+              <i class="num">{{cartData.goodsCount}}</i>
             </span>
           </section>
           <section class="buy-module"  @click="goShopping(goodDetail.id)">立即购买</section>
@@ -55,7 +55,7 @@
 import HeaderBar from 'components/HeaderBar/index'
 
 import { mapGetters } from 'vuex'
-import { getGoodDetail, addCart } from '@/resource'
+import { checkCollectGoods, deleteCollectGoods, addCollectGoods, getGoodDetail, addCart, getGoodCart } from '@/resource'
 import Price from './components/Price'
 import Swiper from 'swiper/js/swiper.js'
 import { isWeiXin } from 'libs/utils'
@@ -74,6 +74,8 @@ export default {
       modelFlag: false,
       goodDetail: null,
       collectOnOff: false,
+      cartOriginalData: {},
+      cartData: {},
       detail: {
         type: 1,
         name: '鲸鱼精美学生练习本（4本）',
@@ -129,6 +131,8 @@ export default {
     mounted () {
       const _this = this
       _this.getGoodDetail()
+      _this.getGoodCartList()
+      _this.checkCollect()
       setTimeout(()=>{
         if (!this.swiper1) {
           this.swiper1 = new Swiper('#swiper1', {
@@ -169,9 +173,68 @@ export default {
       })
     },
     methods: {
+      async getGoodCartList () {
+        const _this = this
+        try {
+          const res = await getGoodCart()
+          const formatte = (data) => {
+            const resultList = []
+            const originalList = JSON.parse(JSON.stringify(data.cartList))
+            for (let num = 0; num < originalList.length; num++) {
+              const item = originalList[num]
+              item.select = 0
+              resultList.push(item)
+            }
+            data.cartList = resultList
+            return data
+          }
+          _this.cartOriginalData = formatte(res.rows)
+          _this.cartData = JSON.parse(JSON.stringify(_this.cartOriginalData))
+          console.log('购物车购物车')
+          console.log(_this.cartData)
+        } catch (e) {
+          console.log(e.message || '获取tab数据失败')
+        }
+      },
+      async checkCollect () {
+        const _this = this
+        if (_this.token) {
+          try {
+            const res = await checkCollectGoods({ goodsId: _this.id })
+            console.log('获取状态')
+            if(res.code===200){
+              _this.collectOnOff = res.data
+            }else{
+              _this.collectOnOff = res
+            }
+          } catch (e) {
+            _this.Toast('获取收藏信息失败')
+          }
+        } else {
+          _this.collectOnOff = false
+        }
+      },
       handleCollect(){
         const _this = this
-        _this.collectOnOff = !_this.collectOnOff
+        _this.$login().then(async res => {
+          if(!_this.collectOnOff){
+            try {
+              await addCollectGoods({goodsId:_this.id})
+              _this.collectOnOff = !_this.collectOnOff
+            }catch (e){
+              _this.Toast('收藏失败')
+            }
+          }else{
+            try {
+              await deleteCollectGoods({goodsId:_this.id})
+              _this.collectOnOff = !_this.collectOnOff
+            }catch (e){
+              _this.Toast('取消收藏失败')
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       },
       async addGoodCart(){
         const _this = this
@@ -191,6 +254,7 @@ export default {
               const res = await addCart(param)
               if(res){
                 _this.Toast('加入购物车成功')
+                _this.getGoodCartList()
               }
             }
             addFun()
@@ -502,6 +566,7 @@ export default {
 </style>
 <style lang="scss">
 img{
+  min-width: 100% !important;
   max-width:100% !important;
 }
 </style>

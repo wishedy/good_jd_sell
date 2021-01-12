@@ -50,7 +50,8 @@ export default {
   },
   data () {
     return {
-      cartData: [],
+      cartOriginalData: {},
+      cartData: {},
       selectData: []
     }
   },

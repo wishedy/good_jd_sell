@@ -7,11 +7,12 @@
         <section class="jd_order_list" v-if="goodList.length">
             <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
+      <EmptyList v-if="goodList.length===0"></EmptyList>
     </section>
 </template>
 <script>
 import { getGoodsList } from '@/resource'
-
+import EmptyList from 'components/EmptyList'
 import SearchBar from './components/SearchBar'
 /*
 import TabBar from '../home/components/TabBar'
@@ -21,6 +22,7 @@ export default {
   name: 'search',
   components: {
     SearchBar,
+    EmptyList,
     /*
     TabBar,
 */

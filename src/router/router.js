@@ -116,6 +116,16 @@ const recommendDetail = (resolve) => {
     resolve(module)
   })
 }
+const service = (resolve) => {
+  import(/* webpackChunkName: 'recommendDetail' */'@/views/service/index').then((module) => {
+    resolve(module)
+  })
+}
+const collect = (resolve) => {
+  import(/* webpackChunkName: 'recommendDetail' */'@/views/collect/index').then((module) => {
+    resolve(module)
+  })
+}
 const agreement = (resolve) => {
   import(/* webpackChunkName: 'agreement' */'@/views/agreement/agreement').then((module) => {
     resolve(module)
@@ -324,6 +334,30 @@ const router = new Router({
       component: agreement,
       meta: {
         title: '隐私协议'
+      }
+    },
+    {
+      path: '/service',
+      name: 'service',
+      component: service,
+      meta: {
+        title: '用户协议'
+      }
+    },
+    {
+      path: '/collect',
+      name: 'collect',
+      component: collect,
+      meta: {
+        title: '我的收藏'
+      }
+    },
+    {
+      path: '/browse',
+      name: 'browse',
+      component: collect,
+      meta: {
+        title: '我的足迹'
       }
     },
   ]
