@@ -55,7 +55,7 @@
 import HeaderBar from 'components/HeaderBar/index'
 
 import { mapGetters } from 'vuex'
-import { checkCollectGoods, deleteCollectGoods, addCollectGoods, getGoodDetail, addCart, getGoodCart } from '@/resource'
+import { addBrowseRecord, checkCollectGoods, deleteCollectGoods, addCollectGoods, getGoodDetail, addCart, getGoodCart } from '@/resource'
 import Price from './components/Price'
 import Swiper from 'swiper/js/swiper.js'
 import { isWeiXin } from 'libs/utils'
@@ -133,6 +133,7 @@ export default {
       _this.getGoodDetail()
       _this.getGoodCartList()
       _this.checkCollect()
+      _this.handleRecord()
       setTimeout(()=>{
         if (!this.swiper1) {
           this.swiper1 = new Swiper('#swiper1', {
@@ -173,6 +174,14 @@ export default {
       })
     },
     methods: {
+      async handleRecord(){
+        const _this = this
+        try {
+          await addBrowseRecord({ goodsId: _this.id })
+        }catch (e){
+          console.log(e)
+        }
+      },
       async getGoodCartList () {
         const _this = this
         try {

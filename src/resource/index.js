@@ -133,6 +133,10 @@ export function addCollectGoods (params) {
   console.log(params)
   return api.post('/api/collection/addGoods', params)
 }
+export function addBrowseRecord (params) {
+  console.log(params)
+  return api.post('/api/record/addRecord', params)
+}
 export function deleteCollectGoods (params) {
   console.log(params)
   const query = params?`?${json2Query(params)}`:''
@@ -144,6 +148,12 @@ export function checkCollectGoods (params) {
   const query = params?`?${json2Query(params)}`:''
 
   return api.get(`/api/collection/isCollGoods${query}`)
+}
+export function getRecordList (params) {
+  console.log(params)
+  const query = params?`?${json2Query(params)}`:''
+
+  return api.get(`/api/record/queryRecord${query}`)
 }
 export function getCollectGoods (params) {
   console.log(params)

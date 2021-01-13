@@ -5,12 +5,13 @@
         <section class="order_list" v-if="goodList.length">
             <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
+      <EmptyList v-if="loadEnd&&goodList.length===0"></EmptyList>
     </section>
 </template>
 <script>
 import HeaderBar from 'components/HeaderBar/index'
 import { getOrderList } from '@/resource'
-
+import EmptyList from 'components/EmptyList'
 import TabBar from './components/TabBar'
 import OrderItem from './components/OrderItem'
 export default {
@@ -18,10 +19,12 @@ export default {
   components: {
     TabBar,
     OrderItem,
-    HeaderBar
+    HeaderBar,
+    EmptyList
   },
   data () {
     return {
+      loadEnd: false,
       tabIndex: 0,
       goodList: []
     }
@@ -45,11 +48,13 @@ export default {
           pageSize: 1000,
           pageNum: 1
         })
+        _this.loadEnd = true
         if (res) {
           _this.goodList = res.rows
           console.log(res)
         }
       } catch (e) {
+        _this.loadEnd = true
         _this.Toast(e.msg || '获取订单列表失败')
       }
     }

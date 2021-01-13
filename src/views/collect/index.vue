@@ -4,7 +4,7 @@
     <section class="jd_order_list" v-if="goodList.length">
       <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
     </section>
-    <EmptyList v-if="goodList.length===0"></EmptyList>
+    <EmptyList v-if="loadEnd&&goodList.length===0"></EmptyList>
   </section>
 </template>
 <script>
@@ -23,6 +23,7 @@ export default {
     const _this = this
     const title = _this.$route.query.title
     return {
+      loadEnd: false,
       title: title,
       goodList: []
     }
@@ -33,7 +34,9 @@ export default {
       try {
         const res = await getCollectGoods()
         _this.goodList = res.rows
+        _this.loadEnd = true
       } catch (e) {
+        _this.loadEnd = true
         console.log(e.message || '获取商品数据失败')
       }
     }

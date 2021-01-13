@@ -3,24 +3,68 @@
         <h1 class="title">操作记录</h1>
         <section class="jd_statistics">
             <div class="statistics-item" @click="goCollect">
-                <span class="statistics-num">89</span>
+                <span class="statistics-num">{{collectList.length}}</span>
                 <span class="statistics-title">商品收藏</span>
             </div>
             <div class="statistics-item" @click="goOrder">
-                <span class="statistics-num">1280</span>
+                <span class="statistics-num">{{goodList.length}}</span>
                 <span class="statistics-title">我的订单</span>
             </div>
             <div class="statistics-item" @click="goBrowse">
-                <span class="statistics-num">10</span>
+                <span class="statistics-num">{{recordList.length}}</span>
                 <span class="statistics-title">足迹</span>
             </div>
         </section>
     </section>
 </template>
 <script>
+import { getCollectGoods, getOrderList, getRecordList } from 'api'
+
 export default {
   name: 'statistics',
+  data () {
+    return {
+      goodList: [],
+      recordList: [],
+      collectList: []
+    }
+  },
+  mounted () {
+    const _this = this
+    _this.getListData()
+    _this.getMyOrderList()
+  },
   methods: {
+    async getMyOrderList (param) {
+      const _this = this
+      try {
+        const res = await getOrderList(param ? {
+          pageSize: 1000,
+          pageNum: 1,
+          ...param
+        } : {
+          pageSize: 1000,
+          pageNum: 1
+        })
+        if (res) {
+          _this.goodList = res.rows
+          console.log(res)
+        }
+      } catch (e) {
+        _this.Toast(e.msg || '获取订单列表失败')
+      }
+    },
+    async getListData () {
+      const _this = this
+      try {
+        const record = await getRecordList()
+        const collect = await getCollectGoods()
+        _this.recordList = record.rows
+        _this.collectList = collect.rows
+      } catch (e) {
+        console.log(e.message || '获取商品数据失败')
+      }
+    },
     goBrowse () {
       const _this = this
       _this.$router.push({

@@ -122,7 +122,12 @@ const service = (resolve) => {
   })
 }
 const collect = (resolve) => {
-  import(/* webpackChunkName: 'recommendDetail' */'@/views/collect/index').then((module) => {
+  import(/* webpackChunkName: 'collect' */'@/views/collect/index').then((module) => {
+    resolve(module)
+  })
+}
+const browse = (resolve) => {
+  import(/* webpackChunkName: 'browse' */'@/views/browse/index').then((module) => {
     resolve(module)
   })
 }
@@ -355,7 +360,7 @@ const router = new Router({
     {
       path: '/browse',
       name: 'browse',
-      component: collect,
+      component: browse,
       meta: {
         title: '我的足迹'
       }
