@@ -2,7 +2,7 @@ import { tokenKey } from '@/libs/constant'
 import Cookies from 'js-cookie'
 import router from './router.js'
 const setTitle = (obj) => {
-  document.title = obj.meta.title+'关东臻品'
+  document.title = '关东臻品-'+obj.meta.title
 }
 // 针对活动页添加的神策公共属性
 router.beforeEach((to, from, next) => {

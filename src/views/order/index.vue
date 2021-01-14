@@ -3,7 +3,7 @@
         <HeaderBar title="我的订单" :back="true"></HeaderBar>
         <TabBar :tabIndex="tabIndex" @handleTab="handleTab"></TabBar>
         <section class="order_list" v-if="goodList.length">
-            <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
+            <OrderItem v-for="(item) in goodList" :key="item.orderSn" :config="item"></OrderItem>
         </section>
       <EmptyList v-if="loadEnd&&goodList.length===0"></EmptyList>
     </section>
@@ -49,9 +49,11 @@ export default {
           pageNum: 1
         })
         _this.loadEnd = true
-        if (res) {
+        if (res && res.rows) {
           _this.goodList = res.rows
           console.log(res)
+        } else {
+          _this.goodList = []
         }
       } catch (e) {
         _this.loadEnd = true

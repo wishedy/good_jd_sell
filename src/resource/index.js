@@ -149,6 +149,12 @@ export function checkCollectGoods (params) {
 
   return api.get(`/api/collection/isCollGoods${query}`)
 }
+export function checkOrderExpress (params) {
+  console.log(params)
+  const query = params?`?${json2Query(params)}`:''
+
+  return api.get(`/api/order/getShippingInfo${query}`)
+}
 export function getRecordList (params) {
   console.log(params)
   const query = params?`?${json2Query(params)}`:''

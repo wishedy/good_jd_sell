@@ -42,8 +42,7 @@ export default {
         },
         {
           des: '完成',
-          payStatus: 5,
-          shippingStatus: 15
+          orderStatus: 1
         }
       ]
     }

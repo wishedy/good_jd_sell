@@ -7,10 +7,10 @@
         <section class="order-content">
             <figure class="logo" :style="{background:`url('${config.goodsList[0].primaryPicUrl}') no-repeat center/cover`}"></figure>
             <article class="order-detail">
-                <h1 class="title" v-text="config.goodsList[0].goodsName">绿萝盆栽吸出甲醛室内办室小绿植</h1>
-                <span class="des">人参-干货</span>
+                <h1 class="title" v-text="config.goodsList[0].goodsName"></h1>
+                <span class="des"></span>
             </article>
-            <div class="order-price">￥678.00</div>
+            <div class="order-price">￥{{config.orderPrice}}</div>
             <div class="order-num">x1</div>
         </section>
         <section class="order-info">
@@ -31,12 +31,13 @@
         <section class="handle-bar">
             <div class="order-time" v-text="config.createTime"></div>
             <div class="order-btn">
-                <section class="btn-item" v-if="status.checkDes" v-text="status.checkDes"></section>
+                <section class="btn-item" v-if="status.checkDes" v-text="status.checkDes" @click="handleOrder(config)"></section>
             </div>
         </section>
     </section>
 </template>
 <script>
+import { checkOrderExpress } from '@/resource'
 export default {
   name: 'orderItem',
   props: {
@@ -47,27 +48,28 @@ export default {
       type: Object
     }
   },
-  computed: {
-    status () {
-      /* "shippingStatus": 0,物流状态（1、未发货 5、 发货中 10、已到达 15、已签收 20-退货中 25-已退货） <number>   "orderStatus": null,订单状态(1-未付款 5-交易成功 10-已退款 15-交易关闭) <string>
-      * "payStatus": null,支付状态（1-未支付 5-已支付 10-超时未支付） <string> */
+  methods: {
+    checkStatus (options) {
       const _this = this
       let resultStr = ''
       let btnStatus = ''
       switch (parseInt(_this.config.payStatus, 10)) {
         case 1:
+        case 0:
           resultStr = '待付款'
           btnStatus = '去付款'
           break
         case 5:
           switch (parseInt(_this.config.shippingStatus, 10)) {
             case 1:
+            case 0:
               resultStr = '待发货'
               btnStatus = '提醒发货'
               break
             case 5:
               resultStr = '待收货'
               btnStatus = '查看物流'
+              options.checkExpress && options.checkExpress()
               break
             case 15:
               resultStr = '交易完成'
@@ -92,6 +94,29 @@ export default {
         statusDes: resultStr,
         checkDes: btnStatus
       }
+    },
+    async checkExpress (data) {
+      const _this = this
+      try {
+        const res = await checkOrderExpress({ orderSn: data.orderSn })
+        console.log(res)
+      } catch (e) {
+        _this.Toast('获取物流信息失败')
+      }
+    },
+    handleOrder (item) {
+      const _this = this
+      _this.checkStatus({
+        checkExpress: _this.checkExpress(item)
+      })
+    }
+  },
+  computed: {
+    status () {
+      const _this = this
+      /* "shippingStatus": 0,物流状态（1、未发货 5、 发货中 10、已到达 15、已签收 20-退货中 25-已退货） <number>   "orderStatus": null,订单状态(1-未付款 5-交易成功 10-已退款 15-交易关闭) <string>
+      * "payStatus": null,支付状态（1-未支付 5-已支付 10-超时未支付） <string> */
+      return _this.checkStatus()
     }
   }
 }
