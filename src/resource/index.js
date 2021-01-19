@@ -137,6 +137,14 @@ export function addBrowseRecord (params) {
   console.log(params)
   return api.post('/api/record/addRecord', params)
 }
+export function receiveUserOrder (params) {
+  console.log(params)
+  return api.post('/api/order/confirmOrder', params)
+}
+export function cancelUserOrder (params) {
+  console.log(params)
+  return api.post('/api/order/cancelOrder', params)
+}
 export function deleteCollectGoods (params) {
   console.log(params)
   const query = params?`?${json2Query(params)}`:''

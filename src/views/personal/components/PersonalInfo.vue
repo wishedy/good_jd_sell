@@ -46,7 +46,7 @@ export default {
           pageSize: 1000,
           pageNum: 1
         })
-        if (res) {
+        if (res && res.rows) {
           _this.goodList = res.rows
           console.log(res)
         }

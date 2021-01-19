@@ -5,14 +5,14 @@
                 <div class="swiper-slide">
                     <Entrance :entranceData="entranceList"></Entrance>
                 </div>
-                <div class="swiper-slide">
+<!--                <div class="swiper-slide">
                     <Entrance></Entrance>
                 </div>
                 <div class="swiper-slide">
                     <Entrance></Entrance>
-                </div>
+                </div>-->
             </div>
-            <div class="swiper-pagination entrance-pagination"></div><!--分页器。如果放置在swiper-container外面，需要自定义样式。-->
+            <div class="swiper-pagination entrance-pagination" style="display: none;"></div><!--分页器。如果放置在swiper-container外面，需要自定义样式。-->
         </div>
     </section>
 </template>

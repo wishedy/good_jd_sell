@@ -19,6 +19,7 @@ function setInterceptors (axiosIns) {
   axiosIns.interceptors.response.use(res => {
     console.log('------')
     console.log(res)
+    res.data.code = parseInt(res.data.code, 10)
     console.timeEnd(res.config.method.toUpperCase() + ' ' + res.config.url)
     if (parseInt(res.status,10) >= 200 && parseInt(res.status,10) < 300 && (!parseInt(res.data.code,10) || parseInt(res.data.code,10) === 200)) {
       return res.data.data || res.data

@@ -63,7 +63,7 @@ export default {
     selectAll () {
       const _this = this
       let allOnOff = true
-      if (_this.cartData.cartList.length) {
+      if (_this.cartData && _this.cartData.cartList && _this.cartData.cartList.length) {
         for (let num = 0; num < _this.cartData.cartList.length; num++) {
           const item = _this.cartData.cartList[num]
           if (parseInt(item.select, 10) === 0) {

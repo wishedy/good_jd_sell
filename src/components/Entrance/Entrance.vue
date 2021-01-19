@@ -6,60 +6,6 @@
             </figure>
             <h1 class="title" v-text="item.entranceName"></h1>
         </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">天麻</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">人参</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">人参</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">天麻</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">人参</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">人参</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">更多</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">更多</h1>
-        </section>
-        <section class="entrance-item">
-            <figure class="icon">
-                <i></i>
-            </figure>
-            <h1 class="title">更多</h1>
-        </section>
     </section>
 </template>
 <script>

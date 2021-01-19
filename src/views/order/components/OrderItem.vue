@@ -20,24 +20,33 @@
                 </span>
                 <span class="price">￥45.90</span>
             </div>-->
-            <div class="mail-detail" style="margin-left: 25px;">
+            <div class="mail-detail" >
                 <span class="des">
                     付款：
                 </span>
                 <span class="price">￥{{config.orderPrice}}</span>
                 <span class="des mail-info">(含运费￥0.00）</span>
             </div>
+            <div class="mail-detail"  v-if="config.payTime">
+                <span class="des">
+                    付款时间：
+                </span>
+                <span class="des mail-info">{{ config.payTime }}</span>
+            </div>
         </section>
         <section class="handle-bar">
-            <div class="order-time" v-text="config.createTime"></div>
+            <div class="order-time" v-text="'下单：'+config.createTime"></div>
             <div class="order-btn">
-                <section class="btn-item" v-if="status.checkDes" v-text="status.checkDes" @click="handleOrder(config)"></section>
+                <section class="btn-item" v-if="status.checkDes" v-text="status.checkDes" @click="handleOrder(config,1)" :class="{wake:status.checkDes==='提醒发货',pay:status.checkDes==='去付款'}"></section>
+                <section class="btn-item receive" v-if="status.expressDes" v-text="status.expressDes" @click="receiveOrder(config,1)"></section>
             </div>
         </section>
     </section>
 </template>
 <script>
-import { checkOrderExpress } from '@/resource'
+import Cookies from 'js-cookie'
+import { checkOrderExpress, receiveUserOrder, cancelUserOrder, doPay } from '@/resource'
+import { changeURLArg, isWeiXin } from 'libs/utils'
 export default {
   name: 'orderItem',
   props: {
@@ -48,16 +57,24 @@ export default {
       type: Object
     }
   },
+  data () {
+    const openId = Cookies.get('openId')
+    return {
+      openId
+    }
+  },
   methods: {
-    checkStatus (options) {
+    checkStatus (options, trigger, data) {
       const _this = this
       let resultStr = ''
       let btnStatus = ''
+      let espressStatus = ''
       switch (parseInt(_this.config.payStatus, 10)) {
         case 1:
         case 0:
           resultStr = '待付款'
           btnStatus = '去付款'
+          trigger && options.payOrder && options.payOrder(data)
           break
         case 5:
           switch (parseInt(_this.config.shippingStatus, 10)) {
@@ -65,15 +82,18 @@ export default {
             case 0:
               resultStr = '待发货'
               btnStatus = '提醒发货'
+              trigger && options.wakeExpress && options.wakeExpress(data)
               break
             case 5:
               resultStr = '待收货'
               btnStatus = '查看物流'
-              options.checkExpress && options.checkExpress()
+              espressStatus = '确认收货'
+              trigger && options.checkExpress && options.checkExpress(data)
               break
             case 15:
-              resultStr = '交易完成'
-              btnStatus = ''
+              resultStr = '已签收'
+              // btnStatus = '确认收货'
+              // trigger && options.receiveOrder && options.receiveOrder(data)
               break
             case 20:
               resultStr = '退货中'
@@ -92,6 +112,7 @@ export default {
       }
       return {
         statusDes: resultStr,
+        expressDes: espressStatus,
         checkDes: btnStatus
       }
     },
@@ -100,15 +121,124 @@ export default {
       try {
         const res = await checkOrderExpress({ orderSn: data.orderSn })
         console.log(res)
+        _this.$emit('showPanel', res)
       } catch (e) {
         _this.Toast('获取物流信息失败')
+      }
+    },
+    async wakeExpress (data) {
+      const _this = this
+      _this.Toast('收到，迅速为您发货')
+    },
+    async receiveOrder (data) {
+      const _this = this
+      _this.MessageBox({
+        title: '提示',
+        message: '请您确定该订单已经收到？',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: '取消',
+        confirmButtonText: '确定'
+
+      }).then(async () => {
+        try {
+          const res = await receiveUserOrder({ orderSn: data.orderSn })
+          console.log(res)
+          _this.handleAfterSuccess()
+        } catch (e) {
+          _this.Toast('获取物流信息失败')
+        }
+      })
+    },
+    async cancelOrder (data) {
+      const _this = this
+      _this.MessageBox({
+        title: '提示',
+        message: '请您确定取消该订单？',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: '取消',
+        confirmButtonText: '确定'
+
+      }).then(async () => {
+        try {
+          const res = await cancelUserOrder({ orderSn: data.orderSn })
+          console.log(res)
+        } catch (e) {
+          _this.Toast('获取物流信息失败')
+        }
+      })
+    },
+    handleAfterSuccess () {
+      const _this = this
+      _this.$emit('handleAfterSuccess')
+    },
+    async payOrder (item) {
+      const _this = this
+      console.log('继续支付')
+      const successUrlFirst = changeURLArg(location.origin + '/purchase?type=0', 'pay_success', 'success')
+      const successUrlSecond = changeURLArg(successUrlFirst, 'orderSn', item)
+      const param = {
+        orderSn: item.orderSn,
+        payType: isWeiXin() ? 1 : 4,
+        notifyUrl: encodeURIComponent(successUrlSecond),
+        openId: _this.openId ? _this.openId : ''
+      }
+      if (isWeiXin()) {
+        // 微信环境下
+        const payConfig = await doPay(param)
+        // wx.chooseWXPay(payConfig)
+        /*eslint-disable*/
+        const payFun = () => {
+          WeixinJSBridge.invoke(
+              'getBrandWCPayRequest', payConfig,
+              function (res) {
+                // alert(res.err_msg);
+                if (res.err_msg === 'get_brand_wcpay_request:ok') {
+                  // 使用以上方式判断前端返回,微信团队郑重提示：
+                  console.log('支付成功===')
+                  _this.paySuccess = true
+                  _this.orderSn = param.orderSn
+                  _this.checkQuery()
+                } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+                  console.log('用户取消支付')
+                } else if (res.err_msg === 'get_brand_wcpay_request:fail') {
+                  console.log('支付失败')
+                }
+              })
+        }
+
+        if (typeof WeixinJSBridge === 'undefined') {
+          if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', function () {
+              payFun()
+            }, false)
+          } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', function () {
+              payFun()
+            })
+            document.attachEvent('onWeixinJSBridgeReady', function () {
+              payFun()
+            })
+          }
+        } else {
+          payFun()
+        }
+      } else {
+        // 非微信环境下
+        const payConfig = await doPay(param)
+        const payUrl = payConfig.url
+        location.href = payUrl
       }
     },
     handleOrder (item) {
       const _this = this
       _this.checkStatus({
-        checkExpress: _this.checkExpress(item)
-      })
+        checkExpress: _this.checkExpress,
+        wakeExpress: _this.wakeExpress,
+        payOrder: _this.payOrder,
+        receiveOrder: _this.receiveOrder
+      }, 1, item)
     }
   },
   computed: {
@@ -210,6 +340,7 @@ export default {
         .order-info{
             height: 81px;
             font-size:24px;
+            padding: 0 10px;
             font-family:SourceHanSansCN;
             font-weight:400;
             color:rgba(102,102,102,1);
@@ -229,9 +360,6 @@ export default {
                 color:rgba(51,51,51,1);
                 line-height:40px;
             }
-            .mail-info{
-                margin-right: 31px;
-            }
         }
         .handle-bar{
             height: 97px;
@@ -240,7 +368,7 @@ export default {
             align-items: center;
             justify-content: space-between;
             .order-time{
-                font-size:20px;
+                font-size:22px;
                 margin-left: 30px;
                 font-family:SourceHanSansCN;
                 font-weight:400;
@@ -266,6 +394,22 @@ export default {
                     line-height: 56px;
                     text-align: center;
                     margin-right: 11px;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  justify-content: center;
+                  &.pay{
+                    border:2px solid #EF4C51;
+                    color:#EF4C51;
+                  }
+                  &.receive{
+                    border:2px solid #3AB344;
+                    color:#3AB344;
+                  }
+                  &.wake{
+                    border:2px solid #02B1FF;
+                    color:#02B1FF;
+                  }
                 }
             }
         }
