@@ -161,9 +161,11 @@ export default {
     _this.getEntranceData()
     _this.getTabData()
     _this.getRecommendData()
-    if (isWeiXin()) {
-      _this.share()
-    }
+    setTimeout(() => {
+      if (isWeiXin()) {
+        _this.share()
+      }
+    }, 1000)
   }
 }
 </script>

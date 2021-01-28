@@ -68,8 +68,8 @@ export default {
     return {
       title: '关东臻品',
       desc: '一站式山货购物，是真品，更是臻品',
-      imgUrl: 'https://shop.goodjd.cn/static/img/home-active.56a05ebd.png',
-      url: location.href,
+      imgUrl: 'https://goodjd.oss-cn-beijing.aliyuncs.com/goodjd/20201222/rvbIUnaqDXnZfgAnFBrgiANZEMlGjwkc.png',
+      url: '',
       id: id,
       modelFlag: false,
       goodDetail: null,
@@ -152,9 +152,6 @@ export default {
       },1000)
       //this.getMyCoin()
       //this.getCommodityDetail()
-      if (isWeiXin()) {
-        _this.share()
-      }
     },
     updated () {
       /* eslint-disable no-new */
@@ -303,6 +300,11 @@ export default {
             id: _this.id
           })
           _this.goodDetail = res.rows
+          _this.desc = _this.goodDetail.categoryName+'-'+ _this.goodDetail.name
+          _this.url = location.href
+          if (isWeiXin()) {
+            _this.share()
+          }
         } catch (e) {
           console.log(e.message || '获取商品数据失败')
         }
