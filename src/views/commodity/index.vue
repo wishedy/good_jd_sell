@@ -26,7 +26,7 @@
           <section class="handle-module">
             <span class="collect-item" :class="{activity:collectOnOff}" @click="handleCollect"></span>
             <span class="car-item"  @click="addGoodCart">
-              <i class="num">{{cartData.goodsCount}}</i>
+              <i class="num" v-if="token">{{cartData.goodsCount}}</i>
             </span>
           </section>
           <section class="buy-module"  @click="goShopping(goodDetail.id)">立即购买</section>
@@ -53,7 +53,8 @@
 </template>
 <script>
 import HeaderBar from 'components/HeaderBar/index'
-
+import { tokenKey } from '@/libs/constant'
+import Cookies from 'js-cookie'
 import { mapGetters } from 'vuex'
 import { addBrowseRecord, checkCollectGoods, deleteCollectGoods, addCollectGoods, getGoodDetail, addCart, getGoodCart } from '@/resource'
 import Price from './components/Price'
@@ -71,6 +72,7 @@ export default {
       imgUrl: 'https://goodjd.oss-cn-beijing.aliyuncs.com/goodjd/20201222/rvbIUnaqDXnZfgAnFBrgiANZEMlGjwkc.png',
       url: '',
       id: id,
+      token: '',
       modelFlag: false,
       goodDetail: null,
       collectOnOff: false,
@@ -130,6 +132,8 @@ export default {
     },
     mounted () {
       const _this = this
+      const token = Cookies.get(tokenKey)
+      _this.token = token
       _this.getGoodDetail()
       _this.getGoodCartList()
       _this.checkCollect()
