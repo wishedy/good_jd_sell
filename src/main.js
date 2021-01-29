@@ -19,7 +19,9 @@ import '@/libs/mixin/Register'
 import { getOpenId, setDomain } from 'libs/utils'
 import VueLazyLoad from 'vue-lazyload'
 /*eslint-disable*/
-new vConsole()
+if (!(process.env.VUE_APP_ENV === 'prod')) {
+  new vConsole()
+}
 Vue.use(AwesomePicker)
 Vue.config.productionTip = false
 Vue.prototype.MessageBox = MessageBox
