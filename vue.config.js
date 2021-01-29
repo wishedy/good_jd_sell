@@ -2,11 +2,19 @@ const path = require('path')
 // const isDev = process.env.NODE_ENV = 'development'
 const isProd = process.env.NODE_ENV === 'production'
 const fs = require('fs')
+const eslintMode = process.env.VUE_APP_ESLINT_ENV
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
-const chainWebpack = (config) => {
-  config.module
+let chainWebpack = (config) => {
+  // 移除 prefetch 插件
+  config.plugins.delete('prefetch')
+  // 移除 preload 插件
+  config.plugins.delete('preload')
+}
+if (eslintMode === 'eslint') {
+  chainWebpack = (config) => {
+    config.module
       .rule('eslint')
       .use('eslint-loader')
       .loader('eslint-loader')
@@ -15,6 +23,11 @@ const chainWebpack = (config) => {
         options.emitWarning = true
         return options
       })
+    // 移除 prefetch 插件
+    config.plugins.delete('prefetch')
+    // 移除 preload 插件
+    config.plugins.delete('preload')
+  }
 }
 module.exports = {
   lintOnSave: !isProd,
