@@ -28,6 +28,7 @@ export default {
   methods: {
     async getArticleData () {
       const _this = this
+      _this.Indicator.open()
       try {
         const res = await getArticleList({
           pageSize: 1000,
@@ -36,6 +37,8 @@ export default {
         _this.articleList = res.rows
       } catch (e) {
         console.log(e.message || '获取商品数据失败')
+      } finally {
+        _this.Indicator.close()
       }
     }
   },

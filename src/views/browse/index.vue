@@ -31,13 +31,15 @@ export default {
   methods: {
     async getGoodsData () {
       const _this = this
+      _this.Indicator.open()
       try {
         const res = await getRecordList()
         _this.goodList = res.rows
-        _this.loadEnd = true
       } catch (e) {
-        _this.loadEnd = true
         console.log(e.message || '获取商品数据失败')
+      } finally {
+        _this.loadEnd = true
+        _this.Indicator.close()
       }
     }
   },

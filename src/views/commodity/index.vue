@@ -284,6 +284,7 @@ export default {
       },
       async getGoodDetail(){
         const _this = this
+        _this.Indicator.open()
         try {
           const res = await getGoodDetail({
             id: _this.id
@@ -291,10 +292,12 @@ export default {
           _this.goodDetail = res.rows
           _this.desc = _this.goodDetail.categoryName+'-'+ _this.goodDetail.name
           _this.url = location.href
+          _this.Indicator.close()
           if (isWeiXin()) {
             _this.share()
           }
         } catch (e) {
+          _this.Indicator.close()
           console.log(e.message || '获取商品数据失败')
         }
       }

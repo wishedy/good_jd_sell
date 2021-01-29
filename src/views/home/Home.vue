@@ -63,6 +63,7 @@ export default {
     },
     async getGoodsData (id) {
       const _this = this
+      _this.Indicator.open()
       try {
         const res = await getGoodsList({
           pageSize: 1000,
@@ -70,7 +71,10 @@ export default {
           pageNum: 1
         })
         _this.goodList = res.rows[0].goodsList
+        _this.Indicator.close()
       } catch (e) {
+        _this.Indicator.close()
+
         console.log(e.message || '获取商品数据失败')
       }
     },

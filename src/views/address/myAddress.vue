@@ -76,10 +76,17 @@ export default {
     },
     async getList () {
       const _this = this
-      const res = await getExpressAddressList()
-      console.log(res)
-      _this.list = res.rows
-      _this.loadEnd = true
+      _this.Indicator.open()
+      try {
+        const res = await getExpressAddressList()
+        console.log(res)
+        _this.list = res.rows
+      } catch (e) {
+        console.log(e.msg || '获取商品数据失败')
+      } finally {
+        _this.loadEnd = true
+        _this.Indicator.close()
+      }
     }
   }
 }

@@ -2009,3 +2009,15 @@
 .mintui-field-warning:before { content: "\E608"; }
 .mintui-success:before { content: "\E602"; }
 .mintui-field-success:before { content: "\E609"; }
+.mint-indicator-wrapper{
+  padding: 30px !important;
+  .mint-spinner-snake{
+    width: 64px !important;
+    border: 8px solid transparent;
+    height: 64px !important;
+  }
+  .mint-indicator-text{
+    font-size: 26px !important;
+    margin-top: 10px !important;
+  }
+}

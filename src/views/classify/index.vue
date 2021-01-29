@@ -26,6 +26,7 @@ export default {
     return {
       tabData: [],
       goodList: [],
+      loadEnd: false,
       tabIndex: 0,
       tabConfig: {}
     }
@@ -55,6 +56,7 @@ export default {
     },
     async getGoodsData (id) {
       const _this = this
+      _this.Indicator.open()
       try {
         const res = await getGoodsList({
           pageSize: 1000,
@@ -64,6 +66,9 @@ export default {
         _this.goodList = res.rows[0].goodsList
       } catch (e) {
         console.log(e.message || '获取商品数据失败')
+      } finally {
+        _this.loadEnd = true
+        _this.Indicator.close()
       }
     },
     changeTab (index) {

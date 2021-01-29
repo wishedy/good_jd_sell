@@ -71,6 +71,8 @@ export default {
     },
     async getMyOrderList (param) {
       const _this = this
+      _this.Indicator.open()
+
       try {
         const res = await getOrderList(param ? {
           pageSize: 1000,
@@ -80,7 +82,6 @@ export default {
           pageSize: 1000,
           pageNum: 1
         })
-        _this.loadEnd = true
         console.log('数据加载完')
         console.log(res)
         if (res && res.rows) {
@@ -92,8 +93,11 @@ export default {
       } catch (e) {
         console.log('数据加载失败')
         _this.goodList = []
-        _this.loadEnd = true
         _this.Toast(e.msg || '获取订单列表失败')
+      } finally {
+        _this.Indicator.close()
+
+        _this.loadEnd = true
       }
     }
   },

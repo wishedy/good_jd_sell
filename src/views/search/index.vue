@@ -4,10 +4,10 @@
 <!--
         <TabBar></TabBar>
 -->
-        <section class="jd_order_list" v-if="goodList.length">
+        <section class="jd_order_list" v-if="loadEnd&&goodList.length">
             <OrderItem v-for="(item) in goodList" :key="item.id" :config="item"></OrderItem>
         </section>
-      <EmptyList v-if="goodList.length===0"></EmptyList>
+      <EmptyList v-if="loadEnd&&goodList.length===0"></EmptyList>
     </section>
 </template>
 <script>
@@ -32,6 +32,7 @@ export default {
     const _this = this
     const title = _this.$route.query.title
     return {
+      loadEnd: false,
       title: title,
       goodList: []
     }
@@ -39,6 +40,7 @@ export default {
   methods: {
     async getGoodsData () {
       const _this = this
+      _this.Indicator.open()
       try {
         const res = await getGoodsList({
           pageSize: 1000,
@@ -47,7 +49,10 @@ export default {
         })
         _this.goodList = res.rows[0].goodsList
       } catch (e) {
-        console.log(e.message || '获取商品数据失败')
+        console.log(e.msg || '获取商品数据失败')
+      } finally {
+        _this.loadEnd = true
+        _this.Indicator.close()
       }
     }
   },
