@@ -3,9 +3,9 @@
         <!--<HeaderBar title="关东臻品"></HeaderBar>-->
         <section class="jd_home_card">
             <div class="jd_content">
-                <input type="text" placeholder="请输入您的产品" @focusin="focus=true" @focusout="focus=false" v-model="searchval">
+                <input type="text" placeholder="请输入产品名" @focusin="focus=true" @focusout="focus=false" v-model="searchval">
                 <i class="icon" v-if="!focus"></i>
-                <i class="message" @click="goToMessage"></i>
+                <i class="message" @click="goToMessage" style="display: none;"></i>
             </div>
         </section>
         <BannerBar :bannerList="bannerList"></BannerBar>
@@ -181,13 +181,14 @@ export default {
             position: relative;
             overflow: hidden;
             .jd_content{
-                width:604px;
+                width:651px;
                 height:60px;
                 background:rgba(255,255,255,1);
                 border-radius:30px;
                 position: absolute;
                 top:20px;
-                left: 30px;
+                left: 50%;
+              transform: translateX(-50%);
                 .icon{
                     width: 26px;
                     height: 26px;
