@@ -4,7 +4,7 @@
             <router-link tag="figure" :to="{path:'/editUserInfo'}" class="logo" :style="{background:`url('${user.avatar?user.avatar:userLogo}') no-repeat center/cover`}"></router-link>
             <section class="personal-info">
                 <div class="user-name" v-text="user.userName"></div>
-                <div class="user-phone" v-text="user.phonenumber"></div>
+                <div class="user-phone">做真品，更做臻品</div>
             </section>
             <div class="sign">马上签到</div>
         </section>
