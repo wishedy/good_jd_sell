@@ -78,20 +78,7 @@ export default {
       collectOnOff: false,
       cartOriginalData: {},
       cartData: {},
-      detail: {
-        type: 1,
-        name: '鲸鱼精美学生练习本（4本）',
-        coin: 1200,
-        counterPrice: 16,
-        stock_num: 915,
-        images: [
-          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600593638953&di=8853fb2e9505c6832db5233ef7c3b7f1&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F81a0000a835003df64f7dbfb59c0356cf0a9f99e4952f-OIod35_fw658',
-          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600593638953&di=8853fb2e9505c6832db5233ef7c3b7f1&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F81a0000a835003df64f7dbfb59c0356cf0a9f99e4952f-OIod35_fw658',
-          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600593638953&di=8853fb2e9505c6832db5233ef7c3b7f1&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F81a0000a835003df64f7dbfb59c0356cf0a9f99e4952f-OIod35_fw658'
-        ],
-        content: '<p><img src="https://jyxb-common-1252525514.cos.ap-shanghai.myqcloud.com/8ddff1226a777c156c7f4477f8ab7f57.png" style="max-width:100%;"><br></p>',
-        status: 1
-      },
+      detail: {},
       swiper1: null,
       swiper2: null,
       goodNo: '',
@@ -154,8 +141,6 @@ export default {
           }
         })
       },1000)
-      //this.getMyCoin()
-      //this.getCommodityDetail()
     },
     updated () {
       /* eslint-disable no-new */

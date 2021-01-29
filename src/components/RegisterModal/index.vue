@@ -12,7 +12,7 @@
             </figure>
             <figure class="jd_input_bar">
                 <span class="code_input">
-                    <input type="text" placeholder="请输入验证码" v-model="form.validCode">
+                    <input type="text" placeholder="请输入验证码" v-model="form.validCode" maxlength="4">
                 </span>
                 <span class="jd_code_label">获取验证码</span>
             </figure>

@@ -64,6 +64,11 @@ export default {
         console.log(res)
         if (res) {
           _this.Toast('已收到您的反馈，我们会尽快处理')
+          setTimeout(() => {
+            _this.$router.push({
+              path: 'home'
+            })
+          }, 3000)
         }
       } catch (e) {
         _this.Toast('反馈提交失败')
