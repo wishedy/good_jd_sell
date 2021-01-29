@@ -14,10 +14,10 @@
         </section>
         <section class="ml-open-metion" :class="{'active':submitOnOff}" @click.stop="loginFunc">登录</section>
         <section class="ml-authorization">
-            <article class="register" style="visibility: hidden;">快速注册</article>
+<!--            <article class="register" style="visibility: hidden;">快速注册</article>
             <p class="third-line">第三方</p>
-            <figure class="third-logo"></figure>
-            <section class="userAgreement">登录表示您同意 <em>《用户协议》</em></section>
+            <figure class="third-logo"></figure>-->
+            <section class="userAgreement">登录表示您同意 <em>《用户协议》</em>及<em>《隐私协议》</em></section>
         </section>
     </section>
 </template>
@@ -172,7 +172,7 @@ export default {
             margin-bottom: 50px;
         }
         .userAgreement{
-            width:372px;
+            width:472px;
             height:28px;
             font-size:20px;
             font-family:PingFangSC-Light;
