@@ -41,7 +41,8 @@ export default {
                 background:rgba(255,255,255,1);
                 border-radius:50%;
                 margin: 0 26px 0 35px;
-                background: url("~img/personal/headerLogo.png") no-repeat center/cover;
+                border:3px solid #fff;
+                background: url("https://goodjd.oss-cn-beijing.aliyuncs.com/goodjd/20210129/vfgrfVshwkMHGjEuaCxohKeRxtTPPdpJ.png") no-repeat center/cover;
             }
             .personal-info{
                 width: 128px;
