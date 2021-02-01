@@ -1,7 +1,7 @@
 <template>
     <section class="jd_main">
         <HeaderBar title="个人中心"></HeaderBar>
-        <PersonalCard></PersonalCard>
+        <PersonalCard @handleAfterSign="getUserData"></PersonalCard>
         <PersonalInfo></PersonalInfo>
         <PersonalSet></PersonalSet>
     </section>
@@ -28,6 +28,7 @@ export default {
       try {
         const res = await getUserInfo()
         if (res) {
+          res.sysUser.signedStatus = res.signedStatus
           _this.saveUser(res.sysUser)
           console.log(res)
         }

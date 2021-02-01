@@ -137,6 +137,10 @@ export function addBrowseRecord (params) {
   console.log(params)
   return api.post('/api/record/addRecord', params)
 }
+export function saveSigned (params) {
+  console.log(params)
+  return api.post('/api/customer/signed/saveSigned', params)
+}
 export function receiveUserOrder (params) {
   console.log(params)
   return api.post('/api/order/confirmOrder', params)

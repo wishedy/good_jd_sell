@@ -6,12 +6,13 @@
                 <div class="user-name" v-text="user.userName"></div>
                 <div class="user-phone">做真品，更做臻品</div>
             </section>
-            <div class="sign">马上签到</div>
+            <div class="sign" v-text="sign" @click="handleSign"></div>
         </section>
     </section>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { saveSigned } from '@/resource'
 export default {
   name: 'personalCard',
   data () {
@@ -19,8 +20,24 @@ export default {
       userLogo: require('../../../assets/images/personal/userLogo.png')
     }
   },
+  methods: {
+    async handleSign () {
+      const _this = this
+      try {
+        await saveSigned()
+        _this.Toast('签到成功')
+        _this.$emit('handleAfterSign')
+      } catch (e) {
+        _this.Toast(e.msg || '签到失败')
+      }
+    }
+  },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
+    sign () {
+      const _this = this
+      return _this.user.signedStatus ? '已签到' : '马上签到'
+    }
   }
 }
 </script>
@@ -56,7 +73,7 @@ export default {
                     line-height:32px;
                 }
                 .user-phone{
-                    width: 100%;
+                    width: 300%;
                     font-size:26px;
                     font-family:SourceHanSansCN;
                     font-weight:400;
