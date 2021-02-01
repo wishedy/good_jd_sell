@@ -23,7 +23,7 @@ export default {
   methods: {
     goDetail (item) {
       const _this = this
-      if (!testLink(item.entranceLink)) {
+      if (testLink(item.entranceLink)) {
         location.href = item.entranceLink
       } else {
         _this.$router.push({

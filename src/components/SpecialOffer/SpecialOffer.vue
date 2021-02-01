@@ -47,7 +47,7 @@ export default {
   methods: {
     goDetail (item) {
       const _this = this
-      if (!testLink(item.recommendLink)) {
+      if (testLink(item.recommendLink)) {
         location.href = item.recommendLink
       } else {
         _this.$router.push({

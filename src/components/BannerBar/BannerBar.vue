@@ -29,7 +29,7 @@ export default {
     goDetail (item) {
       const _this = this
       if (item.bannerLink) {
-        if (!testLink(item.bannerLink)) {
+        if (testLink(item.bannerLink)) {
           _this.$router.push({
             path: 'search',
             query: {
