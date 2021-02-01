@@ -2,7 +2,7 @@
     <transition name="confirm-fade">
     <div class="jd_main"  v-show="shareVisible">
         <section class="jd_register">
-            <i class="closeIcon"></i>
+            <i class="closeIcon" @click="hidden"></i>
             <h1 class="title">请输入手机号</h1>
             <figure class="jd_input_bar">
                 <span class="jd_phone_label">+86</span>
@@ -263,6 +263,7 @@ export default {
                         line-height: 88px;
                         font-size: 32px;
                         background: none;
+                        text-align: center;
                         font-family: PingFangSC-Regular, PingFang SC;
                         font-weight: 400;
                         color: #333;
