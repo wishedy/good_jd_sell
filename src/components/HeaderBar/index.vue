@@ -33,8 +33,30 @@ export default {
   methods: {
     returnBack () {
       const _this = this
-      _this.$emit('returnOriginal')
-      _this.$router.back(-1)
+      if ((navigator.userAgent.indexOf('MSIE') >= 0) && (navigator.userAgent.indexOf('Opera') < 0)) { // IE
+        if (history.length > 0) {
+          _this.$emit('returnOriginal')
+          window.history.go(-1)
+        } else {
+          window.location.href = '/home'
+        }
+      } else { // 非IE浏览器
+        if (navigator.userAgent.indexOf('Firefox') >= 0 ||
+            navigator.userAgent.indexOf('Opera') >= 0 ||
+            navigator.userAgent.indexOf('Safari') >= 0 ||
+            navigator.userAgent.indexOf('Chrome') >= 0 ||
+            navigator.userAgent.indexOf('WebKit') >= 0) {
+          if (window.history.length > 1) {
+            _this.$emit('returnOriginal')
+            window.history.go(-1)
+          } else {
+            window.location.href = '/home'
+          }
+        } else { // 未知的浏览器
+          _this.$emit('returnOriginal')
+          window.history.go(-1)
+        }
+      }
     },
     subTitleEvent () {
       const _this = this

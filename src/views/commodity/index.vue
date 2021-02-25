@@ -72,7 +72,6 @@ export default {
       imgUrl: 'https://goodjd.oss-cn-beijing.aliyuncs.com/goodjd/20201222/rvbIUnaqDXnZfgAnFBrgiANZEMlGjwkc.png',
       url: '',
       id: id,
-      token: '',
       modelFlag: false,
       goodDetail: null,
       collectOnOff: false,
