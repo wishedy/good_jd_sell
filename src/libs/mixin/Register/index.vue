@@ -47,6 +47,13 @@ export default {
     }
   },
   watch: {
+    shareVisible (n) {
+      if (n) {
+        document.body.style.overflow = 'hidden'
+      } else {
+        document.body.style.overflow = 'auto'
+      }
+    },
     onCoding (n) {
       const _this = this
       if (n) {
